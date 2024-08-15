@@ -2,6 +2,7 @@ import 'package:travel_claim/models/branch.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/employee.dart';
 import 'package:travel_claim/models/trip_type.dart';
+import 'package:travel_claim/utils/app_enums.dart';
 
 class ClaimHistoryResponse {
   late bool success;
@@ -33,29 +34,58 @@ class ClaimHistory {
   late String tripClaimId;
   TripType? tripTypeDetails;
   Employee? approverDetails;
+  Employee? financeApproverDetails;
   late String tripPurpose;
   Branch? visitBranchDetail;
   List<Category>? categories;
-  late String status;
+  late ClaimStatus status;
+  late ClaimStatus approverStatus;
+  late ClaimStatus financeStatus;
+  late String tmgId;
+  late String date;
+  late String tripApprovedDate;
+  late String tripRejectedDate;
+  late String financeApprovedDate;
+  late double totalAmount;
 
   ClaimHistory(
       {this.tripClaimId = '',
         this.tripTypeDetails,
         this.approverDetails,
+        this.financeApproverDetails,
         this.tripPurpose = '',
         this.visitBranchDetail,
         this.categories,
-        this.status = ''
+        this.status = ClaimStatus.none,
+        this.approverStatus = ClaimStatus.none,
+        this.financeStatus = ClaimStatus.none,
+        this.tmgId = '',
+        this.date = '',
+        this.tripApprovedDate = '',
+        this.tripRejectedDate = '',
+        this.financeApprovedDate = '',
+        this.totalAmount = 0
       });
 
   ClaimHistory.fromJson(Map<String, dynamic> json) {
     tripClaimId = json['trip_claim_id'] ?? '';
-    status = json['status'] ?? 'Pending';
+    status = json['trip_status'].toString().toClaimStatus;
+    approverStatus = json['approver_status'].toString().toClaimStatus;
+    financeStatus = json['finance_status'].toString().toClaimStatus;
+    tmgId = json['tmg_id'] ?? '';
+    date = json['date'] ?? '';
+    tripApprovedDate = json['trip_approved_date'] ?? 'NA';
+    tripRejectedDate = json['trip_rejected_date'] ?? 'NA';
+    financeApprovedDate = json['finance_status_change_date'] ?? 'NA';
+    totalAmount = double.tryParse(json['total_amount'].toString()) ?? 0;
     tripTypeDetails = json['trip_type_details'] != null
         ? new TripType.fromJson(json['trip_type_details'])
         : null;
     approverDetails = json['approver_details'] != null
         ? new Employee.fromJson(json['approver_details'])
+        : null;
+    financeApproverDetails = json['finance_approver_details'] != null
+        ? new Employee.fromJson(json['finance_approver_details'])
         : null;
     tripPurpose = json['trip_purpose'] ?? '';
     visitBranchDetail = json['visit_branch_detail'] != null

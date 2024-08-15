@@ -142,8 +142,8 @@ class ClaimFormData {
     fromDate = json['document_date']!=null ? DateTime.tryParse(json['document_date']) : null;
     tripFrom = json['trip_from'];
     tripTo = json['trip_to'];
-    odoMeterStart = json['start_meter'];
-    odoMeterEnd = json['end_meter'];
+    odoMeterStart = json['start_meter']!=null ? json['start_meter'].toString() : null;
+    odoMeterEnd = json['end_meter']!=null ? json['end_meter'].toString() : null;
     noOfEmployees = json['no_of_persons'] ?? 1;
     employees = <Employee>[];
     if (json['person_details'] != null) {

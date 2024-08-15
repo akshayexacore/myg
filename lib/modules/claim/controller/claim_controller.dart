@@ -189,16 +189,9 @@ class ClaimController extends GetxController
           }
 
           Get.until((route) => Get.currentRoute == LandingPage.routeName);
-
-          FToast fToast = FToast();
-          fToast.init(navigatorKey.currentContext!);
-          fToast.showToast(
-            child: showToastMessage(msg: "Claim has been submitted successfully",
-                iconColor: Colors.green,icon: Icons.check_circle_rounded),
-          );
-          //AppDialog.showSnackBar("Success", "Claim submitted successfully.");
+          AppDialog.showSnackBar("Success", "Claim submitted successfully.");
         } else {
-          AppDialog.showToast("Opps! failed to submit claim");
+          AppDialog.showToast(response.message.isNotEmpty ? response.message : "Oops! failed to submit claim");
         }
       }
     } catch (_) {

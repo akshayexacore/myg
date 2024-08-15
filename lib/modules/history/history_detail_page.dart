@@ -4,6 +4,7 @@ import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:travel_claim/modules/history/controllers/history_detail_controller.dart';
+import 'package:travel_claim/utils/app_enums.dart';
 import 'package:travel_claim/utils/app_formatter.dart';
 import 'package:travel_claim/views/components/bg.dart';
 import 'package:travel_claim/views/components/common.dart';
@@ -38,9 +39,9 @@ class HistoryDetailPage extends StatelessWidget {
             children: [
               gapHC(10),
               Container(
-                margin:  EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                margin:  const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 decoration: boxDecoration(primaryColor, 10),
-                padding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -49,7 +50,7 @@ class HistoryDetailPage extends StatelessWidget {
                       children: [
                         ts("Trip ID", Colors.white),
                         gapHC(2),
-                        tssb("#${_controller.claim.value!.tripClaimId}", Colors.white,FontWeight.w500),
+                        tssb("#${_controller.claim.value!.tmgId}", Colors.white,FontWeight.w500),
                       ],
                     ),
                     Column(
@@ -57,7 +58,7 @@ class HistoryDetailPage extends StatelessWidget {
                       children: [
                         ts("Date", Colors.white),
                         gapHC(2),
-                        tssb("22/02/2024", Colors.white,FontWeight.w500),
+                        tssb(_controller.claim.value!.date, Colors.white,FontWeight.w500),
                       ],
                     ),
                   ],
@@ -66,9 +67,9 @@ class HistoryDetailPage extends StatelessWidget {
 
 
               Container(
-                margin:  EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+                margin:  const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
                 decoration: boxBaseDecoration(greyLight, 10),
-                padding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
                 child: Column(
                   children: [
                     headTitle("Type of trip", _controller.claim.value!.tripTypeDetails?.name ?? ''),
@@ -81,9 +82,9 @@ class HistoryDetailPage extends StatelessWidget {
 
 
               Container(
-                margin:  EdgeInsets.symmetric(horizontal: 15,vertical: 8),
+                margin:  const EdgeInsets.symmetric(horizontal: 15,vertical: 8),
                 decoration: boxBaseDecoration(greyLight, 10),
-                padding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -91,7 +92,7 @@ class HistoryDetailPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ts("Reporting person approval", Colors.black),
-                        tssb(_controller.claim.value!.status=="Rejected"?"Rejected": "Approved",_controller.claim.value!.status=="Rejected"?pinkreject: Colors.green,FontWeight.w700)
+                        tssb(_controller.claim.value!.approverStatus.title,_controller.claim.value!.approverStatus.color,FontWeight.w700)
 
                       ],
                     ),
@@ -101,8 +102,8 @@ class HistoryDetailPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ts("Finance approval", Colors.black),
-                        tssb(_controller.claim.value!.status=="Rejected"?"Rejected":_controller.claim.value!.status=="Paid"?"Approved":"Pending",
-                            _controller.claim.value!.status=="Rejected"?pinkreject:_controller.claim.value!.status=="Paid"?Colors.green:yellowpending,
+                        tssb(_controller.claim.value!.financeStatus.title,
+                            _controller.claim.value!.financeStatus.color,
                             FontWeight.w700)
 
                       ],
@@ -110,33 +111,39 @@ class HistoryDetailPage extends StatelessWidget {
 
                     gapHC(10),
 
-                    _controller.claim.value!.status=="Pending"?SizedBox(): Column(
+                    _controller.claim.value!.status==ClaimStatus.pending?const SizedBox(): Column(
                       children: [
-                        Divider(),
+                        const Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ts("${_controller.claim.value!.status} Date", Colors.black),
-                            tssb('22/10/24',
+                            ts("${_controller.claim.value!.status.title} Date", Colors.black),
+                            tssb(_controller.claim.value!.status==ClaimStatus.approved ? _controller.claim.value!.tripApprovedDate : _controller.claim.value!.status==ClaimStatus.rejected ? _controller.claim.value!.tripRejectedDate : _controller.claim.value!.financeApprovedDate ,
                                 Colors.black,
-                                FontWeight.w700)
+                                FontWeight.w500)
 
                           ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ts(_controller.claim.value!.status=="Rejected"?"Rejected person":"Approved Finance person", Colors.black),
-                            tssb('Adham (MYGX-1111)',
-                                Colors.black,
-                                FontWeight.w700)
+                            ts(_controller.claim.value!.status== ClaimStatus.rejected ?"Rejected person": _controller.claim.value!.status== ClaimStatus.approved ? "Approved Reporting person" :"Approved Finance person", Colors.black),
+                            Expanded(
+                              child: Text(
+                                _controller.claim.value!.status== ClaimStatus.rejected||_controller.claim.value!.status== ClaimStatus.approved ? "${_controller.claim.value!.approverDetails?.name} (${_controller.claim.value!.approverDetails?.employeeId})" : "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})",
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            )
 
                           ],
                         ),
                       ],
                     ),
-
-
 
                     gapHC(10),
 
@@ -151,10 +158,10 @@ class HistoryDetailPage extends StatelessWidget {
                           height: 26,
                           width: 90,
                           //  padding: EdgeInsets.symmetric(vertical: 2,horizontal: 30),
-                          decoration: boxBaseDecoration(  _controller.claim.value!.status=="Rejected"?pinkreject:_controller.claim.value!.status=="Paid"?Colors.green:yellowpending, 20),
-                          child: Center(child: tssb(_controller.claim.value!.status=="Rejected"?"Rejected":_controller.claim.value!.status=="Paid"?"Paid":"Pending", Colors.white, FontWeight.w500)),
+                          decoration: boxBaseDecoration(  _controller.claim.value!.status.color, 20),
+                          child: Center(child: tssb(_controller.claim.value!.status.title, Colors.white, FontWeight.w500)),
                         ),
-                        tcustom("\u{20B9}15,23.00", primaryColor, 18.0, FontWeight.w500),
+                        tcustom("\u{20B9}${_controller.claim.value!.totalAmount.toStringAsFixed(2)}", primaryColor, 18.0, FontWeight.w500),
 
                       ],
                     ),
@@ -167,29 +174,29 @@ class HistoryDetailPage extends StatelessWidget {
                 padding:   EdgeInsets.symmetric(horizontal: 15,vertical: 5),
                 child: Divider(),
               ),
-              _controller.claim.value!.status=="Rejected"  ? Padding(
-                padding:   EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+              _controller.claim.value!.status==ClaimStatus.rejected  ? Padding(
+                padding:   const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     tssb("Reason for rejection", Colors.black, FontWeight.w400),
                     gapHC(5),
-                    ts('Your claim for the train has been rejected because the bill date and submitted date are different. Additionally, the submitted travel location does not match the location on the train.', Colors.black.withOpacity(0.6))
+                    ts('NA', Colors.black.withOpacity(0.6))
 
                   ],
                 ),
-              ):SizedBox(),
+              ):const SizedBox(),
 
 
 
 
 
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+                padding:  const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
                 child: tssb("Submitted Categories", Colors.black, FontWeight.w600),
               ),
-              SizedBox(height: 15,),
+              const SizedBox(height: 15,),
               ExpandedTileList.separated(
                 key: ValueKey(_controller.claim.value!.categories!
                     .map(
@@ -270,10 +277,10 @@ class HistoryDetailPage extends StatelessWidget {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    ts("Checked In", Colors.black),
+                                                    ts("Checked In", Color(0xff333333).withOpacity(0.8)),
                                                     Text(AppFormatter.formatDDMMMYYYY(_controller.claim.value!.categories![index].items[formIndex].fromDate!),style:  const TextStyle(
                                                         fontFamily: 'Roboto',fontSize: 14,
-                                                        fontWeight: FontWeight.w700,color: Colors.black))
+                                                        fontWeight: FontWeight.w700,color: Color(0xff333333)))
                                                   ],
                                                 )),
 
@@ -283,16 +290,50 @@ class HistoryDetailPage extends StatelessWidget {
                                               child:Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  ts("Checked Out", Colors.black),
+                                                  ts("Checked Out", Color(0xff333333).withOpacity(0.8)),
                                                   Text(AppFormatter.formatDDMMMYYYY(_controller.claim.value!.categories![index].items[formIndex].toDate!),textAlign: TextAlign.left,overflow: TextOverflow.fade,style: const TextStyle(
                                                       fontFamily: 'Roboto',fontSize: 14,
-                                                      fontWeight: FontWeight.bold,color: Colors.black)),
+                                                      fontWeight: FontWeight.bold,color: Color(0xff333333))),
                                                 ],
                                               ),
                                             ),
                                           ],
                                         ),
                                       if(_controller.claim.value!.categories![index].hasToDate)
+                                        gapHC(10),
+                                      if(_controller.claim.value!.categories![index].hasStartMeter)
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Flexible(
+                                                flex: 5,
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    ts("Odometer reading before", Color(0xff333333).withOpacity(0.8)),
+                                                    Text(_controller.claim.value!.categories![index].items[formIndex].odoMeterStart ?? 'NA',style:  const TextStyle(
+                                                        fontFamily: 'Roboto',fontSize: 14,
+                                                        fontWeight: FontWeight.w700,color: Color(0xff333333)))
+                                                  ],
+                                                )),
+
+
+                                            Expanded(
+                                              flex: 5,
+                                              child:Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  ts("Odometer reading after", Color(0xff333333).withOpacity(0.8)),
+                                                  Text(_controller.claim.value!.categories![index].items[formIndex].odoMeterEnd ?? 'NA',textAlign: TextAlign.left,overflow: TextOverflow.fade,style: const TextStyle(
+                                                      fontFamily: 'Roboto',fontSize: 14,
+                                                      fontWeight: FontWeight.bold,color: Color(0xff333333))),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      if(_controller.claim.value!.categories![index].hasStartMeter)
                                         gapHC(10),
                                       if(!_controller.claim.value!.categories![index].hasToDate)
                                         headTitle("Document date", AppFormatter.formatDDMMMYYYY(_controller.claim.value!.categories![index].items[formIndex].fromDate!)),
@@ -315,8 +356,8 @@ class HistoryDetailPage extends StatelessWidget {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: _controller.claim.value!.categories![index].items[formIndex].employees.map((e) {
                                                   return Container(
-                                                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 6),
-                                                    margin: EdgeInsets.only(bottom: 2),
+                                                    padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 6),
+                                                    margin: const EdgeInsets.only(bottom: 2),
                                                     decoration: BoxDecoration(
                                                         borderRadius: BorderRadius.circular(14),
                                                         color: primaryColor
@@ -342,7 +383,7 @@ class HistoryDetailPage extends StatelessWidget {
                                         children: [
                                           Flexible(
                                               flex: 5,
-                                              child: ts("Attached files", Colors.black)),
+                                              child: ts("Attached files", Color(0xff333333).withOpacity(0.8))),
 
 
                                           Expanded(
@@ -355,12 +396,12 @@ class HistoryDetailPage extends StatelessWidget {
                                                 Expanded(
                                                   child: Text(basename(_controller.claim.value!.categories![index].items[formIndex].files.first),textAlign: TextAlign.left,overflow: TextOverflow.fade,style: const TextStyle(
                                                       fontFamily: 'Roboto',fontSize: 14,
-                                                      fontWeight: FontWeight.bold,color: Colors.black)),
+                                                      fontWeight: FontWeight.bold,color:Color(0xff333333))),
                                                 ),
                                               ],
                                             ) : const Text("Nil",style:  TextStyle(
                                                 fontFamily: 'Roboto',fontSize: 14,
-                                                fontWeight: FontWeight.w700,color: Colors.black)),
+                                                fontWeight: FontWeight.w700,color: Color(0xff333333))),
                                           ),
                                         ],
                                       ),

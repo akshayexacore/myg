@@ -155,10 +155,10 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                         child: Column(
                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
-                                                            ts("Checked In", Colors.black),
+                                                            ts("Checked In", Color(0xff333333).withOpacity(0.8)),
                                                             Text(AppFormatter.formatDDMMMYYYY(claimController.selectedCategories[index].items[formIndex].fromDate!),style:  const TextStyle(
                                                                 fontFamily: 'Roboto',fontSize: 14,
-                                                                fontWeight: FontWeight.w700,color: Colors.black))
+                                                                fontWeight: FontWeight.w700,color: Color(0xff333333)))
                                                           ],
                                                         )),
 
@@ -168,10 +168,10 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                       child:Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
-                                                          ts("Checked Out", Colors.black),
+                                                          ts("Checked Out", Color(0xff333333).withOpacity(0.8)),
                                                           Text(AppFormatter.formatDDMMMYYYY(claimController.selectedCategories[index].items[formIndex].toDate!),textAlign: TextAlign.left,overflow: TextOverflow.fade,style: const TextStyle(
                                                               fontFamily: 'Roboto',fontSize: 14,
-                                                              fontWeight: FontWeight.bold,color: Colors.black)),
+                                                              fontWeight: FontWeight.bold,color: Color(0xff333333))),
                                                         ],
                                                       ),
                                                     ),
@@ -179,6 +179,40 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                 ),
                                                 if(claimController.selectedCategories[index].hasToDate)
                                                 gapHC(10),
+                                                if(claimController.selectedCategories[index].hasStartMeter)
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Flexible(
+                                                          flex: 5,
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              ts("Odometer reading before", Color(0xff333333).withOpacity(0.8)),
+                                                              Text(claimController.selectedCategories[index].items[formIndex].odoMeterStart ?? 'NA',style:  const TextStyle(
+                                                                  fontFamily: 'Roboto',fontSize: 14,
+                                                                  fontWeight: FontWeight.w700,color: Color(0xff333333)))
+                                                            ],
+                                                          )),
+
+
+                                                      Expanded(
+                                                        flex: 5,
+                                                        child:Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            ts("Odometer reading after", Color(0xff333333).withOpacity(0.8)),
+                                                            Text(claimController.selectedCategories[index].items[formIndex].odoMeterEnd ?? 'NA',textAlign: TextAlign.left,overflow: TextOverflow.fade,style: const TextStyle(
+                                                                fontFamily: 'Roboto',fontSize: 14,
+                                                                fontWeight: FontWeight.bold,color: Color(0xff333333))),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                if(claimController.selectedCategories[index].hasStartMeter)
+                                                  gapHC(10),
                                                 if(!claimController.selectedCategories[index].hasToDate)
                                                 headTitle("Document date", AppFormatter.formatDDMMMYYYY(claimController.selectedCategories[index].items[formIndex].fromDate!)),
                                                 if(!claimController.selectedCategories[index].hasToDate)
@@ -227,7 +261,7 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                   children: [
                                                     Flexible(
                                                         flex: 5,
-                                                        child: ts("Attached files", Colors.black)),
+                                                        child: ts("Attached files", Color(0xff333333).withOpacity(0.8))),
 
 
                                                     Expanded(
@@ -240,12 +274,12 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                           Expanded(
                                                             child: Text(basename(claimController.selectedCategories[index].items[formIndex].files.first),textAlign: TextAlign.left,overflow: TextOverflow.fade,style: const TextStyle(
                                                                 fontFamily: 'Roboto',fontSize: 14,
-                                                                fontWeight: FontWeight.bold,color: Colors.black)),
+                                                                fontWeight: FontWeight.bold,color: Color(0xff333333))),
                                                           ),
                                                         ],
                                                       ) : const Text("Nil",style:  TextStyle(
                                           fontFamily: 'Roboto',fontSize: 14,
-                                          fontWeight: FontWeight.w700,color: Colors.black)),
+                                          fontWeight: FontWeight.w700,color: Color(0xff333333))),
                                                     ),
                                                   ],
                                                 ),

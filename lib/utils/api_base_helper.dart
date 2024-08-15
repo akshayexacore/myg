@@ -279,6 +279,22 @@ class ExpiredTokenRetryPolicy extends customHttp.RetryPolicy {
             fontSize: 16.0
         );
         return false;
+      } catch(_){
+        log("Error: ${_.toString()}");
+        if(!Get.isRegistered<AuthController>()){
+          Get.create(() => AuthController());
+        }
+        Get.find<AuthController>().logout();
+        Fluttertoast.showToast(
+            msg: "Session expired! Please login.",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+        return false;
       }
     }
     return false;

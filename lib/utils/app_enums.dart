@@ -1,7 +1,11 @@
-enum PointTypes {
-  parking,
-  billScanning,
-  voucherRedeem,
+import 'package:flutter/material.dart';
+import 'package:travel_claim/views/style/colors.dart';
+
+enum ClaimStatus {
+  pending,
+  approved,
+  rejected,
+  settled,
   none,
 }
 
@@ -11,32 +15,55 @@ enum TransactionType {
 }
 
 
-extension PointTypesExtension on PointTypes {
+extension ClaimStatusExtension on ClaimStatus {
   String get title {
     switch (this) {
-      case PointTypes.parking:
-        return 'Parking';
-      case PointTypes.billScanning:
-        return 'Bill Scanning';
-      case PointTypes.voucherRedeem:
-        return 'Voucher Redeem';
+      case ClaimStatus.pending:
+        return 'Pending';
+      case ClaimStatus.approved:
+        return 'Approved';
+      case ClaimStatus.rejected:
+        return 'Rejected';
+      case ClaimStatus.settled:
+        return 'Paid';
       default:
         return '';
     }
   }
 }
 
-extension PointTypesToEnumExtension on String {
-  PointTypes get toPointType {
+extension ClaimStatusColorExtension on ClaimStatus {
+  Color get color {
     switch (this) {
-      case 'PARKING':
-        return PointTypes.parking;
-      case 'BILL_SCANNING':
-        return PointTypes.billScanning;
-      case 'VOUCHER_REDEEM':
-        return PointTypes.voucherRedeem;
+      case ClaimStatus.pending:
+        return Color(0xffFFC10A);
+      case ClaimStatus.approved:
+        return Colors.green;
+      case ClaimStatus.rejected:
+        return pinkreject;
+      case ClaimStatus.settled:
+        return Colors.green;
       default:
-        return PointTypes.none;
+        return Colors.grey;
+    }
+  }
+}
+
+extension ClaimStatusToEnumExtension on String {
+  ClaimStatus get toClaimStatus {
+    switch (this) {
+      case 'Pending':
+        return ClaimStatus.pending;
+      case 'Approved':
+        return ClaimStatus.approved;
+      case 'Rejected':
+        return ClaimStatus.rejected;
+      case 'Settled':
+        return ClaimStatus.settled;
+      case 'Paid':
+        return ClaimStatus.settled;
+      default:
+        return ClaimStatus.none;
     }
   }
 }
