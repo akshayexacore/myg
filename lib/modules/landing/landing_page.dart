@@ -2,6 +2,7 @@ import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_claim/modules/claim/claim_page.dart';
+import 'package:travel_claim/modules/claim_approval/claim_approval_list_page.dart';
 import 'package:travel_claim/modules/drafts/draft_page.dart';
 import 'package:travel_claim/modules/history/history_page.dart';
 import 'package:travel_claim/modules/landing/controllers/landing_controller.dart';
@@ -128,7 +129,7 @@ class LandingPage extends StatelessWidget {
                             child: Bounce(
                                 duration: const Duration(milliseconds: 110),
                                 onTap: () {
-                                  Get.to(() => ClaimApprovelScreen());
+                                  Get.toNamed(ClaimApprovalListPage.routeName);
                                 },
                                 child: menuCard(
                                     0.0,

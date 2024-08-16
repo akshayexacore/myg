@@ -54,6 +54,11 @@ class MygRepository {
     return ClaimHistoryResponse.fromJson(response);
   }
 
+  Future<ClaimHistoryResponse> getClaimsForApproval() async {
+    final response = await _api.get(ApiConstants.claimsForApproval,headers: {});
+    return ClaimHistoryResponse.fromJson(response);
+  }
+
 /*Future<PostResponse> toggleFavorite(int id,bool favorite) async {
     final response = await _api.post('${ApiConstants.favorites}$id/${favorite?'favorite/' : 'unfavorite/'}',headers: {});
     return PostResponse.fromFavJson(response);

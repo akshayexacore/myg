@@ -10,4 +10,5 @@ class ApiConstants {
   static String fileUpload = '/api/fileUpload';
   static String tripClaim = '/api/tripClaim';
   static String history = '/api/claimList';
+  static String claimsForApproval = '/api/claimsForApproval';
 }

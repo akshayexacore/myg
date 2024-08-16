@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:travel_claim/modules/claim/controller/claim_controller.dart';
+import 'package:travel_claim/modules/history/widgets/attached_file_widget.dart';
 import 'package:travel_claim/modules/landing/controllers/landing_controller.dart';
 import 'package:travel_claim/modules/landing/controllers/profile_controller.dart';
 import 'package:travel_claim/utils/app_formatter.dart';
@@ -266,18 +267,7 @@ class ClaimConfirmationPage extends StatelessWidget {
 
                                                     Expanded(
                                                       flex: 5,
-                                                      child:claimController.selectedCategories[index].items[formIndex].files.isNotEmpty ? Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          Image.asset(AppAssets.file,height: 16,width: 14,fit: BoxFit.fill,),
-                                                          gapWC(7),
-                                                          Expanded(
-                                                            child: Text(basename(claimController.selectedCategories[index].items[formIndex].files.first),textAlign: TextAlign.left,overflow: TextOverflow.fade,style: const TextStyle(
-                                                                fontFamily: 'Roboto',fontSize: 14,
-                                                                fontWeight: FontWeight.bold,color: Color(0xff333333))),
-                                                          ),
-                                                        ],
-                                                      ) : const Text("Nil",style:  TextStyle(
+                                                      child:claimController.selectedCategories[index].items[formIndex].files.isNotEmpty ? AttachedFileWidget(file: claimController.selectedCategories[index].items[formIndex].files.first,) : const Text("Nil",style:  TextStyle(
                                           fontFamily: 'Roboto',fontSize: 14,
                                           fontWeight: FontWeight.w700,color: Color(0xff333333))),
                                                     ),

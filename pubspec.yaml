@@ -57,6 +57,8 @@ dependencies:
   keyboard_dismisser: ^3.0.0
   localstore: ^1.4.0
   logger: ^2.4.0
+  easy_pdf_viewer: ^1.0.8
+  photo_view: ^0.15.0
   #flutter pub run flutter_launcher_icons:main
 dev_dependencies:
   flutter_test:

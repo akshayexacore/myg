@@ -7,12 +7,15 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:travel_claim/configs/app_config.dart';
+import 'package:travel_claim/modules/gallery/gallery_page.dart';
+import 'package:travel_claim/modules/gallery/pdf_viewer.dart';
+import 'package:travel_claim/modules/gallery/widgets/gallery_item.dart';
 import 'package:travel_claim/resources/myg_repository.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/components/customButton.dart';
 import 'package:travel_claim/views/const/appassets.dart';
 import 'package:travel_claim/views/style/colors.dart';
-
+import 'package:path/path.dart';
 class FilePicker extends StatefulWidget {
   List<String> selectedFiles;
   final ValueChanged<List<String>> onChanged;
@@ -55,48 +58,69 @@ class _FilePickerState extends State<FilePicker> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                return Row(
-                  children: [
-                    widget.selectedFiles[index]
-                                .split("/")
-                                .last
-                                .toLowerCase()
-                                .endsWith('jpg') ||
-                            widget.selectedFiles[index]
-                                .split("/")
-                                .last
-                                .toLowerCase()
-                                .endsWith('png')
-                        ? CachedNetworkImage(
-                            imageUrl:
-                                "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
-                            height: 70,
-                          )
-                        : Image.asset(
-                            AppAssets.file,
-                            height: 70,
+                return GestureDetector(
+                  onTap: (){
+                    if(extension(widget.selectedFiles[index]).toLowerCase().endsWith('pdf')){
+                      Get.to(()=>PdfViewer(file: "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}"));
+                    }else{
+                      Navigator.push(
+                        Get.context!,
+                        MaterialPageRoute(
+                          builder: (context) => GalleryPhotoViewWrapper(
+                            galleryItems: [GalleryItem(id: "id:1", resource: "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}")],
+                            backgroundDecoration: const BoxDecoration(
+                              color: Colors.black,
+                            ),
+                            initialIndex: 0,
+                            scrollDirection: Axis.horizontal,
                           ),
-                    gapWC(10),
-                    Expanded(
-                        child: ts(widget.selectedFiles[index].split("/").last,
-                            Colors.black)),
-                    GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            widget.selectedFiles.removeAt(index);
-                            widget.onChanged.call(widget.selectedFiles);
-                          });
-                        },
-                        child: CircleAvatar(
-                          radius: 10,
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                          backgroundColor: Colors.black87,
-                        ))
-                  ],
+                        ),
+                      );
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      widget.selectedFiles[index]
+                                  .split("/")
+                                  .last
+                                  .toLowerCase()
+                                  .endsWith('jpg') ||
+                              widget.selectedFiles[index]
+                                  .split("/")
+                                  .last
+                                  .toLowerCase()
+                                  .endsWith('png')
+                          ? CachedNetworkImage(
+                              imageUrl:
+                                  "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
+                              height: 70,
+                            )
+                          : Image.asset(
+                              AppAssets.file,
+                              height: 70,
+                            ),
+                      gapWC(10),
+                      Expanded(
+                          child: ts(widget.selectedFiles[index].split("/").last,
+                              Colors.black)),
+                      GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.selectedFiles.removeAt(index);
+                              widget.onChanged.call(widget.selectedFiles);
+                            });
+                          },
+                          child: CircleAvatar(
+                            radius: 10,
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 16,
+                            ),
+                            backgroundColor: Colors.black87,
+                          ))
+                    ],
+                  ),
                 );
               },
               separatorBuilder: (context, index) => SizedBox(

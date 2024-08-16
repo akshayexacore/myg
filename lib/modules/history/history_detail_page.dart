@@ -4,6 +4,7 @@ import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:travel_claim/modules/history/controllers/history_detail_controller.dart';
+import 'package:travel_claim/modules/history/widgets/attached_file_widget.dart';
 import 'package:travel_claim/utils/app_enums.dart';
 import 'package:travel_claim/utils/app_formatter.dart';
 import 'package:travel_claim/views/components/bg.dart';
@@ -388,18 +389,7 @@ class HistoryDetailPage extends StatelessWidget {
 
                                           Expanded(
                                             flex: 5,
-                                            child:_controller.claim.value!.categories![index].items[formIndex].files.isNotEmpty ? Row(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Image.asset(AppAssets.file,height: 16,width: 14,fit: BoxFit.fill,),
-                                                gapWC(7),
-                                                Expanded(
-                                                  child: Text(basename(_controller.claim.value!.categories![index].items[formIndex].files.first),textAlign: TextAlign.left,overflow: TextOverflow.fade,style: const TextStyle(
-                                                      fontFamily: 'Roboto',fontSize: 14,
-                                                      fontWeight: FontWeight.bold,color:Color(0xff333333))),
-                                                ),
-                                              ],
-                                            ) : const Text("Nil",style:  TextStyle(
+                                            child:_controller.claim.value!.categories![index].items[formIndex].files.isNotEmpty ? AttachedFileWidget(file: _controller.claim.value!.categories![index].items[formIndex].files.first,) : const Text("Nil",style:  TextStyle(
                                                 fontFamily: 'Roboto',fontSize: 14,
                                                 fontWeight: FontWeight.w700,color: Color(0xff333333))),
                                           ),

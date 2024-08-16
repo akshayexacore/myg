@@ -2,6 +2,10 @@ import 'package:get/get.dart';
 import 'package:travel_claim/modules/claim/claim_confirmation_page.dart';
 import 'package:travel_claim/modules/claim/claim_page.dart';
 import 'package:travel_claim/modules/claim/controller/claim_controller.dart';
+import 'package:travel_claim/modules/claim_approval/claim_approval_list_page.dart';
+import 'package:travel_claim/modules/claim_approval/claim_detail_approval_page.dart';
+import 'package:travel_claim/modules/claim_approval/controllers/claim_approval_list_controller.dart';
+import 'package:travel_claim/modules/claim_approval/controllers/claim_detail_approval_controller.dart';
 import 'package:travel_claim/modules/drafts/controllers/draft_controller.dart';
 import 'package:travel_claim/modules/drafts/draft_page.dart';
 import 'package:travel_claim/modules/history/controllers/history_controller.dart';
@@ -86,6 +90,18 @@ class Routes {
         page: () => HistoryDetailPage(),
         binding: BindingsBuilder(() {
           Get.lazyPut(() => HistoryDetailController());
+        })),
+    GetPage(
+        name: ClaimApprovalListPage.routeName,
+        page: () => ClaimApprovalListPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => ClaimApprovalListController());
+        })),
+    GetPage(
+        name: ClaimDetailApprovalPage.routeName,
+        page: () => ClaimDetailApprovalPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => ClaimDetailApprovalController());
         })),
   ];
 }

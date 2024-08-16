@@ -34,6 +34,7 @@ class ClaimHistory {
   late String tripClaimId;
   TripType? tripTypeDetails;
   Employee? approverDetails;
+  Employee? userDetails;
   Employee? financeApproverDetails;
   late String tripPurpose;
   Branch? visitBranchDetail;
@@ -52,6 +53,7 @@ class ClaimHistory {
       {this.tripClaimId = '',
         this.tripTypeDetails,
         this.approverDetails,
+        this.userDetails,
         this.financeApproverDetails,
         this.tripPurpose = '',
         this.visitBranchDetail,
@@ -83,6 +85,9 @@ class ClaimHistory {
         : null;
     approverDetails = json['approver_details'] != null
         ? new Employee.fromJson(json['approver_details'])
+        : null;
+    userDetails = json['user_details'] != null
+        ? new Employee.fromJson(json['user_details'])
         : null;
     financeApproverDetails = json['finance_approver_details'] != null
         ? new Employee.fromJson(json['finance_approver_details'])
