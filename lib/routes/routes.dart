@@ -8,6 +8,8 @@ import 'package:travel_claim/modules/claim_approval/controllers/claim_approval_l
 import 'package:travel_claim/modules/claim_approval/controllers/claim_detail_approval_controller.dart';
 import 'package:travel_claim/modules/drafts/controllers/draft_controller.dart';
 import 'package:travel_claim/modules/drafts/draft_page.dart';
+import 'package:travel_claim/modules/history/claim_resubmit_confirmation_page.dart';
+import 'package:travel_claim/modules/history/claim_resubmit_page.dart';
 import 'package:travel_claim/modules/history/controllers/history_controller.dart';
 import 'package:travel_claim/modules/history/controllers/history_detail_controller.dart';
 import 'package:travel_claim/modules/history/history_detail_page.dart';
@@ -23,6 +25,10 @@ import 'package:travel_claim/modules/notification/notification_screen.dart';
 import 'package:travel_claim/modules/notification/notification_screen.dart';
 import 'package:travel_claim/modules/profile/profile_page.dart';
 import 'package:travel_claim/modules/profile/profile_page.dart';
+import 'package:travel_claim/modules/special_approval/controllers/special_approval_list_controller.dart';
+import 'package:travel_claim/modules/special_approval/controllers/special_detail_approval_controller.dart';
+import 'package:travel_claim/modules/special_approval/special_approval_list_page.dart';
+import 'package:travel_claim/modules/special_approval/special_detail_approval_page.dart';
 import 'package:travel_claim/modules/splash/controllers/splash_controller.dart';
 import 'package:travel_claim/modules/splash/splash_page.dart';
 
@@ -92,6 +98,18 @@ class Routes {
           Get.lazyPut(() => HistoryDetailController());
         })),
     GetPage(
+        name: ClaimResubmitPage.routeName,
+        page: () => ClaimResubmitPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => HistoryDetailController());
+        })),
+    GetPage(
+        name: ClaimResubmitConfirmationPage.routeName,
+        page: () => ClaimResubmitConfirmationPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => HistoryDetailController());
+        })),
+    GetPage(
         name: ClaimApprovalListPage.routeName,
         page: () => ClaimApprovalListPage(),
         binding: BindingsBuilder(() {
@@ -102,6 +120,18 @@ class Routes {
         page: () => ClaimDetailApprovalPage(),
         binding: BindingsBuilder(() {
           Get.lazyPut(() => ClaimDetailApprovalController());
+        })),
+    GetPage(
+        name: SpecialApprovalListPage.routeName,
+        page: () => SpecialApprovalListPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => SpecialApprovalListController());
+        })),
+    GetPage(
+        name: SpecialDetailApprovalPage.routeName,
+        page: () => SpecialDetailApprovalPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => SpecialDetailApprovalController());
         })),
   ];
 }

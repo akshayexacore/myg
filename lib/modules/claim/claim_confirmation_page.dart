@@ -275,6 +275,40 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                 ),
                                                 gapHC(10),
                                                 headTitle("Amount", "${claimController.selectedCategories[index].items[formIndex].amount!.toStringAsFixed(2)} INR"),
+                                                Obx(() {
+                                                  if (claimController.selectedCategories[index].items[formIndex].selectedClass != null &&
+                                                      claimController.selectedCategories[index].items[formIndex].selectedClass?.policy?.gradeAmount != null &&
+                                                      claimController.selectedCategories[index].items[formIndex].amount != null) {
+                                                    double max = claimController.selectedCategories[index].items[formIndex].selectedClass!.policy!.gradeAmount!;
+                                                    double totalKms = 0;
+                                                    if (claimController.selectedCategories[index].hasStartMeter) {
+                                                      double start =
+                                                          double.tryParse(claimController.selectedCategories[index].items[formIndex].odoMeterStart ?? '0') ?? 0;
+                                                      double end =
+                                                          double.tryParse(claimController.selectedCategories[index].items[formIndex].odoMeterEnd ?? '0') ?? 0;
+                                                      if (start == 0 && end == 0) {
+                                                        return const SizedBox.shrink();
+                                                      }
+
+                                                      totalKms = end - start;
+
+                                                      max = totalKms *
+                                                          claimController.selectedCategories[index].items[formIndex].selectedClass!.policy!.gradeAmount!;
+                                                    }
+
+                                                    if (claimController.selectedCategories[index].items[formIndex].amount! > max) {
+                                                      return Padding(
+                                                        padding: const EdgeInsets.only(top: 5),
+                                                        child: headTitle("",
+                                                          "(Eligible amount ${max.toStringAsFixed(2)} INR ${claimController.selectedCategories[index].hasStartMeter ? 'for $totalKms Kms @ ${claimController.selectedCategories[index].items[formIndex].selectedClass!.policy!.gradeAmount!} INR/Km' : ''})",
+                                                         colors: Colors.red,
+                                                        ),
+                                                      );
+                                                    }
+                                                    return const SizedBox.shrink();
+                                                  }
+                                                  return const SizedBox.shrink();
+                                                }),
                                               ],
                                             ),
 

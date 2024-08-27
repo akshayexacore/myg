@@ -1,7 +1,7 @@
 
 
 import 'package:travel_claim/configs/api_constants.dart';
-import 'package:travel_claim/models/post_response.dart';
+import 'package:travel_claim/models/success.dart';
 import 'package:travel_claim/models/user.dart';
 import 'package:travel_claim/utils/api_base_helper.dart';
 import 'package:travel_claim/utils/shared_preferences_data_provider.dart';
@@ -39,6 +39,12 @@ class UserProfileRepository {
 
   Future<PostResponse> deleteAccount() async {
     final response = await _api.delete(ApiConstants.profile,header: {},);
+    return PostResponse.fromJson(response);
+  }
+
+  Future<PostResponse> saveFcmToken(
+      {required Map<String,dynamic> body}) async {
+    final response = await _api.post(ApiConstants.devices, body: body);
     return PostResponse.fromJson(response);
   }
 }

@@ -6,6 +6,7 @@ enum ClaimStatus {
   approved,
   rejected,
   settled,
+  resubmitted,
   none,
 }
 
@@ -26,6 +27,8 @@ extension ClaimStatusExtension on ClaimStatus {
         return 'Rejected';
       case ClaimStatus.settled:
         return 'Paid';
+      case ClaimStatus.resubmitted:
+        return 'ReSubmited';
       default:
         return '';
     }
@@ -43,6 +46,8 @@ extension ClaimStatusColorExtension on ClaimStatus {
         return pinkreject;
       case ClaimStatus.settled:
         return Colors.green;
+      case ClaimStatus.resubmitted:
+        return pinkreject;
       default:
         return Colors.grey;
     }
@@ -65,5 +70,79 @@ extension ClaimStatusToEnumExtension on String {
       default:
         return ClaimStatus.none;
     }
+  }
+}
+
+
+
+enum Permission {
+  newClaim,
+  requestAdvance,
+  drafts,
+  history,
+  claimApprovals,
+  advanceApprovals,
+  specialApprovals,
+  cmdApprovals,
+}
+extension PermissionCheck on int {
+  List<Permission> get permissions {
+    switch (this) {
+      case 5:
+        return [
+          Permission.newClaim,
+          Permission.requestAdvance,
+          Permission.drafts,
+          Permission.history,
+        ];
+      case 4:
+        return [
+          Permission.newClaim,
+          Permission.requestAdvance,
+          Permission.drafts,
+          Permission.history,
+        ];
+      case 3:
+        return [
+          Permission.newClaim,
+          Permission.requestAdvance,
+          Permission.drafts,
+          Permission.history,
+          Permission.claimApprovals,
+          Permission.advanceApprovals,
+        ];
+      case 2:
+        return [
+          Permission.newClaim,
+          Permission.requestAdvance,
+          Permission.drafts,
+          Permission.history,
+          Permission.claimApprovals,
+          Permission.advanceApprovals,
+        ];
+      case 1:
+        return [
+          Permission.newClaim,
+          Permission.requestAdvance,
+          Permission.drafts,
+          Permission.history,
+          Permission.claimApprovals,
+          Permission.advanceApprovals,
+          Permission.specialApprovals,
+        ];
+      case 0:
+        return [
+          Permission.claimApprovals,
+          Permission.advanceApprovals,
+          Permission.specialApprovals,
+         // Permission.cmdApprovals,
+        ];
+      default:
+        return [];
+    }
+  }
+
+  bool hasPermission(Permission permission) {
+    return permissions.contains(permission);
   }
 }

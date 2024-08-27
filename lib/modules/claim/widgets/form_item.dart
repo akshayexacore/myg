@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_form.dart';
 import 'package:travel_claim/modules/claim/widgets/count_widget.dart';
@@ -29,24 +30,29 @@ class FormItem extends StatefulWidget {
 }
 
 class _FormItemState extends State<FormItem> {
-
   TextEditingController textEditingControllerFrom = TextEditingController();
   TextEditingController textEditingControllerTo = TextEditingController();
-  TextEditingController textEditingControllerOdoMeterFrom = TextEditingController();
-  TextEditingController textEditingControllerOdoMeterTo = TextEditingController();
+  TextEditingController textEditingControllerOdoMeterFrom =
+      TextEditingController();
+  TextEditingController textEditingControllerOdoMeterTo =
+      TextEditingController();
   TextEditingController textEditingControllerRemarks = TextEditingController();
   TextEditingController textEditingControllerAmount = TextEditingController();
+
+  var isUpdated = false.obs;
 
   @override
   void initState() {
     textEditingControllerFrom.text = widget.formData.tripFrom ?? '';
     textEditingControllerTo.text = widget.formData.tripTo ?? '';
-    textEditingControllerOdoMeterFrom.text = widget.formData.odoMeterStart ?? '';
+    textEditingControllerOdoMeterFrom.text =
+        widget.formData.odoMeterStart ?? '';
     textEditingControllerOdoMeterTo.text = widget.formData.odoMeterEnd ?? '';
     textEditingControllerRemarks.text = widget.formData.remarks ?? '';
-    textEditingControllerAmount.text = (widget.formData.amount ?? '').toString();
+    textEditingControllerAmount.text =
+        (widget.formData.amount==0 || widget.formData.amount== null ? '' : widget.formData.amount!.toStringAsFixed(2)).toString();
     widget.formData.fromDate ??= DateTime.now();
-    if(widget.formData.toDate==null && widget.category.hasToDate){
+    if (widget.formData.toDate == null && widget.category.hasToDate) {
       widget.formData.toDate = DateTime.now();
     }
     super.initState();
@@ -73,7 +79,7 @@ class _FormItemState extends State<FormItem> {
         if (widget.category.hasTripFrom) ts("From", Colors.black),
         if (widget.category.hasTripFrom) gapHC(3),
         if (widget.category.hasTripFrom)
-           TextinputfieldContainer(
+          TextinputfieldContainer(
               showIcon: false,
               verticalPadding: 6,
               maxline: 1,
@@ -83,30 +89,30 @@ class _FormItemState extends State<FormItem> {
               onchange: (val) {
                 widget.formData.tripFrom = val;
               },
-               validate: (value) {
-                 if (value == null|| value.isEmpty) {
-                   return 'This is a mandatory field';
-                 }
-                 return null; // Valid input
-               },
+              validate: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'This is a mandatory field';
+                }
+                return null; // Valid input
+              },
               isEnable: true,
               isObscure: false),
         if (widget.category.hasTripTo) gapHC(10),
         if (widget.category.hasTripTo) ts("To", Colors.black),
         if (widget.category.hasTripTo) gapHC(3),
         if (widget.category.hasTripTo)
-           TextinputfieldContainer(
+          TextinputfieldContainer(
               showIcon: false,
               verticalPadding: 6,
               maxline: 1,
               controller: textEditingControllerTo,
               textInputAction: TextInputAction.done,
-               validate: (value) {
-                 if (value == null|| value.isEmpty) {
-                   return 'This is a mandatory field';
-                 }
-                 return null; // Valid input
-               },
+              validate: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'This is a mandatory field';
+                }
+                return null; // Valid input
+              },
               onchange: (val) {
                 widget.formData.tripTo = val;
               },
@@ -144,25 +150,79 @@ class _FormItemState extends State<FormItem> {
             maxline: 1,
             controller: textEditingControllerAmount,
             textInputAction: TextInputAction.done,
-            hintText: "Amount",
+            hintText: "Enter amount",
             validate: (value) {
-              if (value == null || value.isEmpty || value=="0.0" || value =="0") {
+              if (value == null ||
+                  value.isEmpty ||
+                  value == "0.0" ||
+                  value == "0") {
                 return 'This is a mandatory field';
               }
               return null; // Valid input
             },
             keybordType: TextInputType.number,
             inputFormattor: mfnInputDecFormatters(),
+            onEditingComplete: (){
+              final text = textEditingControllerAmount.text;
+              if (text.isNotEmpty) {
+                final double? value = double.tryParse(text);
+                if (value != null) {
+                  textEditingControllerAmount.text = value.toStringAsFixed(2);
+                }
+              }
+              FocusScope.of(context).unfocus();
+            },
             onchange: (val) {
               widget.formData.amount = double.tryParse(val) ?? 0;
+              isUpdated.toggle();
             },
             isEnable: true,
             isObscure: false),
-        gapHC(10),
-        FilePicker(onChanged: (list){
-          widget.formData.files = list;
-        },selectedFiles: widget.formData.files.isEmpty ? [] : widget.formData.files,)
+        Obx(() {
+          debugPrint(isUpdated.value.toString()); // do not remove
+          if (widget.formData.selectedClass != null &&
+              widget.formData.selectedClass?.policy?.gradeAmount != null &&
+              widget.formData.amount != null) {
+            double max = widget.formData.selectedClass!.policy!.gradeAmount!;
+            double totalKms = 0;
+            if (widget.category.hasStartMeter) {
+              double start =
+                  double.tryParse(widget.formData.odoMeterStart ?? '0') ?? 0;
+              double end =
+                  double.tryParse(widget.formData.odoMeterEnd ?? '0') ?? 0;
+              if (start == 0 && end == 0) {
+                return const SizedBox.shrink();
+              }
 
+              totalKms = end - start;
+
+              max = totalKms *
+                  widget.formData.selectedClass!.policy!.gradeAmount!;
+            }
+
+            if (widget.formData.amount! > max) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text(
+                  "(Eligible amount ${max.toStringAsFixed(2)} INR ${widget.category.hasStartMeter ? 'for $totalKms Kms @ ${widget.formData.selectedClass!.policy!.gradeAmount!} INR/Km' : ''})",
+                  style: const TextStyle(color: Colors.red),
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          }
+          return const SizedBox.shrink();
+        }),
+        gapHC(12),
+        FilePicker(
+          onChanged: (list) {
+            widget.formData.files = list;
+            widget.formData.fileError = '';
+          },
+          selectedFiles:
+              widget.formData.files.isEmpty ? [] : widget.formData.files,
+          errorMsg: widget.formData.fileError,
+        )
       ],
     );
   }
@@ -185,16 +245,24 @@ class _FormItemState extends State<FormItem> {
                     maxline: 1,
                     controller: textEditingControllerOdoMeterFrom,
                     textInputAction: TextInputAction.done,
+                    keybordType: TextInputType.number,
+                    suffix: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Km",style: TextStyle(color: Colors.black54),),
+                      ],
+                    ),
                     onchange: (val) {
                       widget.formData.odoMeterStart = val;
+                      isUpdated.toggle();
                     },
                     validate: (value) {
-                      if (value == null|| value.isEmpty) {
+                      if (value == null || value.isEmpty) {
                         return 'This is a mandatory field';
                       }
                       return null; // Valid input
                     },
-                    hintText: "",
+                    hintText: "Enter reading",
                     isEnable: true,
                     isObscure: false),
               ],
@@ -213,18 +281,26 @@ class _FormItemState extends State<FormItem> {
                     boxRadiusColor: primaryColor,
                     verticalPadding: 6,
                     maxline: 1,
+                    suffix: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Km",style: TextStyle(color: Colors.black54),),
+                      ],
+                    ),
+                    keybordType: TextInputType.number,
                     controller: textEditingControllerOdoMeterTo,
                     textInputAction: TextInputAction.done,
                     onchange: (val) {
                       widget.formData.odoMeterEnd = val;
+                      isUpdated.toggle();
                     },
                     validate: (value) {
-                      if (value == null|| value.isEmpty) {
+                      if (value == null || value.isEmpty) {
                         return 'This is a mandatory field';
                       }
                       return null; // Valid input
                     },
-                    hintText: "",
+                    hintText: "Enter reading",
                     isEnable: true,
                     isObscure: false),
               ],
@@ -263,18 +339,25 @@ class _FormItemState extends State<FormItem> {
       children: [
         tcustom("Number of employee", Colors.black, 14.0, FontWeight.w500),
         gapHC(3),
-        CountWidget(count: (widget.formData.noOfEmployees ?? 1).toString(),onChanged: (value) {
-          setState(() {
-            widget.formData.noOfEmployees = int.tryParse(value) ?? 1;
-          });
-        }),
+        CountWidget(
+            count: (widget.formData.noOfEmployees ?? 1).toString(),
+            onChanged: (value) {
+              setState(() {
+                widget.formData.noOfEmployees = int.tryParse(value) ?? 1;
+              });
+            }),
+        if (widget.formData.noOfEmployees > 1) gapHC(12),
         if (widget.formData.noOfEmployees > 1)
-          gapHC(12),
-        if (widget.formData.noOfEmployees > 1)
-          EmployeeSelector(maxSelection: widget.formData.noOfEmployees - 1,onChanged: (list){
-            widget.formData.employees = list;
-            print(list.length);
-          },items: widget.formData.employees.isNotEmpty ? widget.formData.employees : [],)
+          EmployeeSelector(
+            maxSelection: widget.formData.noOfEmployees - 1,
+            onChanged: (list) {
+              widget.formData.employees = list;
+              print(list.length);
+            },
+            items: widget.formData.employees.isNotEmpty
+                ? widget.formData.employees
+                : [],
+          )
       ],
     );
   }
@@ -294,6 +377,7 @@ class _FormItemState extends State<FormItem> {
                   widget.formData.selectedClass = value;
                   widget.formData.classId = value.id;
                   widget.formData.policyId = value.policy?.id;
+                  isUpdated.toggle();
                 },
               )
             ],

@@ -1,4 +1,4 @@
-package com.exacore.travel_claim
+package com.myg.travel_claim
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -7,8 +7,21 @@ class ApiConstants {
   static String categories = '/api/categorieswithpolicy';
   static String profile = '/api/user-profile';
   static String employees = '/api/employeeNames';
+  static String approvers = '/api/approverNames';
   static String fileUpload = '/api/fileUpload';
   static String tripClaim = '/api/tripClaim';
+  static String resubmitClaim = '/api/claimResubmit';
   static String history = '/api/claimList';
   static String claimsForApproval = '/api/claimsForApproval';
+  static String claimsForSpecialApproval = '/api/claimsForSpecialApproval';
+  static String rejectSingle = '/api/rejectSingle';
+  static String removeSingle = '/api/removeSingle';
+  static String sentForSpecialApproval = '/api/approverChange';
+  static String approveOrRejectAll = '/api/approvalAll';
+  static String specialApproveOrRejectAll = '/api/specialApprovalAll';
+  static String notifications = '/api/notificationList';
+  static String notificationsCount = '/api/notificationCount';
+  static String viewClaim = '/api/viewClaim';
+  static String specialApproverRejectSingle = '/api/specialApproverRejectSingle';
+  static String devices = '/api/devices';
 }

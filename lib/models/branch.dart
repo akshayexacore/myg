@@ -56,4 +56,5 @@ class Branch {
 
   @override
   int get hashCode => id.hashCode;
+
 }

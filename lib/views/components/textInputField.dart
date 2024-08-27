@@ -14,8 +14,10 @@ class TextinputfieldContainer extends StatefulWidget {
   final TextEditingController? controller;
   final TextInputType ?keybordType;
   final IconData ? suffixIcon;
+  final Widget ? suffix;
   final VoidCallback ? suffixIconOnclick;
   final VoidCallback ? onSubmitted;
+  final VoidCallback ? onEditingComplete;
   final void Function(String)? onchange;
   final TextInputAction ? textInputAction;
   final FormFieldValidator ? validate;
@@ -26,7 +28,7 @@ class TextinputfieldContainer extends StatefulWidget {
   final List<TextInputFormatter> ? inputFormattor;
 
 
-  const TextinputfieldContainer({super.key, required this.showIcon,  this.hintText,  this.controller,  this.keybordType, required this.isEnable,    this.suffixIcon, this.suffixIconOnclick, this.validate, required this.isObscure,  this.maxline, this.verticalPadding, this.boxRadius, this.boxRadiusColor, this.contentPadding, this.focusNode, this.onSubmitted, this.textInputAction, this.onchange, this.inputFormattor,});
+  const TextinputfieldContainer({super.key, required this.showIcon,  this.hintText,  this.controller,  this.keybordType, required this.isEnable,    this.suffixIcon, this.suffixIconOnclick, this.validate, required this.isObscure,  this.maxline, this.verticalPadding, this.boxRadius, this.boxRadiusColor, this.contentPadding, this.focusNode, this.onSubmitted, this.textInputAction, this.onchange, this.inputFormattor,this.onEditingComplete,this.suffix});
 
   @override
   State<TextinputfieldContainer> createState() => _TextinputfieldContainerState();
@@ -53,7 +55,7 @@ class _TextinputfieldContainerState extends State<TextinputfieldContainer> {
           horizontal: 10,
             vertical: widget.verticalPadding??0.0
         ),
-        suffixIcon:widget.showIcon? Bounce(
+        suffixIcon: widget.suffix ?? (widget.showIcon ? Bounce(
           onTap: widget.suffixIconOnclick,
 
           child: Icon(
@@ -61,10 +63,9 @@ class _TextinputfieldContainerState extends State<TextinputfieldContainer> {
             color: Colors.grey.shade600,
 
           ),
-        ):SizedBox(),
+        ):SizedBox()),
         hintText: widget.hintText,
         hintStyle: hintTextStyle(),
-
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.boxRadius??10.0),
           borderSide:  BorderSide(color: Colors.grey.shade400),
@@ -87,7 +88,11 @@ class _TextinputfieldContainerState extends State<TextinputfieldContainer> {
     //
     // },
 
-      onChanged: widget.onchange
+      onChanged: widget.onchange,
+        onEditingComplete: widget.onEditingComplete,
+      onTapOutside: (event){
+        widget.onEditingComplete?.call();
+      },
 
 
     );

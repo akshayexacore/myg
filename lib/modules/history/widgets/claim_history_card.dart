@@ -33,12 +33,20 @@ class ClaimHistoryCard extends StatelessWidget {
                 gapHC(2),
                 tssb("#${claim.tmgId}", Colors.black,FontWeight.w500),
                 gapHC(5),
-                Container(     height: 26,
-                  width: 90,
+                Row(
+                  children: [
+                    Container(     height: 26,
+                      width: 90,
 
-                  //   padding: EdgeInsets.symmetric(vertical: 2,horizontal: 20),
-                  decoration: boxDecoration(claim.status.color, 20),
-                  child: Center(child: tssb(claim.status.title, Colors.white, FontWeight.w500)),
+                      //   padding: EdgeInsets.symmetric(vertical: 2,horizontal: 20),
+                      decoration: boxDecoration(claim.status.color, 20),
+                      child: Center(child: tssb(claim.status.title, Colors.white, FontWeight.w500)),
+                    ),
+                    if(claim.status == ClaimStatus.pending)
+                      SizedBox(width: 7,),
+                    if(claim.status == ClaimStatus.pending)
+                      Text(claim.pendingFrom,style: TextStyle(color: const Color(0xff333333).withOpacity(0.8),fontSize: 12,fontWeight: FontWeight.w400),)
+                  ],
                 )
 
               ],

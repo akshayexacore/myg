@@ -88,6 +88,8 @@ class HistoryController extends GetxController with GetSingleTickerProviderState
             break;
           case ClaimStatus.none:
             break;
+          case ClaimStatus.resubmitted:
+            break;
         }
       }
 

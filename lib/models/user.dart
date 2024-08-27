@@ -45,7 +45,7 @@ class User {
         this.department = '',
         this.location = '',
         this.designation = '',
-        this.grade = 0,
+        this.grade = -1,
         this.reportingPerson = '',
         this.reportingPersonEmpid = '',
         this.branch,
@@ -63,7 +63,7 @@ class User {
     department = json['emp_department'] ?? '';
     location = (json['emp_baselocation'] ?? '').toString();
     designation = json['emp_designation'] ?? '';
-    grade = json['emp_grade'] ?? 0;
+    grade = json['emp_grade'] ?? -1;
     reportingPerson = json['reporting_person'] ?? '';
     reportingPersonEmpid = json['reporting_person_empid'] ?? '';
     role = json['emp_role'] ?? '';

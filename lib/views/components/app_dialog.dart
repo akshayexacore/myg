@@ -2,8 +2,10 @@ import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:travel_claim/main.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/style/colors.dart';
+import 'package:travel_claim/views/widgets.dart';
 
 class AppDialog {
   static   showDialog({
@@ -110,7 +112,7 @@ class AppDialog {
     Get.snackbar(
       title,
       message,
-      snackPosition: SnackPosition.TOP,
+      snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.black,
       margin: const EdgeInsets.all(0),
       colorText: Colors.white,
@@ -118,15 +120,22 @@ class AppDialog {
     );
   }
 
-  static showToast(String message) {
-    Fluttertoast.showToast(
+  static showToast(String message,{bool isError = false}) {
+    late FToast fToast;
+    fToast = FToast();
+    fToast.init(navigatorKey.currentContext!);
+    fToast.showToast(
+      child: showToastMessage(msg: message,
+          iconColor: isError ? Colors.red : Colors.green,icon: isError ? Icons.error_rounded : Icons.check_circle_rounded),
+    );
+    /*Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.TOP,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
+        backgroundColor: primaryColor,
         textColor: Colors.white,
         fontSize: 14.0
-    );
+    );*/
   }
 }

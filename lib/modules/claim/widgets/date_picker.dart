@@ -56,6 +56,19 @@ class _DatePickerState extends State<DatePicker> {
   Future<void> selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
         context: context,
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: primaryColor,
+              hintColor: primaryColorLight,
+              colorScheme: const ColorScheme.light(primary: primaryColor),
+              buttonTheme: const ButtonThemeData(
+                  textTheme: ButtonTextTheme.primary
+              ),
+            ),
+            child: child!,
+          );
+        },
         firstDate: DateTime(2023, 1),
         lastDate: DateTime(2050, 8),
         initialDate: DateTime.now());

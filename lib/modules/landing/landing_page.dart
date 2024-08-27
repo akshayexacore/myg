@@ -7,15 +7,13 @@ import 'package:travel_claim/modules/drafts/draft_page.dart';
 import 'package:travel_claim/modules/history/history_page.dart';
 import 'package:travel_claim/modules/landing/controllers/landing_controller.dart';
 import 'package:travel_claim/modules/landing/controllers/profile_controller.dart';
+import 'package:travel_claim/modules/special_approval/special_approval_list_page.dart';
+import 'package:travel_claim/utils/app_enums.dart';
 import 'package:travel_claim/views/components/bg.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/const/appassets.dart';
 import 'package:travel_claim/views/screens/advanceApprovel/advance_approvel_screen.dart';
-import 'package:travel_claim/views/screens/claimApprovel/claim_Approvel_screen.dart';
 import 'package:travel_claim/views/screens/cmdApproels/cmdapprovel_screen.dart';
-import 'package:travel_claim/views/screens/draftScreen/draftscreen.dart';
-import 'package:travel_claim/views/screens/history/historyscreen.dart';
-import 'package:travel_claim/views/screens/newClaim/add_expense_screen.dart';
 import 'package:travel_claim/views/screens/reqAdvance/reqadvance_screen.dart';
 import 'package:travel_claim/views/screens/specialApprovel/specialapprovel_screen.dart';
 import 'package:travel_claim/views/style/colors.dart';
@@ -40,7 +38,7 @@ class LandingPage extends StatelessWidget {
           }),
           Obx((){
             return Padding(
-              padding: const EdgeInsets.only(top: 123, left: 20, right: 20),
+              padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
               child: SingleChildScrollView(
                 child: Column(
                   // mainAxisSize: MainAxisSize.min,
@@ -71,26 +69,25 @@ class LandingPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+
                         Expanded(
-                          child: Bounce(
+                          child: _profileController.user.value.grade.hasPermission(Permission.newClaim) ? Bounce(
                               duration: const Duration(milliseconds: 110),
                               onTap: () {
-                                dprint("NewCliam");
                                 Get.toNamed(ClaimPage.routeName);
                               },
                               child: menuCard(30.0, 0.0, 0.0, 0.0,
-                                  AppAssets.newClaim_img, "New Claim")),
+                                  AppAssets.newClaim_img, "New Claim")) : const SizedBox(),
                         ),
                         gapWC(10),
                         Expanded(
-                            child: Bounce(
+                            child: _profileController.user.value.grade.hasPermission(Permission.requestAdvance) ? Bounce(
                                 duration: const Duration(milliseconds: 110),
                                 onTap: () {
-                                  dprint("Request");
-                                  Get.to(() => ReqadvanceScreen());
+                                  Get.to(() => const ReqadvanceScreen());
                                 },
                                 child: menuCard(0.0, 30.0, 0.0, 0.0,
-                                    AppAssets.reqAdv_img, "Request\nAdvance"))),
+                                    AppAssets.reqAdv_img, "Request\nAdvance")) : const SizedBox()),
                       ],
                     ),
                     gapHC(20),
@@ -99,77 +96,77 @@ class LandingPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Expanded(
-                          child: Bounce(
+                          child: _profileController.user.value.grade.hasPermission(Permission.drafts) ? Bounce(
                               duration: const Duration(milliseconds: 110),
                               onTap: () {
                                 Get.toNamed(DraftPage.routeName);
                               },
-                              child: menuCard(0.0, 0.0, 0.0, 0.0,
-                                  AppAssets.draft_img, "Draft")),
+                              child: menuCard(0.0, 0.0, _profileController.user.value.grade.hasPermission(Permission.claimApprovals) ? 0.0 : 30.0, 0.0,
+                                  AppAssets.draft_img, "Draft")) : const SizedBox(),
                         ),
                         gapWC(10),
                         Expanded(
-                          child: Bounce(
+                          child: _profileController.user.value.grade.hasPermission(Permission.history) ? Bounce(
                               duration: const Duration(milliseconds: 110),
                               onTap: () {
                                 Get.toNamed(HistoryPage.routeName);
                               },
-                              child: menuCard(0.0, 0.0, 0.0, 0.0,
-                                  AppAssets.history_img, "History")),
+                              child: menuCard(0.0, 0.0, 0.0, _profileController.user.value.grade.hasPermission(Permission.advanceApprovals) ? 0.0 : 30.0,
+                                  AppAssets.history_img, "History")): const SizedBox(),
                         ),
                       ],
                     ),
+                    if(_profileController.user.value.grade.hasPermission(Permission.claimApprovals) || _profileController.user.value.grade.hasPermission(Permission.advanceApprovals))
                     gapHC(20),
-                    if(_profileController.user.value.grade==1)
+                    if(_profileController.user.value.grade.hasPermission(Permission.claimApprovals) || _profileController.user.value.grade.hasPermission(Permission.advanceApprovals))
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Expanded(
-                            child: Bounce(
+                            child: _profileController.user.value.grade.hasPermission(Permission.claimApprovals) ? Bounce(
                                 duration: const Duration(milliseconds: 110),
                                 onTap: () {
                                   Get.toNamed(ClaimApprovalListPage.routeName);
                                 },
                                 child: menuCard(
+                                    _profileController.user.value.grade.hasPermission(Permission.drafts) ? 0.0 : 30.0,
                                     0.0,
-                                    0.0,
-                                    0.0,
+                                    _profileController.user.value.grade.hasPermission(Permission.specialApprovals) ? 0.0 : 30.0,
                                     0.0,
                                     AppAssets.claimApprv_img,
-                                    "Claim\nApprovals")),
+                                    "Claim\nApprovals")) : const SizedBox(),
                           ),
                           gapWC(10),
                           Expanded(
-                            child: Bounce(
+                            child: _profileController.user.value.grade.hasPermission(Permission.advanceApprovals) ? Bounce(
                                 duration: const Duration(milliseconds: 110),
                                 onTap: () {
                                   dprint("advv");
-                                  Get.to(() => AdvanceApprovelScreen());
+                                  Get.to(() => const AdvanceApprovelScreen());
                                 },
                                 child: menuCard(
                                     0.0,
+                                    _profileController.user.value.grade.hasPermission(Permission.history) ? 0.0 : 30.0,
                                     0.0,
-                                    0.0,
-                                    0.0,
+                                    _profileController.user.value.grade.hasPermission(Permission.cmdApprovals) || _profileController.user.value.grade.hasPermission(Permission.specialApprovals) ? 0.0 : 30.0,
                                     AppAssets.advApprvl_img,
-                                    "Advance\nApprovals")),
+                                    "Advance\nApprovals")) : const SizedBox(),
                           ),
                         ],
                       ),
-                    if(_profileController.user.value.grade==1)
+                      if(_profileController.user.value.grade.hasPermission(Permission.specialApprovals) || _profileController.user.value.grade.hasPermission(Permission.cmdApprovals))
                       gapHC(20),
-                    if(_profileController.user.value.grade==1)
+                    if(_profileController.user.value.grade.hasPermission(Permission.specialApprovals) || _profileController.user.value.grade.hasPermission(Permission.cmdApprovals))
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Expanded(
-                            child: Bounce(
+                            child: _profileController.user.value.grade.hasPermission(Permission.specialApprovals) ? Bounce(
                                 duration: const Duration(milliseconds: 110),
                                 onTap: () {
-                                  dprint("sped");
-                                  Get.to(() => SpecialapprovelScreen());
+                                  Get.toNamed(SpecialApprovalListPage.routeName);
                                 },
                                 child: menuCard(
                                     0.0,
@@ -177,22 +174,21 @@ class LandingPage extends StatelessWidget {
                                     30.0,
                                     0.0,
                                     AppAssets.speciaslApprvl_img,
-                                    "Special\nApprovals")),
+                                    "Special\nApprovals")) : const SizedBox(),
                           ),
                           gapWC(10),
                           Expanded(
-                            child: Bounce(
+                            child: _profileController.user.value.grade.hasPermission(Permission.cmdApprovals) ? Bounce(
                                 duration: const Duration(milliseconds: 110),
                                 onTap: () {
                                   dprint("CM");
-                                  Get.to(() => CmdapprovelScreen());
+                                  Get.to(() => const CmdapprovelScreen());
                                 },
                                 child: menuCard(0.0, 0.0, 0.0, 30.0,
-                                    AppAssets.cmdApprvl_img, "CMD\nApprovals")),
+                                    AppAssets.cmdApprvl_img, "CMD\nApprovals")) : const SizedBox(),
                           ),
                         ],
                       ),
-                    if(_profileController.user.value.grade==1)
                       gapHC(20),
                   ],
                 ),

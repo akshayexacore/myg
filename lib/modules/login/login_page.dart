@@ -84,7 +84,7 @@ class LoginPage extends StatelessWidget {
                             TextinputfieldContainer(
                                 showIcon: true,
                                 maxline: 1,
-                                suffixIcon:loginController.showPassword.isTrue? Icons.visibility_outlined:Icons.visibility_off_outlined,
+                                suffixIcon:loginController.showPassword.isTrue? Icons.visibility_off_outlined:Icons.visibility_outlined,
                                 suffixIconOnclick: (){
                                   loginController.showPassword.toggle();
                                 },
@@ -96,7 +96,7 @@ class LoginPage extends StatelessWidget {
                                     return null;
                                   }
                                 },
-                                isObscure: loginController.showPassword.value,
+                                isObscure: !loginController.showPassword.value,
                                 isEnable: true,
                                 hintText: "Enter your password",
                                 controller: loginController.textControllerPassword,

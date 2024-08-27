@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:travel_claim/modules/landing/controllers/landing_controller.dart';
 import 'package:travel_claim/modules/notification/controllers/notification_controller.dart';
 
 import 'package:travel_claim/views/components/bg.dart';
@@ -16,58 +18,87 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(
-      backgroundColor: Colors.white,
-      appBar: customAppBar("Notifications"),
-      body:ListView.builder(
-          itemCount: notificationController.notificationList.length ,
-          itemBuilder: (context,index){
-            String text = notificationController.notificationList[index]["text"].toString();
-            List<TextSpan> spans = parseText(text);
-        return  Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
-          child:       Container(
-            decoration: boxOutlineShadowCustom(Colors.white, 10, Colors.grey.shade400),
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) {
+        if(Get.isRegistered<LandingController>()){
+          Get.find<LandingController>().getNotificationCount();
+        }
+      },
+      child: SafeArea(
+          child: Scaffold(
+              backgroundColor: Colors.white,
+              appBar: customAppBar("Notifications"),
+              body: Obx(() {
+                if (notificationController.isBusy.isTrue) {
+                  return const Center(
+                      child: SpinKitDoubleBounce(
+                    color: primaryColor,
+                  ));
+                }
 
-            child:Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                 Flexible(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10,
-                        horizontal: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text("6:22 AM", style: TextStyle(color: Colors.black,
-                                fontSize: 12),),
-                          ],
+                if (notificationController.notifications.isEmpty) {
+                  return Center(child: ts("No notifications", Colors.black54));
+                }
+                return ListView.builder(
+                    itemCount: notificationController.notifications.length,
+                    itemBuilder: (context, index) {
+                      String text =
+                          notificationController.notifications[index].message;
+                      List<TextSpan> spans = parseText(text);
+                      return GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: (){
+                          notificationController.onTap(notificationController.notifications[index]);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 15),
+                          child: Container(
+                            decoration: boxOutlineShadowCustom(
+                                Colors.white, 10, Colors.grey.shade400),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              notificationController
+                                                  .notifications[index].time,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                        RichText(text: TextSpan(children: spans))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: 4,
+                                  decoration: boxDecorationC(
+                                      primaryColor, 0.0, 0.0, 52, 52),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                       RichText(text: TextSpan(
-                         children: spans
-                       ))
-
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 4,
-                  decoration: boxDecorationC(primaryColor, 0.0, 0.0, 52, 52),
-                ),
-              ],
-            ) , ),
-        );
-      })
-    )
-
+                      );
+                    });
+              }))),
     );
-
   }
 
   List<TextSpan> parseText(String text) {
@@ -79,7 +110,7 @@ class NotificationScreen extends StatelessWidget {
       if (match.start > start) {
         spans.add(TextSpan(
           text: text.substring(start, match.start),
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ));
       }
 
@@ -91,10 +122,13 @@ class NotificationScreen extends StatelessWidget {
         case 'red':
           color = Colors.red;
           break;
+        case 'orange':
+          color = Colors.red;
+          break;
         case 'green':
           color = Colors.green;
           break;
-      // Add more colors if needed
+        // Add more colors if needed
         default:
           color = Colors.black;
           break;
@@ -111,7 +145,7 @@ class NotificationScreen extends StatelessWidget {
     if (start < text.length) {
       spans.add(TextSpan(
         text: text.substring(start),
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black),
       ));
     }
 

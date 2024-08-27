@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "832984927667",
+    "project_id": "mygproj-cbe46",
+    "storage_bucket": "mygproj-cbe46.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832984927667:android:21caa2a699d1a4aaf64fc6",
+        "android_client_info": {
+          "package_name": "com.myg.travel_claim"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC91JsJkDlfYn3RtLr8sdwdvyKnw0R4794"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -48,28 +48,28 @@ class LoginController extends GetxController {
           gotoLandingPage();
         } else {
           busy(false);
-          AppDialog.showSnackBar('Failed', response.message ?? 'Something went wrong! Try again.');
+          AppDialog.showToast(response.message ?? 'Something went wrong! Try again.',isError: true);
         }
       } else {
         busy(false);
       }
     } on UnauthorisedException {
       busy(false);
-      AppDialog.showSnackBar('Failed', 'Invalid credentials');
+      AppDialog.showToast('Invalid credentials',isError: true);
     } catch (_) {
       print(_.toString());
       busy(false);
-      AppDialog.showSnackBar('Failed', 'Something went wrong! Try again.');
+      AppDialog.showToast('Something went wrong! Try again.',isError: true);
     } finally {}
   }
 
   bool _validate(){
     if(!textControllerUsername.text.isEmail){
-      AppDialog.showSnackBar('Error', 'Enter valid email address');
+      AppDialog.showToast('Enter valid email address',isError: true);
       return false;
     }
     if(textControllerPassword.text.isEmpty || textControllerPassword.text.length <3){
-      AppDialog.showSnackBar('Error', 'Password must have at least 3 characters.');
+      AppDialog.showToast('Password must have at least 3 characters.',isError: true);
       return false;
     }
     return true;

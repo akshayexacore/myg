@@ -11,6 +11,7 @@ import 'package:travel_claim/modules/gallery/gallery_page.dart';
 import 'package:travel_claim/modules/gallery/pdf_viewer.dart';
 import 'package:travel_claim/modules/gallery/widgets/gallery_item.dart';
 import 'package:travel_claim/resources/myg_repository.dart';
+import 'package:travel_claim/views/components/app_dialog.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/components/customButton.dart';
 import 'package:travel_claim/views/const/appassets.dart';
@@ -20,12 +21,15 @@ class FilePicker extends StatefulWidget {
   List<String> selectedFiles;
   final ValueChanged<List<String>> onChanged;
   final bool multiple;
+  late String errorMsg;
 
   FilePicker(
       {super.key,
       required this.onChanged,
       required this.selectedFiles,
-      this.multiple = false});
+      this.multiple = false,
+        this.errorMsg = ''
+      });
 
   @override
   State<FilePicker> createState() => _FilePickerState();
@@ -34,6 +38,7 @@ class FilePicker extends StatefulWidget {
 class _FilePickerState extends State<FilePicker> {
   @override
   Widget build(BuildContext context) {
+    print(widget.errorMsg);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -50,13 +55,20 @@ class _FilePickerState extends State<FilePicker> {
             ),
           ],
         ),
+        if (widget.errorMsg.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(left: 12,top: 6),
+            child: Text(widget.errorMsg,style: TextStyle(color: Theme.of(context).colorScheme.error,fontSize: 12,fontWeight: FontWeight.w400),),
+          ),
+        if (widget.errorMsg.isNotEmpty)
+          gapHC(4),
         if (widget.selectedFiles.isNotEmpty) gapHC(10),
         if (widget.selectedFiles.isNotEmpty) ts("Files", Colors.black),
         if (widget.selectedFiles.isNotEmpty) gapHC(3),
         if (widget.selectedFiles.isNotEmpty)
           ListView.separated(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: (){
@@ -103,27 +115,29 @@ class _FilePickerState extends State<FilePicker> {
                       Expanded(
                           child: ts(widget.selectedFiles[index].split("/").last,
                               Colors.black)),
+                      gapWC(10),
                       GestureDetector(
+                        behavior: HitTestBehavior.opaque,
                           onTap: () {
                             setState(() {
                               widget.selectedFiles.removeAt(index);
                               widget.onChanged.call(widget.selectedFiles);
                             });
                           },
-                          child: CircleAvatar(
-                            radius: 10,
+                          child: const CircleAvatar(
+                            radius: 14,
+                            backgroundColor: primaryColor,
                             child: Icon(
                               Icons.close,
                               color: Colors.white,
                               size: 16,
                             ),
-                            backgroundColor: Colors.black87,
                           ))
                     ],
                   ),
                 );
               },
-              separatorBuilder: (context, index) => SizedBox(
+              separatorBuilder: (context, index) => const SizedBox(
                     height: 10,
                   ),
               itemCount: widget.selectedFiles.length),
@@ -155,11 +169,11 @@ class _FilePickerState extends State<FilePicker> {
                               CircleAvatar(
                                   radius:
                                       MediaQuery.sizeOf(context).width * 0.1,
+                                  backgroundColor: greyLight,
                                   child: const Icon(
                                     Icons.camera_alt_outlined,
                                     color: primaryColor,
-                                  ),
-                                  backgroundColor: greyLight),
+                                  )),
                               const SizedBox(
                                 height: 8,
                               ),
@@ -177,11 +191,11 @@ class _FilePickerState extends State<FilePicker> {
                               CircleAvatar(
                                   radius:
                                       MediaQuery.sizeOf(context).width * 0.1,
+                                  backgroundColor: greyLight,
                                   child: const Icon(
                                     Icons.photo_library_sharp,
                                     color: primaryColor,
-                                  ),
-                                  backgroundColor: greyLight),
+                                  )),
                               const SizedBox(
                                 height: 8,
                               ),
@@ -199,11 +213,11 @@ class _FilePickerState extends State<FilePicker> {
                               CircleAvatar(
                                   radius:
                                       MediaQuery.sizeOf(context).width * 0.1,
+                                  backgroundColor: greyLight,
                                   child: const Icon(
                                     Icons.picture_as_pdf_rounded,
                                     color: primaryColor,
-                                  ),
-                                  backgroundColor: greyLight),
+                                  )),
                               const SizedBox(
                                 height: 8,
                               ),
@@ -233,10 +247,23 @@ class _FilePickerState extends State<FilePicker> {
 
     if (result != null) {
       final file = XFile(result.files.single.path!);
+
+      int fileSizeInBytes = await file.length();
+      double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+
+      if (fileSizeInMB > 16) {
+        AppDialog.showToast('File size exceeds the 16MB limit. Please choose a smaller file.',isError: true);
+        return;
+      }
+
       String newFile = await uploadFile(file.path);
       if (newFile.isNotEmpty) {
         setState(() {
-          widget.selectedFiles.add(newFile);
+          if (widget.multiple) {
+            widget.selectedFiles.add(newFile);
+          } else {
+            widget.selectedFiles = [newFile];
+          }
           widget.onChanged.call(widget.selectedFiles);
         });
       }
@@ -246,8 +273,18 @@ class _FilePickerState extends State<FilePicker> {
   void pickFromCamera() async {
     Get.back();
     final ImagePicker _picker = ImagePicker();
-    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera,imageQuality: 80);
     if (photo != null) {
+
+      int fileSizeInBytes = await photo.length();
+      double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+
+      if (fileSizeInMB > 16) {
+        AppDialog.showToast('File size exceeds the 16MB limit. Please choose a smaller file.',isError: true);
+        return;
+      }
+
+
       String newFile = await uploadFile(photo.path);
       if (newFile.isNotEmpty) {
         setState(() {
@@ -265,8 +302,17 @@ class _FilePickerState extends State<FilePicker> {
   void pickFromGallery() async {
     Get.back();
     final ImagePicker _picker = ImagePicker();
-    final XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? photo = await _picker.pickImage(source: ImageSource.gallery,imageQuality: 80);
     if (photo != null) {
+
+      int fileSizeInBytes = await photo.length();
+      double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+
+      if (fileSizeInMB > 16) {
+        AppDialog.showToast('File size exceeds the 16MB limit. Please choose a smaller file.',isError: true);
+        return;
+      }
+
       String newFile = await uploadFile(photo.path);
       if (newFile.isNotEmpty) {
         setState(() {
@@ -282,21 +328,19 @@ class _FilePickerState extends State<FilePicker> {
   }
 
   Future<String> uploadFile(String file) async {
-    // Get the application directory
-
-    var response = await MygRepository().uploadFile(file);
-    if (response.success) {
-      return response.path;
-    } else {
+    try {
+      print('file: $file');
+      var response = await MygRepository().uploadFile(file);
+      if (response.success) {
+        widget.errorMsg = '';
+        return response.path;
+      } else {
+        AppDialog.showToast(response.message,isError: true);
+        return '';
+      }
+    }catch(_){
+      AppDialog.showToast("Something went wrong! Try again.",isError: true);
       return '';
     }
-    /*Directory appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path;
-
-    // Copy the file to the application directory
-    String newFilePath = '$appDocPath/${XFile(file).name}';
-    await File(file).copy(newFilePath);
-
-    return newFilePath;*/
   }
 }

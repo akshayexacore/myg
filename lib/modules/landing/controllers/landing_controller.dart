@@ -11,11 +11,13 @@ class LandingController extends GetxController
 
   var isTripTypeBusy = false.obs;
   var tripTypes = <TripType>[].obs;
+  var notifications = 0.obs;
 
   final _repository = MygRepository();
 
   @override
   void onInit() {
+    getNotificationCount();
     getBranches();
     geTripTypes();
     super.onInit();
@@ -56,6 +58,18 @@ class LandingController extends GetxController
       if(!isSilent) {
         isTripTypeBusy(false);
       }
+    }
+  }
+
+  getNotificationCount({bool isSilent = false}) async {
+    try {
+      var response = await _repository.getNotificationCount();
+      if (response.success) {
+        notifications(response.notifications);
+      }
+    } catch (_) {
+      print('notification count error: ${_.toString()}');
+    } finally {
     }
   }
 

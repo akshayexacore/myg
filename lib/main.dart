@@ -1,11 +1,26 @@
+import 'package:appspector/appspector.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:travel_claim/firebase_options.dart';
+import 'package:travel_claim/modules/notification/controllers/firebase_notification_controller.dart';
 import 'package:travel_claim/modules/splash/splash_page.dart';
 import 'package:travel_claim/routes/routes.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  await FirebaseNotificationController().initialize();
+  runAppSpector();
   runApp(const MyApp());
 }
 
@@ -21,7 +36,8 @@ class MyApp extends StatelessWidget {
     ]);
     return KeyboardDismisser(
       child: GetMaterialApp(
-        title: 'Travel Claim',
+        title: 'MyG Travel Claim',
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -29,9 +45,22 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: SplashPage.routeName,
         getPages: Routes.getPages,
+        builder: FToastBuilder(),
       ),
     );
   }
+}
+
+void runAppSpector() {
+  final config = Config()
+    ..iosApiKey = "Your iOS API_KEY"
+    ..androidApiKey = "android_Y2M2YzVjMmUtYjUxOC00MzA4LWE5ZDEtNDk4MjZiYTcwMWQ2"
+  ;
+
+  // If you don't want to start all monitors you can specify a list of necessary ones
+  config.monitors = [Monitors.http, Monitors.logs, Monitors.screenshot];
+
+  AppSpectorPlugin.run(config);
 }
 
 

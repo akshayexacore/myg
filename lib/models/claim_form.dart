@@ -3,6 +3,7 @@ import 'package:travel_claim/models/branch.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/employee.dart';
 import 'package:travel_claim/models/trip_type.dart';
+import 'package:travel_claim/utils/app_enums.dart';
 import 'package:travel_claim/utils/app_formatter.dart';
 
 class ClaimForm {
@@ -78,10 +79,14 @@ class ClaimFormData {
   late int noOfEmployees;
   late List<Employee> employees;
   late String remarks;
+  late String approverRemarks;
   double? amount;
   late List<String> files;
+  late String fileError;
   CategoryClass? selectedClass;
-  String? status;
+  late ClaimStatus status;
+  late bool sentForApproval;
+  late int rejectionCount;
 
   ClaimFormData({
     this.id,
@@ -96,10 +101,14 @@ class ClaimFormData {
     this.noOfEmployees = 1,
     this.employees = const [],
     this.remarks = '',
+    this.fileError = '',
+    this.approverRemarks = '',
     this.amount=0,
     this.files = const [],
     this.selectedClass,
-    this.status
+    this.status = ClaimStatus.none,
+    this.sentForApproval = false,
+    this.rejectionCount = 0,
   });
 
   ClaimFormData.fromJson(Map<String, dynamic> json) {
@@ -119,7 +128,8 @@ class ClaimFormData {
         employees.add(Employee.fromJson(v));
       });
     }
-    remarks = json['remarks'];
+    remarks = json['remarks'] ?? '';
+    approverRemarks = json['approver_remarks'] ?? '';
     amount = json['amount'];
     files = <String>[];
     if (json['files'] != null) {
@@ -130,11 +140,13 @@ class ClaimFormData {
     if(json['selected_class']!=null){
       selectedClass = CategoryClass.fromJson(json['selected_class']);
     }
+    status = json['status'].toString().toClaimStatus;
+    fileError = '';
   }
 
   ClaimFormData.fromApiJson(Map<String, dynamic> json) {
     id = json['trip_claim_details_id'];
-    status = json['trip_claim_details_status'];
+    status = json['status'].toString().toClaimStatus;
     classId = json['class_id'];
     policyId = json['policy_id'];
     fromDate = json['from_date']!=null ? DateTime.tryParse(json['from_date']) : null;
@@ -145,6 +157,8 @@ class ClaimFormData {
     odoMeterStart = json['start_meter']!=null ? json['start_meter'].toString() : null;
     odoMeterEnd = json['end_meter']!=null ? json['end_meter'].toString() : null;
     noOfEmployees = json['no_of_persons'] ?? 1;
+    sentForApproval = json['send_approver_flag'] ?? false;
+    rejectionCount = json['rejection_count'] ?? 0;
     employees = <Employee>[];
     if (json['person_details'] != null) {
       json['person_details'].forEach((v) {
@@ -152,6 +166,7 @@ class ClaimFormData {
       });
     }
     remarks = json['remarks'] ?? '';
+    approverRemarks = json['approver_remarks'] ?? '';
     amount = double.tryParse(json['unit_amount'].toString()) ?? 0;
     files = <String>[];
     if(json['file_url']!=null){
@@ -165,11 +180,16 @@ class ClaimFormData {
     if(json['policy_details']!=null){
       selectedClass = CategoryClass.fromJson(json['policy_details']);
     }
+
+    classId = selectedClass?.id;
+    policyId = selectedClass?.policy?.id;
+    fileError = '';
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = id;
+    data['trip_claim_details_id'] = id;
     data['class_id'] = classId;
     data['policy_id'] = policyId;
     data['from_date'] = fromDate.toString();
@@ -184,12 +204,14 @@ class ClaimFormData {
     data['amount'] = amount;
     data['files'] = files;
     data['selected_class'] = selectedClass?.toJson();
+    data['policy_details'] = selectedClass?.toJson();
     return data;
   }
 
   Map<String, dynamic> toApiJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = id;
+    data['trip_claim_details_id'] = id;
     data['class_id'] = classId;
     data['policy_id'] = policyId;
     data['from_date'] = fromDate!=null ? AppFormatter.formatYYYYMMDD(fromDate!) : null;
@@ -205,6 +227,7 @@ class ClaimFormData {
     data['remarks'] = remarks;
     data['unit_amount'] = amount;
     data['file_url'] = files.isNotEmpty ? files.first : null;
+    data['policy_details'] = selectedClass?.toJson();
     return data;
   }
 }

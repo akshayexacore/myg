@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:travel_claim/modules/landing/controllers/landing_controller.dart';
 import 'package:travel_claim/modules/landing/controllers/profile_controller.dart';
 import 'package:travel_claim/modules/notification/notification_screen.dart';
 import 'package:travel_claim/modules/profile/profile_page.dart';
@@ -158,7 +159,6 @@ Widget bgDashBoard(context,name){
                         Bounce(
                           duration: const Duration(milliseconds: 110),
                           onTap: (){
-                            //dashboardcontroller.apiLogout();
                             endBottomSheetDialog(
                                 "Are you sure you want to logout?",
                                 "Log out the current user",
@@ -178,13 +178,14 @@ Widget bgDashBoard(context,name){
                           duration: const Duration(milliseconds: 110),
                           onTap: (){
                             Get.toNamed(NotificationScreen.routeName);
-                            dprint("33333333333333333333");
                           },
                           child: badges.Badge(
-                              badgeContent: ts('3', Colors.white),
+                              badgeContent: Obx(() {
+                                return ts(Get.find<LandingController>().notifications.value.toString(), Colors.white);
+                              },),
                               position: badges.BadgePosition.topEnd(
                                   top: -11, end: -2),
-                              showBadge: true,
+                              showBadge: Get.find<LandingController>().notifications.value>0  ? true : false,
                               badgeStyle: const badges.BadgeStyle(
                                 shape: badges.BadgeShape.circle,
                                 badgeColor: Colors.red,

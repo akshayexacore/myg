@@ -44,6 +44,7 @@ class _EmployeeSelectorState extends State<EmployeeSelector> {
         inputDecoration: InputDecoration(
           hintText: "Type to search employees",
           contentPadding: const EdgeInsets.symmetric(horizontal: 10,vertical: 0),
+          errorStyle: TextStyle(fontSize: 1,color: Colors.transparent),
           hintStyle: hintTextStyle()
         ),
         textStyle: const TextStyle(fontFamily: 'Roboto',fontSize: 14,color: Colors.black,fontWeight: FontWeight.normal),
@@ -52,7 +53,7 @@ class _EmployeeSelectorState extends State<EmployeeSelector> {
         minTextFieldWidth: 300,
         validator: (value) {
           if (selectedItems.length < widget.maxSelection) {
-                  return "Min ${widget.maxSelection} employees required";
+                  return "Min ${widget.maxSelection} employee${widget.maxSelection==1?'':'s'} required";
                 }
           return null;
         },

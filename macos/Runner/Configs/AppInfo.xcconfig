@@ -8,7 +8,7 @@
 PRODUCT_NAME = travel_claim
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.exacore.travelClaim
+PRODUCT_BUNDLE_IDENTIFIER = com.myg.travel_claim
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2024 com.exacore. All rights reserved.

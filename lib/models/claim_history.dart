@@ -30,6 +30,30 @@ class ClaimHistoryResponse {
   }
 }
 
+class ClaimDetailResponse {
+  late bool success;
+  late String message;
+  ClaimHistory? claim;
+
+  ClaimDetailResponse({this.success = false, this.message = '', this.claim});
+
+  ClaimDetailResponse.fromJson(Map<String, dynamic> json) {
+    message = json['message'];
+    success = json['statusCode'] == 200;
+
+    if (json['data'] != null) {
+      claim = (ClaimHistory.fromJson(json['data']));
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['detail'] = message;
+    data['data'] = claim?.toJson();
+    return data;
+  }
+}
+
 class ClaimHistory {
   late String tripClaimId;
   TripType? tripTypeDetails;
@@ -40,6 +64,9 @@ class ClaimHistory {
   Branch? visitBranchDetail;
   List<Category>? categories;
   late ClaimStatus status;
+  late ClaimStatus tripHistoryStatus;
+  late String pendingFrom;
+  late String tripApproverRemarks;
   late ClaimStatus approverStatus;
   late ClaimStatus financeStatus;
   late String tmgId;
@@ -56,9 +83,12 @@ class ClaimHistory {
         this.userDetails,
         this.financeApproverDetails,
         this.tripPurpose = '',
+        this.pendingFrom = '',
+        this.tripApproverRemarks = '',
         this.visitBranchDetail,
         this.categories,
         this.status = ClaimStatus.none,
+        this.tripHistoryStatus = ClaimStatus.none,
         this.approverStatus = ClaimStatus.none,
         this.financeStatus = ClaimStatus.none,
         this.tmgId = '',
@@ -72,10 +102,13 @@ class ClaimHistory {
   ClaimHistory.fromJson(Map<String, dynamic> json) {
     tripClaimId = json['trip_claim_id'] ?? '';
     status = json['trip_status'].toString().toClaimStatus;
+    tripHistoryStatus = json['trip_history_status'].toString().toClaimStatus;
     approverStatus = json['approver_status'].toString().toClaimStatus;
     financeStatus = json['finance_status'].toString().toClaimStatus;
     tmgId = json['tmg_id'] ?? '';
     date = json['date'] ?? '';
+    pendingFrom = json['pending_from'] ?? '';
+    tripApproverRemarks = json['trip_approver_remarks'] ?? '';
     tripApprovedDate = json['trip_approved_date'] ?? 'NA';
     tripRejectedDate = json['trip_rejected_date'] ?? 'NA';
     financeApprovedDate = json['finance_status_change_date'] ?? 'NA';

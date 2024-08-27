@@ -32,6 +32,8 @@ class ClaimController extends GetxController
 
   final formKey = GlobalKey<FormState>();
 
+  var openedSections = [0].obs;
+
   @override
   void onInit() {
     claimFrom(Get.arguments);
@@ -72,13 +74,27 @@ class ClaimController extends GetxController
   }
 
   void addOrRemoveCategory(Category category) {
+    int index = selectedCategories.indexOf(category);
     if (selectedCategories.contains(category)) {
+      List<int> newItems = [];
+      for (var element in openedSections) {
+        if(element == index){}
+        else if(element>index){
+          newItems.add(element - 1);
+        }else{
+          newItems.add(element);
+        }
+      }
+      openedSections(newItems);
       selectedCategories.remove(category);
     } else {
       if (category.items.isEmpty) {
         category.items.add(ClaimFormData());
       }
       selectedCategories.add(category);
+      if(selectedCategories.length == 1){
+        openedSections([0]);
+      }
     }
   }
 
@@ -120,9 +136,9 @@ class ClaimController extends GetxController
         bool response = await _localRepository.saveOrUpdate(claimFrom.value!);
         if (response) {
           Get.until((route) => Get.currentRoute == LandingPage.routeName);
-          AppDialog.showSnackBar("Success", "Saved to drafts");
+          AppDialog.showToast("Saved to drafts");
         } else {
-          AppDialog.showToast("Opps! failed to save to drafts");
+          AppDialog.showToast("Opps! failed to save to drafts",isError: true);
         }
       }
     } catch (_) {
@@ -134,31 +150,54 @@ class ClaimController extends GetxController
 
   bool _validateBaseForm() {
     if (selectedTripType.value == null) {
-      AppDialog.showSnackBar("Oops", "Please select a Trip type");
+      AppDialog.showToast("Please select a Trip type",isError: true);
       return false;
     }
     if (selectedBranch.value == null) {
-      AppDialog.showSnackBar("Oops", "Please select a branch");
+      AppDialog.showToast("Please select a branch",isError: true);
       return false;
     }
     if (selectedCategories.isEmpty) {
-      AppDialog.showSnackBar("Oops", "Please select at least one category");
+      AppDialog.showToast("Please select at least one category",isError: true);
       return false;
     }
     return true;
   }
 
   bool _validateForm() {
-    if (formKey.currentState!.validate()) {
+
+    bool isFormValid = formKey.currentState!.validate();
+    bool areFilesValid = _validateFiles();
+
+    if (isFormValid && areFilesValid) {
       if (selectedCategories.isEmpty) {
-        AppDialog.showSnackBar("Oops", "Please select at least one category");
+        AppDialog.showToast("Please select at least one category",isError: true);
         return false;
       }
       return true;
     }else {
-      AppDialog.showSnackBar("Oops", "Please fill all the mandatory fields");
+      AppDialog.showToast("Please fill all the mandatory fields",isError: true);
       return false;
     }
+  }
+
+  bool _validateFiles(){
+    bool valid = true;
+    selectedCategories.forEach((element) {
+      print('here 1');
+      element.items.forEach((form) {
+        print('here 2');
+        if(form.files.isEmpty){
+          form.fileError = "This is a mandatory field";
+          print('here');
+          emitFormUpdate();
+          emitFormChange();
+          valid = false;
+        }
+      },);
+    },);
+
+    return valid;
   }
 
   void save() async {
@@ -189,9 +228,9 @@ class ClaimController extends GetxController
           }
 
           Get.until((route) => Get.currentRoute == LandingPage.routeName);
-          AppDialog.showSnackBar("Success", "Claim submitted successfully.");
+          AppDialog.showToast("Claim submitted successfully.");
         } else {
-          AppDialog.showToast(response.message.isNotEmpty ? response.message : "Oops! failed to submit claim");
+          AppDialog.showToast(response.message.isNotEmpty ? response.message : "Oops! failed to submit claim",isError: true);
         }
       }
     } catch (_) {

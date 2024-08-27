@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_claim/models/user.dart';
@@ -30,6 +33,7 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     getUser();
+    saveFcm();
     super.onInit();
   }
 
@@ -56,5 +60,18 @@ class ProfileController extends GetxController {
   void logout(){
     AuthRepository().logoutUser();
     Get.offAllNamed(LoginPage.routeName);
+  }
+
+  void saveFcm()async{
+    try{
+      var body = {
+        "registration_id": await FirebaseMessaging.instance.getToken(),
+        "type": Platform.isAndroid ? "android" : "ios"
+      };
+      print('fcm');
+      print(body);
+      final response = await _userProfileRepository.saveFcmToken(body: body);
+    }catch(_){
+    }
   }
 }

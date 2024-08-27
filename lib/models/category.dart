@@ -67,8 +67,9 @@ class Category {
     hasStartMeter = json['start_meter_flag'];
     hasEndMeter = json['end_meter_flag'];
     imageUrl = json['image_url'];
+    classes = <CategoryClass>[];
     if (json['subcategorydetails'] != null) {
-      classes = <CategoryClass>[];
+
       json['subcategorydetails'].forEach((v) {
         classes!.add(CategoryClass.fromJson(v));
       });
@@ -81,9 +82,9 @@ class Category {
         items.add(ClaimFormData.fromJson(v));
       });
     }
-
+    items = <ClaimFormData>[];
     if (json['claim_details'] != null) {
-      items = <ClaimFormData>[];
+
       json['claim_details'].forEach((v) {
         items.add(ClaimFormData.fromApiJson(v));
       });
@@ -104,8 +105,8 @@ class Category {
     data['image_url'] = imageUrl;
     data['subcategorydetails'] =
         classes?.map((v) => v.toJson()).toList();
-    data['items'] =
-        items.map((v) => v.toJson()).toList();
+    data['items'] = items.map((v) => v.toJson()).toList();
+    data['claim_details'] = items.map((v) => v.toApiJson()).toList();
     return data;
   }
 
@@ -135,7 +136,7 @@ class CategoryClass {
     status = json['status'] ?? '';
     policy = json['policies'] != null
         ? Policy.fromJson(json['policies'])
-        : null;
+        : json['grade_type']!=null ? Policy.fromJson(json) : null;
   }
 
   Map<String, dynamic> toJson() {

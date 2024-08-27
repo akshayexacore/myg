@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:travel_claim/models/category.dart';
+import 'package:travel_claim/modules/history/claim_resubmit_page.dart';
 import 'package:travel_claim/modules/history/controllers/history_detail_controller.dart';
 import 'package:travel_claim/modules/history/widgets/attached_file_widget.dart';
 import 'package:travel_claim/utils/app_enums.dart';
 import 'package:travel_claim/utils/app_formatter.dart';
 import 'package:travel_claim/views/components/bg.dart';
 import 'package:travel_claim/views/components/common.dart';
+import 'package:travel_claim/views/components/customButton.dart';
 import 'package:travel_claim/views/const/appassets.dart';
 import 'package:path/path.dart';
 import 'package:travel_claim/views/style/colors.dart';
@@ -31,7 +34,7 @@ class HistoryDetailPage extends StatelessWidget {
           return const Center(child: SpinKitDoubleBounce(color: primaryColor,));
         }
 
-        if(_controller.claim.value!.categories!.isEmpty){
+        if(_controller.claim.value!.tmgId.isEmpty){
           return Center(child: ts("Claim details not found!", Colors.black54));
         }
         return SingleChildScrollView(
@@ -159,8 +162,8 @@ class HistoryDetailPage extends StatelessWidget {
                           height: 26,
                           width: 90,
                           //  padding: EdgeInsets.symmetric(vertical: 2,horizontal: 30),
-                          decoration: boxBaseDecoration(  _controller.claim.value!.status.color, 20),
-                          child: Center(child: tssb(_controller.claim.value!.status.title, Colors.white, FontWeight.w500)),
+                          decoration: boxBaseDecoration(  _controller.claim.value!.tripHistoryStatus.color, 20),
+                          child: Center(child: tssb(_controller.claim.value!.tripHistoryStatus.title, Colors.white, FontWeight.w500)),
                         ),
                         tcustom("\u{20B9}${_controller.claim.value!.totalAmount.toStringAsFixed(2)}", primaryColor, 18.0, FontWeight.w500),
 
@@ -175,20 +178,43 @@ class HistoryDetailPage extends StatelessWidget {
                 padding:   EdgeInsets.symmetric(horizontal: 15,vertical: 5),
                 child: Divider(),
               ),
-              _controller.claim.value!.status==ClaimStatus.rejected  ? Padding(
+              _controller.claim.value!.status!=ClaimStatus.pending  ? Padding(
                 padding:   const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    tssb("Reason for rejection", Colors.black, FontWeight.w400),
+                    tssb(_controller.claim.value!.status==ClaimStatus.rejected ? "Reason for rejection" : "Remarks", Colors.black, FontWeight.w400),
+                    if(_controller.claim.value!.tripApproverRemarks.isNotEmpty)
                     gapHC(5),
-                    ts('NA', Colors.black.withOpacity(0.6))
+                    if(_controller.claim.value!.tripApproverRemarks.isNotEmpty)
+                    ts(_controller.claim.value!.tripApproverRemarks, Colors.black.withOpacity(0.6))
 
                   ],
                 ),
               ):const SizedBox(),
 
+              Builder(builder: (context) {
+                List<Category> cats = _controller.claim.value!.categories!.where((element) {
+                  return element.items.where((e) => e.status == ClaimStatus.rejected).isNotEmpty;
+                },).toList();
+
+                return ListView.builder(padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),shrinkWrap: true,physics: NeverScrollableScrollPhysics(),itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: cats[index].items.map((e) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          tssb("${cats[index].name}:", Colors.black, FontWeight.w400),
+                          gapHC(5),
+                          ts('${e.approverRemarks}', Colors.black.withOpacity(0.6))
+                        ],
+                      );
+                    },).toList(),
+                  );
+                },itemCount: cats.length,);
+              },),
 
 
 
@@ -198,6 +224,7 @@ class HistoryDetailPage extends StatelessWidget {
                 child: tssb("Submitted Categories", Colors.black, FontWeight.w600),
               ),
               const SizedBox(height: 15,),
+              if(_controller.claim.value!.categories!.isNotEmpty)
               ExpandedTileList.separated(
                 key: ValueKey(_controller.claim.value!.categories!
                     .map(
@@ -214,6 +241,7 @@ class HistoryDetailPage extends StatelessWidget {
                 ),
                 initiallyOpenedControllersIndexes: [0],
                 itemBuilder: (context, index, con) {
+                 bool hasRejected =  _controller.claim.value!.categories![index].items.where((e) => e.status == ClaimStatus.rejected,).toList().isNotEmpty;
                   return ExpandedTile(
                     theme: ExpandedTileThemeData(
                       headerColor: greyLight,
@@ -224,7 +252,7 @@ class HistoryDetailPage extends StatelessWidget {
                       contentBackgroundColor: Colors.white,
                       headerBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: greyLight)),
+                          borderSide:  BorderSide(color: hasRejected ? Colors.red : greyLight)),
                       contentPadding:
                       const EdgeInsets.symmetric(vertical: 8),
                     ),
@@ -261,11 +289,11 @@ class HistoryDetailPage extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       if(_controller.claim.value!.categories![index].hasTripFrom)
-                                        headTitle("From", _controller.claim.value!.categories![index].items[formIndex].tripFrom),
+                                        headTitle("From", _controller.claim.value!.categories![index].items[formIndex].tripFrom ?? ''),
                                       if(_controller.claim.value!.categories![index].hasTripFrom)
                                         gapHC(10),
                                       if(_controller.claim.value!.categories![index].hasTripTo)
-                                        headTitle("To", _controller.claim.value!.categories![index].items[formIndex].tripTo),
+                                        headTitle("To", _controller.claim.value!.categories![index].items[formIndex].tripTo ?? ''),
                                       if(_controller.claim.value!.categories![index].hasTripTo)
                                         gapHC(10),
                                       if(_controller.claim.value!.categories![index].hasToDate)
@@ -397,6 +425,66 @@ class HistoryDetailPage extends StatelessWidget {
                                       ),
                                       gapHC(10),
                                       headTitle("Amount", "${_controller.claim.value!.categories![index].items[formIndex].amount!.toStringAsFixed(2)} INR"),
+                                      Obx(() {
+                                        if (_controller.claim.value!.categories![index].items[formIndex].selectedClass != null &&
+                                            _controller.claim.value!.categories![index].items[formIndex].selectedClass?.policy?.gradeAmount != null &&
+                                            _controller.claim.value!.categories![index].items[formIndex].amount != null) {
+                                          double max = _controller.claim.value!.categories![index].items[formIndex].selectedClass!.policy!.gradeAmount!;
+                                          double totalKms = 0;
+                                          if (_controller.claim.value!.categories![index].hasStartMeter) {
+                                            double start =
+                                                double.tryParse(_controller.claim.value!.categories![index].items[formIndex].odoMeterStart ?? '0') ?? 0;
+                                            double end =
+                                                double.tryParse(_controller.claim.value!.categories![index].items[formIndex].odoMeterEnd ?? '0') ?? 0;
+                                            if (start == 0 && end == 0) {
+                                              return const SizedBox.shrink();
+                                            }
+
+                                            totalKms = end - start;
+
+                                            max = totalKms *
+                                                _controller.claim.value!.categories![index].items[formIndex].selectedClass!.policy!.gradeAmount!;
+                                          }
+
+                                          if (_controller.claim.value!.categories![index].items[formIndex].amount! > max) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(top: 5),
+                                              child: headTitle("",
+                                                "(Eligible amount ${max.toStringAsFixed(2)} INR ${_controller.claim.value!.categories![index].hasStartMeter ? 'for $totalKms Kms @ ${_controller.claim.value!.categories![index].items[formIndex].selectedClass!.policy!.gradeAmount!} INR/Km' : ''})",
+                                                colors: Colors.red,
+                                              ),
+                                            );
+                                          }
+                                          return const SizedBox.shrink();
+                                        }
+                                        return const SizedBox.shrink();
+                                      }),
+                                      gapHC(10),
+                                      if(_controller.claim.value!.categories![index].items[formIndex].status != ClaimStatus.pending)
+                                        headTitle("Status", "${_controller.claim.value!.categories![index].items[formIndex].status.title}",colors: _controller.claim.value!.categories![index].items[formIndex].status.color),
+                                      if(_controller.claim.value!.categories![index].items[formIndex].status == ClaimStatus.rejected)
+                                        gapHC(20),
+                                      if(_controller.claim.value!.categories![index].items[formIndex].status == ClaimStatus.rejected)
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Obx((){
+                                                if (_controller.isUpdateBusy.isTrue) {
+                                                  return const SpinKitDoubleBounce(
+                                                    color: primaryColor,
+                                                  );
+                                                }
+                                                return Custombutton(
+                                                    onTap: () {
+                                                      _controller.removeSingle(context,_controller.claim.value!.categories![index].items[formIndex]);
+                                                    },
+                                                    buttonName: "Remove",
+                                                    buttonColor: Colors.red,
+                                                    buttonTextColor: Colors.white);
+                                              }),
+                                            ),
+                                          ],
+                                        )
                                     ],
                                   ),
 
@@ -419,11 +507,42 @@ class HistoryDetailPage extends StatelessWidget {
                 },
               ),
               gapHC(15),
-
+              if(showBottomActions())
+                Padding(
+                  padding:  const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+                  child: Text("You can edit and resubmit the claim only once. If you resubmit this claim, you cannot resubmit it again.",style: TextStyle(color: Color(0xff333333).withOpacity(0.8),fontSize: 14),),
+                ),
+              if(showBottomActions())
+                gapHC(15),
+              if(showBottomActions())
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Custombutton(
+                              onTap: () {
+                                _controller.gotoResubmit();
+                              },
+                              buttonName: "Re - submit",
+                              buttonColor: primaryColor,
+                              buttonTextColor: Colors.white)),
+                    ],
+                  ),
+                ),
+              if(showBottomActions())
+              gapHC(25),
             ],
           ),
         );
       }),
     ));
+  }
+
+  bool showBottomActions(){
+    bool canResubmit = _controller.claim.value!.categories!
+        .expand((category) => category.items)
+        .toList().where((e) => e.rejectionCount<2,).toList().isNotEmpty;
+    return (_controller.claim.value!.tripHistoryStatus == ClaimStatus.rejected || _controller.claim.value!.status == ClaimStatus.rejected) && canResubmit;
   }
 }

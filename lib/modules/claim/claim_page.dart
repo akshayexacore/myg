@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_awesome_select_nw/flutter_awesome_select_nw.dart';
 import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:select_searchable_list/select_searchable_list.dart';
 import 'package:travel_claim/models/branch.dart';
 import 'package:travel_claim/models/trip_type.dart';
 import 'package:travel_claim/modules/claim/controller/claim_controller.dart';
@@ -50,19 +52,26 @@ class ClaimPage extends StatelessWidget {
                         horizontal: 10, vertical: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ts("Employee ID", Colors.white,
-                                weight: FontWeight.w400),
-                            gapHC(3),
-                            tssb(
-                              '${profileController.user.value.name}(${profileController.user.value.employeeId})',
-                              Colors.white,
-                              FontWeight.w600,
-                            ),
-                          ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ts("Employee ID", Colors.white,
+                                  weight: FontWeight.w400),
+                              gapHC(3),
+                              Text(
+                                '${profileController.user.value.name} (${profileController.user.value.employeeId})',
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +100,7 @@ class ClaimPage extends StatelessWidget {
                         focusColor: Colors.white,
                         dropdownColor: Colors.white,
                         decoration: dropdownDecoration,
-                        hint: ts("Type of trip", Colors.grey.shade400),
+                        hint: Text("Type of trip", style: hintTextStyle(),),
                         validator: (value) {
                           if (value == null) {
                             return 'This is a mandatory field';
@@ -105,8 +114,11 @@ class ClaimPage extends StatelessWidget {
                         value: claimController.selectedTripType.value,
                         isExpanded: true,
                         // Down Arrow Icon
-                        icon: const Icon(Icons.arrow_forward_ios_rounded,
-                            size: 13),
+                        icon: Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child:  Icon(Icons.arrow_forward_ios_rounded,
+                              size: 13,color: Colors.black.withOpacity(0.6),),
+                        ),
 
                         // Array list of items
                         items: landingController.tripTypes.map((e) {
@@ -125,6 +137,115 @@ class ClaimPage extends StatelessWidget {
                   gapHC(15),
                   ts("Branch name", Colors.black),
                   gapHC(3),
+                  Obx(() {
+                    print(claimController.isBusy.value.toString());
+                    Map<int, String> branchMap = {for (var branch in landingController.branches) branch.id: branch.name};
+                    return DropDownTextField(
+                      style: const TextStyle(fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.w500),
+                      textEditingController: TextEditingController(),
+                      title: 'Select branch',
+                      decoration: InputDecoration(
+                        suffixIcon:  Icon(Icons.arrow_forward_ios_rounded,
+                            size: 13,color: Colors.black.withOpacity(0.6),),
+                        contentPadding:EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical:0.0
+                        ),
+                        hintText: "Select branch",
+                        hintStyle: hintTextStyle(),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide:  BorderSide(color: Colors.grey.shade400),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide:  BorderSide(color: primaryColor),
+                        ),
+                        focusColor: primaryColor,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide:  BorderSide(color: primaryColor),
+                        ),
+
+                      ),
+                      hint: 'Select Category',
+                      options: branchMap,
+                      selectedOptions: claimController.selectedBranch.value!=null ? [claimController.selectedBranch.value!.id] : null,
+                      multiple: false,
+                      onChanged: (selectedIds) {
+                        if(selectedIds!=null && selectedIds.isNotEmpty) {
+                          claimController.selectedBranch(landingController.branches.firstWhereOrNull((element) => element.id == selectedIds!.first,));
+                        }
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'This is a mandatory field';
+                        }
+                        return null;
+                      },
+                    );
+
+                    //debugPrint(_controller.selectedCategory.value?.name);
+                    return SmartSelect<Branch?>.single(
+                      title: 'Select branch',
+                      selectedValue: claimController.selectedBranch.value,
+                      modalFilter: true,
+                      modalFilterAuto: true,
+                      modalFilterHint: 'Search branch',
+                      modalConfig: const S2ModalConfig(
+                        maxHeightFactor: 0.8,
+                        type: S2ModalType.bottomSheet,
+                      ),
+                      onChange: (selected) {
+                        claimController.selectedBranch(selected.value);
+                      },
+                      validation: (chosen) {
+                        if (chosen.isEmpty) return 'This is a mandatory field';
+                        return '';
+                      },
+                      choiceItems: landingController.branches.map((element) => S2Choice<Branch>(value: element, title: element.name)).toList(),
+                      modalType: S2ModalType.bottomSheet,
+                      tileBuilder: (context, state) {
+                        print('smart validation res: ${state.selected.isNotValid}');
+                        return GestureDetector(
+                          onTap: state.showModal,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 13),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.grey.shade400,
+                                ),
+                                boxShadow: null),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    if(claimController.selectedBranch.value==null)
+                                    Align(alignment: Alignment.centerLeft,child: Text("Select branch",style: hintTextStyle(),)),
+                                    if(claimController.selectedBranch.value!=null)
+                                    Align(alignment: Alignment.centerLeft,child: Text(claimController.selectedBranch.value!.name,style: const TextStyle(color: Colors.black,fontWeight: FontWeight.w500),)),
+                                    Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      size: 12,
+                                      color: Colors.black.withOpacity(0.7),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
+                  /*gapHC(3),
                   Obx(() => DropdownButtonFormField<Branch>(
                         focusColor: Colors.white,
                         dropdownColor: Colors.white,
@@ -155,7 +276,7 @@ class ClaimPage extends StatelessWidget {
                         onChanged: (Branch? value) {
                           claimController.selectedBranch(value);
                         },
-                      )),
+                      )),*/
                   gapHC(15),
                   ts("Purpose of trip", Colors.black),
                   gapHC(3),
@@ -265,6 +386,7 @@ class ClaimPage extends StatelessWidget {
                   ),
                   gapHC(10),
                   Obx(() {
+                    print('opened sections: ${claimController.openedSections.toString()}');
                     if (claimController.selectedCategories.isEmpty) {
                       return const SizedBox.shrink();
                     }
@@ -276,13 +398,13 @@ class ClaimPage extends StatelessWidget {
                           .toList()
                           .join("")),
                       itemCount: claimController.selectedCategories.length,
-                      maxOpened: 2,
+                      maxOpened: 1,
                       padding: EdgeInsets.zero,
                       physics: const NeverScrollableScrollPhysics(),
                       separatorBuilder: (context, index) => const SizedBox(
                         height: 12,
                       ),
-                      initiallyOpenedControllersIndexes: [0],
+                      initiallyOpenedControllersIndexes: claimController.openedSections,
                       itemBuilder: (context, index, con) {
                         return ExpandedTile(
                           theme: ExpandedTileThemeData(
@@ -384,7 +506,12 @@ class ClaimPage extends StatelessWidget {
                             ],
                           ),
                           onTap: () {
-                            debugPrint("tapped!!");
+                            print("is open: ${con.isExpanded}");
+                            if(con.isExpanded){
+                              claimController.openedSections([index]);
+                            }else{
+                              claimController.openedSections.remove(index);
+                            }
                           },
                           onLongTap: () {
                             debugPrint("looooooooooong tapped!!");
@@ -393,9 +520,11 @@ class ClaimPage extends StatelessWidget {
                       },
                     );
                   }),
-                  const SizedBox(
-                    height: 100,
-                  )
+                  Obx((){
+                    return  SizedBox(
+                      height: claimController.selectedCategories.isEmpty ? 0 : 20,
+                    );
+                  })
                 ],
               ),
             ),
