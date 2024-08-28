@@ -30,11 +30,14 @@ class HistoryDetailController extends GetxController with GetSingleTickerProvide
   final formKey = GlobalKey<FormState>();
   final _repository = MygRepository();
 
+  var canGoToHistory = true;
+
   @override
   void onInit() {
     claim(Get.arguments);
     if(claim.value!.categories == null || claim.value!.categories!.isEmpty){
       getDetails();
+      canGoToHistory = false;
     }else{
       getDetails(isSilent: true);
     }
@@ -171,6 +174,11 @@ class HistoryDetailController extends GetxController with GetSingleTickerProvide
       return element.items.where((e) => e.status == ClaimStatus.rejected && e.rejectionCount < 2,).isNotEmpty;
     },).toList();
 
+    if(cats.isEmpty){
+      AppDialog.showToast("No claims to resubmit");
+      return;
+    }
+
     reSubmittedCategories(cats.map((e) => Category.fromJson(e.toJson()),).toList());
     Get.toNamed(ClaimResubmitPage.routeName);
   }
@@ -211,7 +219,11 @@ class HistoryDetailController extends GetxController with GetSingleTickerProvide
 
         var response = await _repository.resubmitClaim(body: body);
         if (response.success) {
-          Get.until((route) => Get.currentRoute == HistoryPage.routeName);
+          if(canGoToHistory) {
+            Get.until((route) => Get.currentRoute == HistoryPage.routeName);
+          }else{
+            Get.until((route) => Get.currentRoute == LandingPage.routeName);
+          }
           if(Get.isRegistered<HistoryController>()){
             Get.find<HistoryController>().getHistory();
           }

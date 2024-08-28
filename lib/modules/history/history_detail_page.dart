@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -261,8 +262,8 @@ class HistoryDetailPage extends StatelessWidget {
                         _controller.claim.value!.categories![index].name,
                         Colors.black,
                         15.0),
-                    leading: Image.network(
-                      _controller.claim.value!.categories![index].imageUrl,
+                    leading: CachedNetworkImage(
+                      imageUrl:  _controller.claim.value!.categories![index].imageUrl,
                       height: 25,
                       width: 25,
                     ),
