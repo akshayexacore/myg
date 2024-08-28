@@ -21,7 +21,7 @@ class AppFormatter {
   }
 
   static String formatDDMMYYYY(DateTime date) {
-    return DateFormat('dd-MM-yyyy').format(date);
+    return DateFormat('dd/MM/yyyy').format(date);
   }
   static String formatYYYYMMDD(DateTime date) {
     return DateFormat('yyyy-MM-dd').format(date);

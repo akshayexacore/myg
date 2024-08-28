@@ -41,7 +41,7 @@ class SpecialDetailApprovalController extends GetxController with GetSingleTicke
       if(!isSilent) {
         isBusy(true);
       }
-      var response = await _repository.getClaimDetail(claim.value!.tripClaimId);
+      var response = await _repository.getClaimDetailForSpecialApproval(claim.value!.tripClaimId);
         claim(response.claim);
     } catch (_) {
       print('detail claims get error: ${_.toString()}');

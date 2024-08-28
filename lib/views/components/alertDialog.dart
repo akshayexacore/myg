@@ -9,7 +9,7 @@ import 'package:travel_claim/views/style/colors.dart';
 Future<void> show(context,child,{contWidth,contHeight,autoDismiss}) async {
   return showDialog<void>(
     context: context,
-    barrierDismissible: true, // user must tap button!
+    barrierDismissible: false,
     builder: (BuildContext context) {
       Size size = MediaQuery.of(context).size;
       autoDismiss?  Future.delayed(Duration(seconds: 2), () {

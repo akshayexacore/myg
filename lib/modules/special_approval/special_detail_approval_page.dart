@@ -133,7 +133,7 @@ class SpecialDetailApprovalPage extends StatelessWidget {
                         children: [
                           tssb("${cats[index].name}:", Colors.black, FontWeight.w400),
                           gapHC(5),
-                          ts('${e.approverRemarks}', Colors.black.withOpacity(0.6))
+                          ts(e.approverRemarks.isNotEmpty ? e.approverRemarks : 'NA', Colors.black.withOpacity(0.6))
                         ],
                       );
                     },).toList(),

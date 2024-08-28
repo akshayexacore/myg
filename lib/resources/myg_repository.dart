@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:travel_claim/configs/api_constants.dart';
+import 'package:travel_claim/models/advance.dart';
 import 'package:travel_claim/models/branch.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_history.dart';
@@ -117,21 +118,25 @@ class MygRepository {
     return ClaimDetailResponse.fromJson(response);
   }
 
+  Future<ClaimDetailResponse> getClaimDetailForSpecialApproval(String id) async {
+    final response = await _api.post(ApiConstants.viewClaimSpecialApprover,headers: {},body: {"trip_claim_id":id});
+    return ClaimDetailResponse.fromJson(response);
+  }
+
   Future<ClaimHistoryResponse> getClaimsForSpecialApproval() async {
     final response = await _api.get(ApiConstants.claimsForSpecialApproval,headers: {});
     return ClaimHistoryResponse.fromJson(response);
   }
 
-/*Future<PostResponse> toggleFavorite(int id,bool favorite) async {
-    final response = await _api.post('${ApiConstants.favorites}$id/${favorite?'favorite/' : 'unfavorite/'}',headers: {});
-    return PostResponse.fromFavJson(response);
+  Future<PostResponse> requestAdvance({required Map<String,dynamic> body}) async {
+    Logger().i(body);
+    final response = await _api.post(ApiConstants.advanceRequest,headers: {},body: body);
+    return PostResponse.fromJson(response);
   }
 
-  Future<BillUploadResponse> uploadBill(List<String> files, ValueChanged<int> onProgress,) async {
-    final response =
-    await _api.postMultipart(ApiConstants.uploadBill,body: {},
-        files: files,key: 'images',baseUrl: 'https://api.centresquaremallkochi.com');
-    return BillUploadResponse.fromJson(response);
-  }*/
+  Future<AdvanceHistoryResponse> getAdvanceRequests() async {
+    final response = await _api.get(ApiConstants.advanceList,headers: {});
+    return AdvanceHistoryResponse.fromJson(response);
+  }
 
 }

@@ -8,6 +8,7 @@ const Color greyLight = Color(0xFFF0F0F0);
 
 const Color pinkreject= Color(0xFFFF2424);
 const Color yellowpending= Color(0xFFFF710A);
+const Color textColor= Color(0xFF333333);
 
 
 

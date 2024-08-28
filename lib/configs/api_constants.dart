@@ -24,4 +24,7 @@ class ApiConstants {
   static String viewClaim = '/api/viewClaim';
   static String specialApproverRejectSingle = '/api/specialApproverRejectSingle';
   static String devices = '/api/devices';
+  static String viewClaimSpecialApprover = '/api/viewClaimSpecialApprover';
+  static String advanceRequest = '/api/advanceRequest';
+  static String advanceList = '/api/advanceList';
 }

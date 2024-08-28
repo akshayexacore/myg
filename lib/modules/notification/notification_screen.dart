@@ -89,7 +89,8 @@ class NotificationScreen extends StatelessWidget {
                                 Container(
                                   height: 4,
                                   decoration: boxDecorationC(
-                                      primaryColor, 0.0, 0.0, 52, 52),
+                                      notificationController
+                                          .notifications[index].status == "unread" ? primaryColor : Colors.grey.shade500, 0.0, 0.0, 52, 52),
                                 ),
                               ],
                             ),

@@ -1,6 +1,8 @@
 import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:travel_claim/modules/advance/advance_request_page.dart';
+import 'package:travel_claim/modules/advance_requests/advance_request_list_page.dart';
 import 'package:travel_claim/modules/claim/claim_page.dart';
 import 'package:travel_claim/modules/claim_approval/claim_approval_list_page.dart';
 import 'package:travel_claim/modules/drafts/draft_page.dart';
@@ -84,7 +86,7 @@ class LandingPage extends StatelessWidget {
                             child: _profileController.user.value.grade.hasPermission(Permission.requestAdvance) ? Bounce(
                                 duration: const Duration(milliseconds: 110),
                                 onTap: () {
-                                  Get.to(() => const ReqadvanceScreen());
+                                  Get.toNamed(AdvanceRequestListPage.routeName);
                                 },
                                 child: menuCard(0.0, 30.0, 0.0, 0.0,
                                     AppAssets.reqAdv_img, "Request\nAdvance")) : const SizedBox()),

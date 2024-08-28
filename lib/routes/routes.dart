@@ -1,4 +1,10 @@
 import 'package:get/get.dart';
+import 'package:travel_claim/modules/advance/advance_request_page.dart';
+import 'package:travel_claim/modules/advance/controller/advance_request_controller.dart';
+import 'package:travel_claim/modules/advance_requests/advance_detail_page.dart';
+import 'package:travel_claim/modules/advance_requests/advance_request_list_page.dart';
+import 'package:travel_claim/modules/advance_requests/controllers/advance_detail_controller.dart';
+import 'package:travel_claim/modules/advance_requests/controllers/advance_request_list_controller.dart';
 import 'package:travel_claim/modules/claim/claim_confirmation_page.dart';
 import 'package:travel_claim/modules/claim/claim_page.dart';
 import 'package:travel_claim/modules/claim/controller/claim_controller.dart';
@@ -132,6 +138,24 @@ class Routes {
         page: () => SpecialDetailApprovalPage(),
         binding: BindingsBuilder(() {
           Get.lazyPut(() => SpecialDetailApprovalController());
+        })),
+    GetPage(
+        name: AdvanceRequestPage.routeName,
+        page: () => AdvanceRequestPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => AdvanceRequestController());
+        })),
+    GetPage(
+        name: AdvanceRequestListPage.routeName,
+        page: () => AdvanceRequestListPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => AdvanceRequestListController());
+        })),
+    GetPage(
+        name: AdvanceDetailPage.routeName,
+        page: () => AdvanceDetailPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => AdvanceDetailController());
         })),
   ];
 }

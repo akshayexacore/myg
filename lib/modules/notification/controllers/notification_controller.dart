@@ -4,6 +4,7 @@ import 'package:travel_claim/models/notification.dart';
 import 'package:travel_claim/modules/claim_approval/claim_detail_approval_page.dart';
 import 'package:travel_claim/modules/history/history_detail_page.dart';
 import 'package:travel_claim/modules/landing/controllers/landing_controller.dart';
+import 'package:travel_claim/modules/special_approval/special_detail_approval_page.dart';
 import 'package:travel_claim/resources/myg_repository.dart';
 
 class NotificationController extends GetxController {
@@ -40,8 +41,12 @@ class NotificationController extends GetxController {
       Get.toNamed(HistoryDetailPage.routeName,arguments: ClaimHistory(tripClaimId: notification.tripClaimId));
     }else if(notification.viewType.toLowerCase() == "Approver_View".toLowerCase()){
       Get.toNamed(ClaimDetailApprovalPage.routeName,arguments: ClaimHistory(tripClaimId: notification.tripClaimId));
+    }else if(notification.viewType.toLowerCase() == "SpecialApprover_View".toLowerCase()){
+      Get.toNamed(SpecialDetailApprovalPage.routeName,arguments: ClaimHistory(tripClaimId: notification.tripClaimId));
     }
 
-    notifications.remove(notification);
+    notification.status = 'read';
+    isBusy(true);
+    isBusy(false);
   }
 }
