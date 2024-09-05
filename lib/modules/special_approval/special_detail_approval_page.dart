@@ -612,7 +612,7 @@ class SpecialDetailApprovalPage extends StatelessWidget {
                     maxline: 3,
                     textInputAction: TextInputAction.done,
                     hintText: "Enter your remarks",
-                    isEnable: true,
+                    isEnable: showBottomActions(),
                     isObscure: false),
               ),
               gapHC(20),

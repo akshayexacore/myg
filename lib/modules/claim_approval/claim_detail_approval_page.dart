@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -31,7 +32,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
-      appBar: customAppBar("Claim confirmation"),
+      appBar: customAppBar("Claim approval"),
       body: Obx((){
         if (_controller.isBusy.isTrue) {
           return const Center(
@@ -1046,20 +1047,39 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                       gapHC(10),
                       Obx(() => Container(
                             height: 45,
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration: boxOutlineCustom(
-                                Colors.white, 10, Colors.grey.shade400),
-                            child: DropdownButton<Employee?>(
-                              focusColor: Colors.white,
-                              dropdownColor: Colors.white,
+                            child: DropdownButtonFormField2<Employee?>(
+                              decoration: dropdownDecoration.copyWith(contentPadding: const EdgeInsets.symmetric(horizontal: 15),focusColor: Colors.white,prefixIconConstraints:
+                              BoxConstraints.tight(
+                                  const Size(2, 0)),
+                                prefixIcon: Container(
+                                  width: 0,
+                                ),),
                               hint: ts("Select approver", Colors.grey.shade400),
-                              underline: const SizedBox(),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
+                              buttonStyleData: const ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                      borderRadius:   BorderRadius.all(Radius.circular(10)),
+                                      color: Colors.white
+                                  ),
+                                  padding: EdgeInsets.symmetric(horizontal: 0),
+                                  elevation: 0,
+                                  overlayColor: WidgetStatePropertyAll(Colors.white)
+                              ),
+                              dropdownStyleData: const DropdownStyleData(
+                                decoration: BoxDecoration(
+                                    borderRadius:   BorderRadius.all(Radius.circular(10)),
+                                    color: Colors.white
+                                ),
+                              ),
                               value: _controller.selectedApprover.value,
-                              isExpanded: true,
-                              icon: const Icon(Icons.arrow_forward_ios_rounded,
-                                  size: 13),
+                              isExpanded: false,
+                              iconStyleData: IconStyleData(
+                                  icon: Padding(
+                                    padding: const EdgeInsets.only(right: 6),
+                                    child: Icon(Icons.arrow_forward_ios_rounded,
+                                      size: 13,color: Colors.black.withOpacity(0.6),),
+                                  ),
+                                  iconSize: 13
+                              ),
                               items:
                                   _controller.approverList.map((Employee item) {
                                 return DropdownMenuItem(
@@ -1230,6 +1250,12 @@ class ClaimDetailApprovalPage extends StatelessWidget {
   }
 
   bool showBottomActions(){
-    return _controller.claim.value!.tripHistoryStatus != ClaimStatus.approved && _controller.claim.value!.tripHistoryStatus != ClaimStatus.settled;
+
+    bool canResubmit = _controller.claim.value!.categories!
+        .expand((category) => category.items)
+        .toList().where((e) => e.status == ClaimStatus.pending).toList().isNotEmpty;
+
+
+    return canResubmit;//_controller.claim.value!.tripHistoryStatus != ClaimStatus.approved && _controller.claim.value!.tripHistoryStatus != ClaimStatus.settled;
   }
 }

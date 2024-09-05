@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:travel_claim/views/components/alertDialog.dart';
+import 'package:travel_claim/views/components/app_dialog.dart';
 import 'package:travel_claim/views/components/bg.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/components/customButton.dart';
@@ -251,12 +252,12 @@ class _ClaimConfirmationScreenState extends State<ClaimConfirmationScreen> {
                                      child:Custombutton(onTap: (){
                                        claimConfirmationbutton(ontap: (){
                                          Get.back();
-
-                                         fToast.showToast(
+                                         AppDialog.showToast("Claim has been Rejected");
+                                         /*fToast.showToast(
                                              child: Center(
-                                               child: showToastMessage(msg: "Claim has been Rejected",
+                                               child: showToastMessage(msg: ,
                                                    iconColor: Colors.red,icon: Icons.close_rounded),
-                                             ));
+                                             ));*/
                                        },status: 'reject');
 
                                      }
@@ -307,12 +308,7 @@ class _ClaimConfirmationScreenState extends State<ClaimConfirmationScreen> {
                      child:Custombutton(onTap: (){
                        claimConfirmationbutton(ontap: (){
                          Get.back();
-
-                         fToast.showToast(
-                             child: Center(
-                               child: showToastMessage(msg: "All Claim has Rejected",
-                                   iconColor: Colors.red,icon: Icons.close_rounded),
-                             ));
+                         AppDialog.showToast("All Claim has Rejected");
                        },status: 'rejectall');
 
                      }
@@ -327,11 +323,7 @@ class _ClaimConfirmationScreenState extends State<ClaimConfirmationScreen> {
                          onTap:(){
                            claimConfirmationbutton(ontap: (){
                              Get.back();
-                             fToast.showToast(
-                                 child: Center(
-                                   child: showToastMessage(msg: "All Claim has Approved",
-                                       iconColor: Colors.green,icon: Icons.check_circle_rounded),
-                                 ));
+                             AppDialog.showToast("All Claim has Approved");
 
                            },status: 'approveall');
 
@@ -604,11 +596,7 @@ class _ClaimConfirmationScreenState extends State<ClaimConfirmationScreen> {
                       claimConfirmationbutton(ontap: (){
                         Get.back();
                         Get.back();
-                        fToast.showToast(
-                            child: Center(
-                              child: showToastMessage(msg: "Claim has been Approved",
-                                  iconColor: Colors.green,icon: Icons.check_circle_rounded),
-                            ));
+                        AppDialog.showToast("Claim has been Approved");
 
                       },status: 'approve');
 

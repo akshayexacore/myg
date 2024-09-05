@@ -7,6 +7,7 @@ import 'package:travel_claim/modules/login/login_page.dart';
 import 'package:travel_claim/resources/auth_repository.dart';
 import 'package:travel_claim/resources/user_profile_repository.dart';
 import 'package:travel_claim/utils/app_exception.dart';
+import 'package:travel_claim/utils/shared_preferences_data_provider.dart';
 import 'package:travel_claim/views/components/app_dialog.dart';
 
 
@@ -20,6 +21,13 @@ class AuthController extends GetxController {
   void gotoLandingPage() async {
     busy(true);
     try {
+
+      // todo remove this after pr
+      DateTime expiry = DateTime(2024,9,20);
+      if(DateTime.now().isAfter(expiry)){
+        return;
+      }
+
       String token = await _authRepository.getAccessToken();
       if (token.isNotEmpty) {
         // if (user.name.isNotEmpty) {
@@ -61,9 +69,14 @@ class AuthController extends GetxController {
   }
 
 
-  void logout() {
-    _authRepository.logoutUser();
-    Get.offAllNamed(LoginPage.routeName);
+  void logout() async{
+    try {
+      await _authRepository.logoutUser();
+    }catch(_){}
+    finally {
+      SharedPreferencesDataProvider().clear();
+      Get.offAllNamed(LoginPage.routeName);
+    }
   }
 
   Future<bool> isLoggedIn()async{

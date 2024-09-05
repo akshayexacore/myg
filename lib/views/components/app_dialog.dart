@@ -125,8 +125,14 @@ class AppDialog {
     fToast = FToast();
     fToast.init(navigatorKey.currentContext!);
     fToast.showToast(
+      positionedToastBuilder: (context, child) {
+        return Positioned(
+          child: child,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+        );
+      },
       child: showToastMessage(msg: message,
-          iconColor: isError ? Colors.red : Colors.green,icon: isError ? Icons.error_rounded : Icons.check_circle_rounded),
+          iconColor: isError ? Color(0xffFF1212) : Colors.green,icon: isError ? Icons.error_rounded : Icons.check_circle_rounded,bgColor: isError ? Color(0xffFF1212) : primaryColor,width: MediaQuery.sizeOf(navigatorKey.currentContext!).width),
     );
     /*Fluttertoast.showToast(
         msg: message,

@@ -46,7 +46,7 @@ class LocalStorageDataProvider {
 
   Future<bool> save(ClaimForm data) async {
     try{
-     // Logger().i(data.toJson());
+      Logger().i(data.toJson());
       final db = Localstore.instance;
       final id = db.collection(claims).doc().id;
       data.storageId = id;
@@ -60,7 +60,7 @@ class LocalStorageDataProvider {
 
   Future<bool> update(ClaimForm data) async {
     try{
-    //  Logger().i(data.toJson());
+     Logger().i(data.toJson());
       final db = Localstore.instance;
       await db.collection(claims).doc(data.storageId).set(data.toJson());
       return true;

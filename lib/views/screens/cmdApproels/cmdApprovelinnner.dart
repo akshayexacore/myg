@@ -161,11 +161,11 @@ class _CmdapprovelinnnerState extends State<Cmdapprovelinnner> {
 
                           bottomsheet(context,"reject","cmd",ontap:(){
                             Get.back();
-                            fToast.showToast(
+                            /*fToast.showToast(
                                 child: Center(
                                   child: showToastMessage(msg: "Claim has been Rejected",
                                   iconColor: Colors.red,icon: Icons.close_rounded),
-                                ));
+                                ));*/
                           } );
                           FocusManager.instance.primaryFocus?.unfocus();
                         }
@@ -179,11 +179,11 @@ class _CmdapprovelinnnerState extends State<Cmdapprovelinnner> {
 
                           bottomsheet(context,"approve","cmd",ontap: (){
                             Get.back();
-                            fToast.showToast(
+                            /*fToast.showToast(
                                 child: Center(
                                   child: showToastMessage(msg: "Claim has been Approved",
                                       iconColor: Colors.green,icon: Icons.check_circle_rounded),
-                                ));
+                                ));*/
                           });
                           FocusManager.instance.primaryFocus?.unfocus();
 

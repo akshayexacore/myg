@@ -48,7 +48,7 @@ class LandingPage extends StatelessWidget {
                   // mainAxisAlignment: MainAxisAlignment.center,
 
                   children: [
-                    gapHC(26),
+                    gapHC(31),
                     Padding(
                       padding: const EdgeInsets.only(left: 6),
                       child: Column(
@@ -67,7 +67,7 @@ class LandingPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    gapHC(13),
+                    gapHC(31),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -113,7 +113,7 @@ class LandingPage extends StatelessWidget {
                               onTap: () {
                                 Get.toNamed(HistoryPage.routeName);
                               },
-                              child: menuCard(0.0, 0.0, 0.0, _profileController.user.value.grade.hasPermission(Permission.advanceApprovals) ? 0.0 : 30.0,
+                              child: menuCard(0.0, 0.0, 0.0, _profileController.user.value.grade.hasPermission(Permission.claimApprovals) ? 0.0 : 30.0,
                                   AppAssets.history_img, "History")): const SizedBox(),
                         ),
                       ],
@@ -134,13 +134,27 @@ class LandingPage extends StatelessWidget {
                                 child: menuCard(
                                     _profileController.user.value.grade.hasPermission(Permission.drafts) ? 0.0 : 30.0,
                                     0.0,
-                                    _profileController.user.value.grade.hasPermission(Permission.specialApprovals) ? 0.0 : 30.0,
+                                    _profileController.user.value.grade.hasPermission(Permission.cmdApprovals) ? 0.0 : 30.0,
                                     0.0,
                                     AppAssets.claimApprv_img,
                                     "Claim\nApprovals")) : const SizedBox(),
                           ),
                           gapWC(10),
                           Expanded(
+                            child: _profileController.user.value.grade.hasPermission(Permission.specialApprovals) ? Bounce(
+                                duration: const Duration(milliseconds: 110),
+                                onTap: () {
+                                  Get.toNamed(SpecialApprovalListPage.routeName);
+                                },
+                                child: menuCard(
+                                    0.0,
+                                    _profileController.user.value.grade.hasPermission(Permission.history) ? 0.0 : 30.0,
+                                    0.0,
+                                    30.0,
+                                    AppAssets.speciaslApprvl_img,
+                                    "Special\nApprovals")) : const SizedBox(),
+                          ),
+                          /*Expanded(
                             child: _profileController.user.value.grade.hasPermission(Permission.advanceApprovals) ? Bounce(
                                 duration: const Duration(milliseconds: 110),
                                 onTap: () {
@@ -154,7 +168,7 @@ class LandingPage extends StatelessWidget {
                                     _profileController.user.value.grade.hasPermission(Permission.cmdApprovals) || _profileController.user.value.grade.hasPermission(Permission.specialApprovals) ? 0.0 : 30.0,
                                     AppAssets.advApprvl_img,
                                     "Advance\nApprovals")) : const SizedBox(),
-                          ),
+                          ),*/
                         ],
                       ),
                       if(_profileController.user.value.grade.hasPermission(Permission.specialApprovals) || _profileController.user.value.grade.hasPermission(Permission.cmdApprovals))
@@ -164,7 +178,7 @@ class LandingPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(
+                         /* Expanded(
                             child: _profileController.user.value.grade.hasPermission(Permission.specialApprovals) ? Bounce(
                                 duration: const Duration(milliseconds: 110),
                                 onTap: () {
@@ -178,7 +192,7 @@ class LandingPage extends StatelessWidget {
                                     AppAssets.speciaslApprvl_img,
                                     "Special\nApprovals")) : const SizedBox(),
                           ),
-                          gapWC(10),
+                          gapWC(10),*/
                           Expanded(
                             child: _profileController.user.value.grade.hasPermission(Permission.cmdApprovals) ? Bounce(
                                 duration: const Duration(milliseconds: 110),

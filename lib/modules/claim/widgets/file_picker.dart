@@ -63,7 +63,7 @@ class _FilePickerState extends State<FilePicker> {
         if (widget.errorMsg.isNotEmpty)
           gapHC(4),
         if (widget.selectedFiles.isNotEmpty) gapHC(10),
-        if (widget.selectedFiles.isNotEmpty) ts("Files", Colors.black),
+        if (widget.selectedFiles.isNotEmpty) ts("File", Colors.black),
         if (widget.selectedFiles.isNotEmpty) gapHC(3),
         if (widget.selectedFiles.isNotEmpty)
           ListView.separated(
@@ -113,7 +113,7 @@ class _FilePickerState extends State<FilePicker> {
                             ),
                       gapWC(10),
                       Expanded(
-                          child: ts(widget.selectedFiles[index].split("/").last,
+                          child: ts(''/*widget.selectedFiles[index].split("/").last*/,
                               Colors.black)),
                       gapWC(10),
                       GestureDetector(

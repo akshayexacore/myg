@@ -5,14 +5,26 @@ import 'package:travel_claim/views/style/colors.dart';
 class DatePicker extends StatefulWidget {
   final String title;
   DateTime? selectedDate;
+  DateTime lastDate;
   final ValueChanged<DateTime> onChanged;
-  DatePicker({super.key, required this.title, required this.onChanged,this.selectedDate});
+  DatePicker({super.key, required this.title, required this.onChanged,this.selectedDate,required this.lastDate});
 
   @override
   State<DatePicker> createState() => _DatePickerState();
 }
 
+
 class _DatePickerState extends State<DatePicker> {
+
+  @override
+  void initState() {
+    if(widget.selectedDate!=null){
+      if(widget.selectedDate!.isBefore(widget.lastDate)){
+        widget.lastDate  = widget.selectedDate!;
+      }
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -69,8 +81,8 @@ class _DatePickerState extends State<DatePicker> {
             child: child!,
           );
         },
-        firstDate: DateTime(2023, 1),
-        lastDate: DateTime(2050, 8),
+        firstDate: widget.lastDate,
+        lastDate: DateTime.now(),
         initialDate: DateTime.now());
     if (pickedDate != null && pickedDate != widget.selectedDate) {
       setState(() {

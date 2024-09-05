@@ -261,10 +261,10 @@ class _ClaimconfirmationState extends State<Claimconfirmation> {
                                                 gapWC(20),
                                                 Expanded(
                                                     child: Custombutton(onTap: (){
-                                                      fToast.showToast(
+                                                      /*fToast.showToast(
                                                         child: showToastMessage(msg: "Claim has been submitted successfully",
                                                         iconColor: Colors.green,icon: Icons.check_circle_rounded),
-                                                      );
+                                                      );*/
                                                       Get.back();
                                                       Get.back();
                                                       Get.back();

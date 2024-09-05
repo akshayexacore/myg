@@ -156,14 +156,14 @@ Widget bgDashBoard(context,name){
                     ),
                     Row(
                       children: [
-                        Bounce(
+                        /*Bounce(
                           duration: const Duration(milliseconds: 110),
                           onTap: (){
                             endBottomSheetDialog(
-                                "Are you sure you want to logout?",
-                                "Log out the current user",
-                                "Yes, logout",
-                                "No",
+                                "Are you sure you want to Logout",
+                                "",
+                                "Logout",
+                                "Cancel",
                                     (){
                                       Get.find<ProfileController>().logout();
                                 }
@@ -171,9 +171,9 @@ Widget bgDashBoard(context,name){
                             );
 
                           },
-                          child: const Icon(Icons.power_settings_new,size: 28,color: Colors.white,)
+                          child: SvgPicture.asset(AppAssets.logout,height: 20,)
                         ),
-                        gapWC(16),
+                        gapWC(20),*/
                         Bounce(
                           duration: const Duration(milliseconds: 110),
                           onTap: (){
@@ -190,15 +190,10 @@ Widget bgDashBoard(context,name){
                                 shape: badges.BadgeShape.circle,
                                 badgeColor: Colors.red,
                               ),
-                              child: const Icon(
-                                Icons.notifications_none_outlined,
-                                color: Colors.white,
-                                size: 28,
-                              )),
+                              child: SvgPicture.asset(AppAssets.notification,height: 19,)),
                         ),
                       ],
                     )
-
                   ],
                 ),
                 // gapHC(26),

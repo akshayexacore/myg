@@ -67,6 +67,7 @@ dependencies:
   flutter_local_notifications: ^17.2.2
   firebase_analytics: ^11.2.1
   firebase_crashlytics: ^4.0.4
+  dropdown_button2: ^2.3.9
   #flutter pub run flutter_launcher_icons:main
 dev_dependencies:
   flutter_test:

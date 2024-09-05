@@ -109,7 +109,7 @@ extension PermissionCheck on int {
           Permission.drafts,
           Permission.history,
           Permission.claimApprovals,
-          Permission.advanceApprovals,
+         // Permission.advanceApprovals,
         ];
       case 2:
         return [
@@ -118,7 +118,7 @@ extension PermissionCheck on int {
           Permission.drafts,
           Permission.history,
           Permission.claimApprovals,
-          Permission.advanceApprovals,
+         // Permission.advanceApprovals,
         ];
       case 1:
         return [
@@ -127,7 +127,7 @@ extension PermissionCheck on int {
           Permission.drafts,
           Permission.history,
           Permission.claimApprovals,
-          Permission.advanceApprovals,
+         // Permission.advanceApprovals,
           Permission.specialApprovals,
         ];
       case 0:

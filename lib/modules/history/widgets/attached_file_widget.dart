@@ -38,6 +38,7 @@ class AttachedFileWidget extends StatelessWidget {
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           file
               .split("/")
@@ -59,11 +60,11 @@ class AttachedFileWidget extends StatelessWidget {
             height: 30,
           ),
           gapWC(7),
-          Expanded(
+          /*Expanded(
             child: Text(basename(file),textAlign: TextAlign.left,overflow: TextOverflow.fade,style: const TextStyle(
                 fontFamily: 'Roboto',fontSize: 14,
                 fontWeight: FontWeight.bold,color: Color(0xff333333))),
-          ),
+          ),*/
         ],
       ),
     );

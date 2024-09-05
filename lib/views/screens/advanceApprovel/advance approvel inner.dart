@@ -127,11 +127,11 @@ class _AdvanceApprovelInnerState extends State<AdvanceApprovelInner> {
 
                       bottomsheet(context,"reject","Adv",ontap: (){
                         Get.back();
-                        fToast.showToast(
+                        /*fToast.showToast(
                             child: Center(
                               child: showToastMessage(msg: "Advance has been Rejected",
                                   iconColor: Colors.red,icon: Icons.close_rounded),
-                            ));
+                            ));*/
                       });
                       FocusManager.instance.primaryFocus?.unfocus();
                     }
@@ -146,11 +146,11 @@ class _AdvanceApprovelInnerState extends State<AdvanceApprovelInner> {
 
                       bottomsheet(context,"approve","Adv",ontap: (){
                         Get.back();
-                        fToast.showToast(
+                        /*fToast.showToast(
                             child: Center(
                               child: showToastMessage(msg: "Advance has been Approved",
                                   iconColor: Colors.green,icon: Icons.check_circle_rounded),
-                            ));
+                            ));*/
                       });
                       FocusManager.instance.primaryFocus?.unfocus();
                     }

@@ -18,6 +18,9 @@ class AppAssets{
   static const String reject ='assets/images/reject.png';
   static const String warning ='assets/images/warning.png';
   static const String file ='assets/images/file.png';
+  static const String logout ='assets/images/ic_logout.svg';
+  static const String logoutRed ='assets/images/logout_red.png';
+  static const String notification ='assets/images/ic_notification.svg';
   //static const String appIcon ='assets/icons/appicon.svg';
 
 }

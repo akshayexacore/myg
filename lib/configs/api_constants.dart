@@ -23,7 +23,7 @@ class ApiConstants {
   static String notificationsCount = '/api/notificationCount';
   static String viewClaim = '/api/viewClaim';
   static String specialApproverRejectSingle = '/api/specialApproverRejectSingle';
-  static String devices = '/api/devices';
+  static String devices = '/api/updateFcmToken';
   static String viewClaimSpecialApprover = '/api/viewClaimSpecialApprover';
   static String advanceRequest = '/api/advanceRequest';
   static String advanceList = '/api/advanceList';

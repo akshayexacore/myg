@@ -1,4 +1,5 @@
 
+import 'package:logger/logger.dart';
 import 'package:travel_claim/models/branch.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/employee.dart';
@@ -156,7 +157,7 @@ class ClaimFormData {
     tripTo = json['trip_to'];
     odoMeterStart = json['start_meter']!=null ? json['start_meter'].toString() : null;
     odoMeterEnd = json['end_meter']!=null ? json['end_meter'].toString() : null;
-    noOfEmployees = json['no_of_persons'] ?? 1;
+    noOfEmployees = json['no_of_persons'] ?? (json['no_of_person'] ?? (json['no_of_employees'] ?? 1));
     sentForApproval = json['send_approver_flag'] ?? false;
     rejectionCount = json['rejection_count'] ?? 0;
     employees = <Employee>[];

@@ -39,8 +39,9 @@ class AuthRepository {
   }
 
   Future<bool> logoutUser() async {
-    _api.post(ApiConstants.logout,headers: {});
-    return _preferences.clear();
+    String refreshToken = await _preferences.getRefreshToken();
+    await _api.post(ApiConstants.logout,headers: {},body: {'random_string':refreshToken});
+    return true;
   }
 
   Future<TokenResponse> login(String username,String password) async {

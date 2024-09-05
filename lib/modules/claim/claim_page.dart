@@ -1,4 +1,6 @@
 import 'package:bounce/bounce.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -96,11 +98,17 @@ class ClaimPage extends StatelessWidget {
                   gapHC(5),
                   ts("Type of trip", Colors.black),
                   gapHC(3),
-                  Obx(() => DropdownButtonFormField<TripType>(
-                        focusColor: Colors.white,
-                        dropdownColor: Colors.white,
-                        decoration: dropdownDecoration,
+                  Obx(() => DropdownButtonFormField2<TripType>(
+                        //focusColor: Colors.white,
+                        //dropdownColor: Colors.white,
+                        decoration: dropdownDecoration.copyWith(contentPadding: const EdgeInsets.symmetric(horizontal: 15),focusColor: Colors.white,prefixIconConstraints:
+                        BoxConstraints.tight(
+                            const Size(2, 0)),
+                          prefixIcon: Container(
+                            width: 0,
+                          ),),
                         hint: Text("Type of trip", style: hintTextStyle(),),
+                        alignment: Alignment.centerLeft,
                         validator: (value) {
                           if (value == null) {
                             return 'This is a mandatory field';
@@ -108,18 +116,33 @@ class ClaimPage extends StatelessWidget {
                           return null; // Valid input
                         },
                         //underline: const SizedBox(),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
+                    buttonStyleData: const ButtonStyleData(
+                      decoration: BoxDecoration(
+                      borderRadius:   BorderRadius.all(Radius.circular(10)),
+                        color: Colors.white
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 0),
+                      elevation: 0,
+                      overlayColor: WidgetStatePropertyAll(Colors.white)
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      decoration: BoxDecoration(
+                          borderRadius:   BorderRadius.all(Radius.circular(10)),
+                          color: Colors.white
+                      ),
+                    ),
                         // Initial Value
                         value: claimController.selectedTripType.value,
-                        isExpanded: true,
+                        isExpanded: false,
                         // Down Arrow Icon
-                        icon: Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child:  Icon(Icons.arrow_forward_ios_rounded,
-                              size: 13,color: Colors.black.withOpacity(0.6),),
-                        ),
-
+                    iconStyleData: IconStyleData(
+                      icon: Padding(
+                        padding: const EdgeInsets.only(right: 0),
+                        child: Icon(Icons.arrow_forward_ios_rounded,
+                          size: 13,color: Colors.black.withOpacity(0.6),),
+                      ),
+                      iconSize: 13
+                    ),
                         // Array list of items
                         items: landingController.tripTypes.map((e) {
                           return DropdownMenuItem(
@@ -147,8 +170,8 @@ class ClaimPage extends StatelessWidget {
                       decoration: InputDecoration(
                         suffixIcon:  Icon(Icons.arrow_forward_ios_rounded,
                             size: 13,color: Colors.black.withOpacity(0.6),),
-                        contentPadding:EdgeInsets.symmetric(
-                            horizontal: 10,
+                        contentPadding:const EdgeInsets.symmetric(
+                            horizontal: 16,
                             vertical:0.0
                         ),
                         hintText: "Select branch",
@@ -159,12 +182,12 @@ class ClaimPage extends StatelessWidget {
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide:  BorderSide(color: primaryColor),
+                          borderSide:  const BorderSide(color: primaryColor),
                         ),
                         focusColor: primaryColor,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide:  BorderSide(color: primaryColor),
+                          borderSide:  const BorderSide(color: primaryColor),
                         ),
 
                       ),
@@ -358,8 +381,8 @@ class ClaimPage extends StatelessWidget {
                                               ),
                                             ),
                                             gapWC(4),
-                                            Image.network(
-                                              claimController
+                                            CachedNetworkImage(
+                                             imageUrl:  claimController
                                                   .categories[index].imageUrl,
                                               height: 18,
                                               width: 18,

@@ -25,7 +25,7 @@ class ApiBaseHelper {
   ApiBaseHelper() {
     http = customHttp.InterceptedClient.build(interceptors: [
       CsmApiInterceptor(),
-    ], retryPolicy: ExpiredTokenRetryPolicy());
+    ], retryPolicy: ExpiredTokenRetryPolicy(),requestTimeout: const Duration(seconds: 6));
   }
 
   Future<dynamic> get(
@@ -44,6 +44,8 @@ class ApiBaseHelper {
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
+    } on TimeoutException {
+      throw FetchDataTimeOutException('Connection timeout.');
     }
     return responseJson;
   }
@@ -59,9 +61,12 @@ class ApiBaseHelper {
       var uri = Uri.parse(_baseUrl + url);
       final response =
       await http.post(uri, body: jsonEncode(body), headers: headers);
+      print(body);
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
+    } on TimeoutException {
+      throw FetchDataTimeOutException('Connection timeout.');
     }
     return responseJson;
   }
@@ -80,6 +85,8 @@ class ApiBaseHelper {
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
+    } on TimeoutException {
+      throw FetchDataTimeOutException('Connection timeout.');
     }
     return responseJson;
   }
@@ -126,6 +133,8 @@ class ApiBaseHelper {
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
+    } on TimeoutException {
+      throw FetchDataTimeOutException('Connection timeout.');
     }
     return responseJson;
   }
@@ -142,6 +151,8 @@ class ApiBaseHelper {
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
+    } on TimeoutException {
+      throw FetchDataTimeOutException('Connection timeout.');
     }
     return responseJson;
   }
@@ -156,6 +167,8 @@ class ApiBaseHelper {
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
+    } on TimeoutException {
+      throw FetchDataTimeOutException('Connection timeout.');
     }
     return responseJson;
   }
@@ -191,6 +204,7 @@ class CsmApiInterceptor implements customHttp.InterceptorContract {
     var  preferences = SharedPreferencesDataProvider();
 
     String token = await preferences.getAccessToken();
+    print('auth token: $token');
 
     if(token.isNotEmpty) {
       request.headers["Authorization"] = "Bearer $token";
@@ -223,7 +237,7 @@ class ExpiredTokenRetryPolicy extends customHttp.RetryPolicy {
   @override
   Future<bool> shouldAttemptRetryOnResponse(
       customHttp.BaseResponse response) async {
-    if (response.statusCode == 401 && !response.request!.url.toString().contains(ApiConstants.login)) {
+    if (response.statusCode == 401 && !response.request!.url.toString().contains(ApiConstants.login)&& !response.request!.url.toString().contains(ApiConstants.logout)) {
 
       log("Retrying request...");
       // call refresh api
@@ -239,6 +253,17 @@ class ExpiredTokenRetryPolicy extends customHttp.RetryPolicy {
         if(response.statusCode == 200){
           var responseJson = json.decode(response.body.toString());
 
+          if(responseJson.containsKey('statusCode') && responseJson['statusCode'] == 401){
+            if(!Get.isRegistered<AuthController>()){
+              Get.create(() => AuthController());
+            }
+            Get.find<AuthController>().logout();
+            return false;
+          }
+
+          if(!responseJson.containsKey('token')){
+            return false;
+          }
           String accessToken = responseJson['token'];
           //String refreshToken = responseJson['data']['refresh'];
 

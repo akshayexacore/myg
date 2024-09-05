@@ -1,4 +1,5 @@
 import 'package:bounce/bounce.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -21,6 +22,7 @@ import 'package:collection/collection.dart';
 
 class ClaimConfirmationPage extends StatelessWidget {
   ClaimConfirmationPage({super.key});
+
   static const routeName = '/claim_confirmation';
 
   final profileController = Get.find<ProfileController>();
@@ -30,59 +32,67 @@ class ClaimConfirmationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child:  Scaffold(
+      child: Scaffold(
         backgroundColor: Colors.white,
         appBar: customAppBar("Claim confirmation"),
         body: Column(
           children: [
             Expanded(
-              child: Obx(()=>
-                  SingleChildScrollView(
+              child: Obx(() => SingleChildScrollView(
                     child: Column(
                       children: [
                         Padding(
-                          padding:  const EdgeInsets.symmetric(horizontal: 20,
-                              vertical: 16),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 16),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20
-                            ),
+                                horizontal: 20, vertical: 20),
                             decoration: boxBaseDecoration(greyLight, 8),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
-
                               children: [
-
-                                headTitle("Employee ID", '${profileController.user.value.name}(${profileController.user.value.employeeId})'),
+                                headTitle("Employee ID",
+                                    '${profileController.user.value.name}(${profileController.user.value.employeeId})'),
                                 gapHC(10),
-                                headTitle("Base Location", profileController.user.value.baseLocation?.name),
+                                headTitle(
+                                    "Base Location",
+                                    profileController
+                                        .user.value.baseLocation?.name),
                                 gapHC(10),
-                                headTitle("Date", AppFormatter.formatDDMMMYYYY(claimController.claimFrom.value?.createdAt ?? DateTime.now())),
+                                headTitle(
+                                    "Date",
+                                    AppFormatter.formatDDMMMYYYY(claimController
+                                            .claimFrom.value?.createdAt ??
+                                        DateTime.now())),
                                 gapHC(10),
-                                headTitle("Type of trip", claimController.selectedTripType.value?.name),
+                                headTitle(
+                                    "Type of trip",
+                                    claimController
+                                        .selectedTripType.value?.name),
                                 gapHC(10),
-                                headTitle("Branch name", claimController.selectedBranch.value?.name),
+                                headTitle("Branch name",
+                                    claimController.selectedBranch.value?.name),
                                 gapHC(10),
-                                headTitle("Purpose of trip", claimController.textEditingControllerPurpose.text),
-
+                                headTitle(
+                                    "Purpose of trip",
+                                    claimController
+                                        .textEditingControllerPurpose.text),
                               ],
-
                             ),
                           ),
                         ),
-
                         ExpandedTileList.separated(
                           key: ValueKey(claimController.selectedCategories
                               .map(
                                 (element) => "${element.id}-${element.name}",
-                          )
+                              )
                               .toList()
                               .join("")),
                           itemCount: claimController.selectedCategories.length,
                           maxOpened: 2,
-                          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0),
                           physics: const NeverScrollableScrollPhysics(),
                           separatorBuilder: (context, index) => const SizedBox(
                             height: 12,
@@ -99,17 +109,20 @@ class ClaimConfirmationPage extends StatelessWidget {
                                 contentBackgroundColor: Colors.white,
                                 headerBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
-                                    borderSide: const BorderSide(color: greyLight)),
+                                    borderSide:
+                                        const BorderSide(color: greyLight)),
                                 contentPadding:
-                                const EdgeInsets.symmetric(vertical: 12),
+                                    const EdgeInsets.symmetric(vertical: 12),
                               ),
                               controller: con,
                               title: tss(
-                                  claimController.selectedCategories[index].name,
+                                  claimController
+                                      .selectedCategories[index].name,
                                   Colors.black,
                                   15.0),
-                              leading: Image.network(
-                                claimController.selectedCategories[index].imageUrl,
+                              leading: CachedNetworkImage(
+                                imageUrl: claimController
+                                    .selectedCategories[index].imageUrl,
                                 height: 25,
                                 width: 25,
                               ),
@@ -128,196 +141,495 @@ class ClaimConfirmationPage extends StatelessWidget {
                                     }
                                     return ListView.separated(
                                         shrinkWrap: true,
-                                        physics: const NeverScrollableScrollPhysics(),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
                                         itemBuilder: (context, formIndex) {
                                           return Container(
                                             padding: const EdgeInsets.symmetric(
-                                                horizontal: 20,
-                                                vertical: 20
-                                            ),
-                                            decoration: boxBaseDecoration(greyLight, 0 ),
+                                                horizontal: 20, vertical: 20),
+                                            decoration:
+                                                boxBaseDecoration(greyLight, 0),
                                             child: Column(
                                               children: [
-                                                if(claimController.selectedCategories[index].hasTripFrom)
-                                                headTitle("From", claimController.selectedCategories[index].items[formIndex].tripFrom),
-                                                if(claimController.selectedCategories[index].hasTripFrom)
-                                                gapHC(10),
-                                                if(claimController.selectedCategories[index].hasTripTo)
-                                                headTitle("To", claimController.selectedCategories[index].items[formIndex].tripTo),
-                                                if(claimController.selectedCategories[index].hasTripTo)
-                                                gapHC(10),
-                                                if(claimController.selectedCategories[index].hasToDate)
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Flexible(
-                                                        flex: 5,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            ts("Checked In", Color(0xff333333).withOpacity(0.8)),
-                                                            Text(AppFormatter.formatDDMMMYYYY(claimController.selectedCategories[index].items[formIndex].fromDate!),style:  const TextStyle(
-                                                                fontFamily: 'Roboto',fontSize: 14,
-                                                                fontWeight: FontWeight.w700,color: Color(0xff333333)))
-                                                          ],
-                                                        )),
-
-
-                                                    Expanded(
-                                                      flex: 5,
-                                                      child:Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          ts("Checked Out", Color(0xff333333).withOpacity(0.8)),
-                                                          Text(AppFormatter.formatDDMMMYYYY(claimController.selectedCategories[index].items[formIndex].toDate!),textAlign: TextAlign.left,overflow: TextOverflow.fade,style: const TextStyle(
-                                                              fontFamily: 'Roboto',fontSize: 14,
-                                                              fontWeight: FontWeight.bold,color: Color(0xff333333))),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                if(claimController.selectedCategories[index].hasToDate)
-                                                gapHC(10),
-                                                if(claimController.selectedCategories[index].hasStartMeter)
+                                                if (claimController
+                                                    .selectedCategories[index]
+                                                    .hasTripFrom)
+                                                  headTitle(
+                                                      "From",
+                                                      claimController
+                                                          .selectedCategories[
+                                                              index]
+                                                          .items[formIndex]
+                                                          .tripFrom),
+                                                if (claimController
+                                                    .selectedCategories[index]
+                                                    .hasTripFrom)
+                                                  gapHC(10),
+                                                if (claimController
+                                                    .selectedCategories[index]
+                                                    .hasTripTo)
+                                                  headTitle(
+                                                      "To",
+                                                      claimController
+                                                          .selectedCategories[
+                                                              index]
+                                                          .items[formIndex]
+                                                          .tripTo),
+                                                if (claimController
+                                                    .selectedCategories[index]
+                                                    .hasTripTo)
+                                                  gapHC(10),
+                                                if (claimController
+                                                    .selectedCategories[index]
+                                                    .hasToDate)
                                                   Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Flexible(
                                                           flex: 5,
                                                           child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
-                                                              ts("Odometer reading before", Color(0xff333333).withOpacity(0.8)),
-                                                              Text(claimController.selectedCategories[index].items[formIndex].odoMeterStart ?? 'NA',style:  const TextStyle(
-                                                                  fontFamily: 'Roboto',fontSize: 14,
-                                                                  fontWeight: FontWeight.w700,color: Color(0xff333333)))
+                                                              ts(
+                                                                  "Checked In",
+                                                                  Color(0xff333333)
+                                                                      .withOpacity(
+                                                                          0.8)),
+                                                              Text(
+                                                                  AppFormatter.formatDDMMMYYYY(claimController
+                                                                      .selectedCategories[
+                                                                          index]
+                                                                      .items[
+                                                                          formIndex]
+                                                                      .fromDate!),
+                                                                  style: const TextStyle(
+                                                                      fontFamily:
+                                                                          'Roboto',
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      color: Color(
+                                                                          0xff333333)))
                                                             ],
                                                           )),
-
-
                                                       Expanded(
                                                         flex: 5,
-                                                        child:Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: [
-                                                            ts("Odometer reading after", Color(0xff333333).withOpacity(0.8)),
-                                                            Text(claimController.selectedCategories[index].items[formIndex].odoMeterEnd ?? 'NA',textAlign: TextAlign.left,overflow: TextOverflow.fade,style: const TextStyle(
-                                                                fontFamily: 'Roboto',fontSize: 14,
-                                                                fontWeight: FontWeight.bold,color: Color(0xff333333))),
+                                                            ts(
+                                                                "Checked Out",
+                                                                Color(0xff333333)
+                                                                    .withOpacity(
+                                                                        0.8)),
+                                                            Text(
+                                                                AppFormatter.formatDDMMMYYYY(claimController
+                                                                    .selectedCategories[
+                                                                        index]
+                                                                    .items[
+                                                                        formIndex]
+                                                                    .toDate!),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .fade,
+                                                                style: const TextStyle(
+                                                                    fontFamily:
+                                                                        'Roboto',
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Color(
+                                                                        0xff333333))),
                                                           ],
                                                         ),
                                                       ),
                                                     ],
                                                   ),
-                                                if(claimController.selectedCategories[index].hasStartMeter)
+                                                if (claimController
+                                                    .selectedCategories[index]
+                                                    .hasToDate)
                                                   gapHC(10),
-                                                if(!claimController.selectedCategories[index].hasToDate)
-                                                headTitle("Document date", AppFormatter.formatDDMMMYYYY(claimController.selectedCategories[index].items[formIndex].fromDate!)),
-                                                if(!claimController.selectedCategories[index].hasToDate)
-                                                gapHC(10),
-                                                headTitle("Number of employees", claimController.selectedCategories[index].items[formIndex].noOfEmployees.toString()),
-                                                if(claimController.selectedCategories[index].items[formIndex].noOfEmployees>1)
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    const Flexible(
+                                                if (claimController
+                                                    .selectedCategories[index]
+                                                    .hasStartMeter)
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Flexible(
+                                                          flex: 5,
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              ts(
+                                                                  "Odometer reading before",
+                                                                  Color(0xff333333)
+                                                                      .withOpacity(
+                                                                          0.8)),
+                                                              Text(
+                                                                  claimController
+                                                                          .selectedCategories[
+                                                                              index]
+                                                                          .items[
+                                                                              formIndex]
+                                                                          .odoMeterStart ??
+                                                                      'NA',
+                                                                  style: const TextStyle(
+                                                                      fontFamily:
+                                                                          'Roboto',
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      color: Color(
+                                                                          0xff333333)))
+                                                            ],
+                                                          )),
+                                                      Expanded(
                                                         flex: 5,
-                                                        child: SizedBox()),
-
-
-                                                    Expanded(
-                                                      flex: 5,
-                                                      child:Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: claimController.selectedCategories[index].items[formIndex].employees.map((e) {
-                                                          return Container(
-                                                            padding: EdgeInsets.symmetric(vertical: 5,horizontal: 6),
-                                                            margin: EdgeInsets.only(bottom: 2),
-                                                            decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(14),
-                                                              color: primaryColor
-                                                            ),
-                                                            child: ts('${e.name}(${e.employeeId})', Colors.white),
-                                                          );
-                                                        },).toList(),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            ts(
+                                                                "Odometer reading after",
+                                                                Color(0xff333333)
+                                                                    .withOpacity(
+                                                                        0.8)),
+                                                            Text(
+                                                                claimController
+                                                                        .selectedCategories[
+                                                                            index]
+                                                                        .items[
+                                                                            formIndex]
+                                                                        .odoMeterEnd ??
+                                                                    'NA',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .fade,
+                                                                style: const TextStyle(
+                                                                    fontFamily:
+                                                                        'Roboto',
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Color(
+                                                                        0xff333333))),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
+                                                    ],
+                                                  ),
+                                                if (claimController
+                                                    .selectedCategories[index]
+                                                    .hasStartMeter)
+                                                  gapHC(10),
+                                                if (!claimController
+                                                    .selectedCategories[index]
+                                                    .hasToDate)
+                                                  headTitle(
+                                                      "Document date",
+                                                      AppFormatter.formatDDMMMYYYY(
+                                                          claimController
+                                                              .selectedCategories[
+                                                                  index]
+                                                              .items[formIndex]
+                                                              .fromDate!)),
+                                                if (!claimController
+                                                    .selectedCategories[index]
+                                                    .hasToDate)
+                                                  gapHC(10),
+                                                headTitle(
+                                                    "Number of employees",
+                                                    claimController
+                                                        .selectedCategories[
+                                                            index]
+                                                        .items[formIndex]
+                                                        .noOfEmployees
+                                                        .toString()),
+                                                if (claimController
+                                                        .selectedCategories[
+                                                            index]
+                                                        .items[formIndex]
+                                                        .noOfEmployees >
+                                                    1)
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      const Flexible(
+                                                          flex: 5,
+                                                          child: SizedBox()),
+                                                      Expanded(
+                                                        flex: 5,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: claimController
+                                                              .selectedCategories[
+                                                                  index]
+                                                              .items[formIndex]
+                                                              .employees
+                                                              .map(
+                                                            (e) {
+                                                              return Container(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        vertical:
+                                                                            5,
+                                                                        horizontal:
+                                                                            6),
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            2),
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            14),
+                                                                    color:
+                                                                        primaryColor),
+                                                                child: ts(
+                                                                    '${e.name}(${e.employeeId})',
+                                                                    Colors
+                                                                        .white),
+                                                              );
+                                                            },
+                                                          ).toList(),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 gapHC(10),
-
-                                                if(claimController.selectedCategories[index].classes!=null && claimController.selectedCategories[index].classes!.isNotEmpty)
-                                                headTitle("Class", claimController.selectedCategories[index].items[formIndex].selectedClass?.name),
-                                                if(claimController.selectedCategories[index].classes!=null && claimController.selectedCategories[index].classes!.isNotEmpty)
-                                                gapHC(10),
-                                                headTitle("Remark", claimController.selectedCategories[index].items[formIndex].remarks.isEmpty ? 'Nil' : claimController.selectedCategories[index].items[formIndex].remarks),
+                                                if (claimController
+                                                            .selectedCategories[
+                                                                index]
+                                                            .classes !=
+                                                        null &&
+                                                    claimController
+                                                        .selectedCategories[
+                                                            index]
+                                                        .classes!
+                                                        .isNotEmpty)
+                                                  headTitle(
+                                                      "Class",
+                                                      claimController
+                                                          .selectedCategories[
+                                                              index]
+                                                          .items[formIndex]
+                                                          .selectedClass
+                                                          ?.name),
+                                                if (claimController
+                                                            .selectedCategories[
+                                                                index]
+                                                            .classes !=
+                                                        null &&
+                                                    claimController
+                                                        .selectedCategories[
+                                                            index]
+                                                        .classes!
+                                                        .isNotEmpty)
+                                                  gapHC(10),
+                                                headTitle(
+                                                    "Remark",
+                                                    claimController
+                                                            .selectedCategories[
+                                                                index]
+                                                            .items[formIndex]
+                                                            .remarks
+                                                            .isEmpty
+                                                        ? 'Nil'
+                                                        : claimController
+                                                            .selectedCategories[
+                                                                index]
+                                                            .items[formIndex]
+                                                            .remarks),
                                                 gapHC(10),
                                                 Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Flexible(
                                                         flex: 5,
-                                                        child: ts("Attached files", Color(0xff333333).withOpacity(0.8))),
-
-
+                                                        child: ts(
+                                                            "Attached files",
+                                                            Color(0xff333333)
+                                                                .withOpacity(
+                                                                    0.8))),
                                                     Expanded(
                                                       flex: 5,
-                                                      child:claimController.selectedCategories[index].items[formIndex].files.isNotEmpty ? AttachedFileWidget(file: claimController.selectedCategories[index].items[formIndex].files.first,) : const Text("Nil",style:  TextStyle(
-                                          fontFamily: 'Roboto',fontSize: 14,
-                                          fontWeight: FontWeight.w700,color: Color(0xff333333))),
+                                                      child: claimController
+                                                              .selectedCategories[
+                                                                  index]
+                                                              .items[formIndex]
+                                                              .files
+                                                              .isNotEmpty
+                                                          ? AttachedFileWidget(
+                                                              file: claimController
+                                                                  .selectedCategories[
+                                                                      index]
+                                                                  .items[
+                                                                      formIndex]
+                                                                  .files
+                                                                  .first,
+                                                            )
+                                                          : const Text("Nil",
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      'Roboto',
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: Color(
+                                                                      0xff333333))),
                                                     ),
                                                   ],
                                                 ),
                                                 gapHC(10),
-                                                headTitle("Amount", "${claimController.selectedCategories[index].items[formIndex].amount!.toStringAsFixed(2)} INR"),
+                                                headTitle("Amount",
+                                                    "${claimController.selectedCategories[index].items[formIndex].amount!.toStringAsFixed(2)} INR"),
                                                 Obx(() {
-                                                  if (claimController.selectedCategories[index].items[formIndex].selectedClass != null &&
-                                                      claimController.selectedCategories[index].items[formIndex].selectedClass?.policy?.gradeAmount != null &&
-                                                      claimController.selectedCategories[index].items[formIndex].amount != null) {
-                                                    double max = claimController.selectedCategories[index].items[formIndex].selectedClass!.policy!.gradeAmount!;
+                                                  if (claimController
+                                                              .selectedCategories[
+                                                                  index]
+                                                              .items[formIndex]
+                                                              .selectedClass !=
+                                                          null &&
+                                                      claimController
+                                                              .selectedCategories[
+                                                                  index]
+                                                              .items[formIndex]
+                                                              .selectedClass
+                                                              ?.policy
+                                                              ?.gradeAmount !=
+                                                          null &&
+                                                      claimController
+                                                              .selectedCategories[
+                                                                  index]
+                                                              .items[formIndex]
+                                                              .amount !=
+                                                          null) {
+                                                    double max = claimController
+                                                        .selectedCategories[
+                                                            index]
+                                                        .items[formIndex]
+                                                        .selectedClass!
+                                                        .policy!
+                                                        .gradeAmount!;
                                                     double totalKms = 0;
-                                                    if (claimController.selectedCategories[index].hasStartMeter) {
-                                                      double start =
-                                                          double.tryParse(claimController.selectedCategories[index].items[formIndex].odoMeterStart ?? '0') ?? 0;
-                                                      double end =
-                                                          double.tryParse(claimController.selectedCategories[index].items[formIndex].odoMeterEnd ?? '0') ?? 0;
-                                                      if (start == 0 && end == 0) {
-                                                        return const SizedBox.shrink();
+                                                    if (claimController
+                                                        .selectedCategories[
+                                                            index]
+                                                        .hasStartMeter) {
+                                                      double start = double.tryParse(
+                                                              claimController
+                                                                      .selectedCategories[
+                                                                          index]
+                                                                      .items[
+                                                                          formIndex]
+                                                                      .odoMeterStart ??
+                                                                  '0') ??
+                                                          0;
+                                                      double end = double.tryParse(
+                                                              claimController
+                                                                      .selectedCategories[
+                                                                          index]
+                                                                      .items[
+                                                                          formIndex]
+                                                                      .odoMeterEnd ??
+                                                                  '0') ??
+                                                          0;
+                                                      if (start == 0 &&
+                                                          end == 0) {
+                                                        return const SizedBox
+                                                            .shrink();
                                                       }
 
                                                       totalKms = end - start;
 
                                                       max = totalKms *
-                                                          claimController.selectedCategories[index].items[formIndex].selectedClass!.policy!.gradeAmount!;
+                                                          claimController
+                                                              .selectedCategories[
+                                                                  index]
+                                                              .items[formIndex]
+                                                              .selectedClass!
+                                                              .policy!
+                                                              .gradeAmount!;
                                                     }
 
-                                                    if (claimController.selectedCategories[index].items[formIndex].amount! > max) {
+                                                    if (claimController
+                                                            .selectedCategories[
+                                                                index]
+                                                            .items[formIndex]
+                                                            .amount! >
+                                                        max) {
                                                       return Padding(
-                                                        padding: const EdgeInsets.only(top: 5),
-                                                        child: headTitle("",
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(top: 5),
+                                                        child: headTitle(
+                                                          "",
                                                           "(Eligible amount ${max.toStringAsFixed(2)} INR ${claimController.selectedCategories[index].hasStartMeter ? 'for $totalKms Kms @ ${claimController.selectedCategories[index].items[formIndex].selectedClass!.policy!.gradeAmount!} INR/Km' : ''})",
-                                                         colors: Colors.red,
+                                                          colors: Colors.red,
                                                         ),
                                                       );
                                                     }
-                                                    return const SizedBox.shrink();
+                                                    return const SizedBox
+                                                        .shrink();
                                                   }
-                                                  return const SizedBox.shrink();
+                                                  return const SizedBox
+                                                      .shrink();
                                                 }),
                                               ],
                                             ),
-
                                           );
                                         },
                                         separatorBuilder: (context, index) =>
-                                        const SizedBox(height: 15,),
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
                                         itemCount: claimController
-                                            .selectedCategories[index].items.length);
+                                            .selectedCategories[index]
+                                            .items
+                                            .length);
                                   }),
                                   gapHC(10)
                                 ],
@@ -336,117 +648,147 @@ class ClaimConfirmationPage extends StatelessWidget {
                   )),
             ),
 
-            const Padding(
+            /*const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
 
               child: Divider(),
-            ),
+            ),*/
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-
+            Container(
+              decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.shade200,
+                  blurRadius: 5.0,
+                  spreadRadius: 1,
+                  offset: Offset(0, -3),
+                ),BoxShadow(
+                  color: Colors.white,
+                  blurRadius: 0.0,
+                  spreadRadius: 0,
+                  offset: Offset(0, 15),
+                ),
+              ]),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  tcCustomhead("Total Amount", Colors.grey.shade600, FontWeight.w400),
-                  tcCustomhead("\u{20B9}${claimController.selectedCategories
-                      .expand((category) => category.items)
-                      .toList().map((v) => v).toList().map((e) => e.amount,).toList().fold(0.0, (sum, item) => sum + item!.toDouble())}", primaryColor, FontWeight.w700),
+                  tcCustomhead(
+                      "Total Amount", Colors.grey.shade600, FontWeight.w400),
+                  tcCustomhead(
+                      "\u{20B9}${claimController.selectedCategories.expand((category) => category.items).toList().map((v) => v).toList().map(
+                            (e) => e.amount,
+                          ).toList().fold(0.0, (sum, item) => sum + item!.toDouble()).toStringAsFixed(2)}",
+                      primaryColor,
+                      FontWeight.w700),
                 ],
               ),
             ),
-
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 children: [
                   Expanded(
-                      child:Custombutton(onTap: (){
-                        Get.back();
-                      }, buttonName: "Cancel", buttonColor: Colors.white,
-                        buttonTextColor: Colors.black,
-                        buttonBorderColor: Colors.grey.shade400,)
-                  ),
+                      child: Custombutton(
+                    onTap: () {
+                      Get.back();
+                    },
+                    buttonName: "Cancel",
+                    buttonColor: Colors.white,
+                    buttonTextColor: Colors.black,
+                    buttonBorderColor: Colors.grey.shade400,
+                  )),
                   gapWC(20),
                   Expanded(
-                      child:Custombutton(onTap: (){
-                        show(context,autoDismiss: false,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      gapHC(30),
-                                      Image.asset(
-                                        AppAssets.msgBox
-                                        ,fit: BoxFit.fill,
-
-
-
-
+                      child: Custombutton(
+                          onTap: () {
+                            show(
+                                context,
+                                autoDismiss: false,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          gapHC(30),
+                                          Image.asset(
+                                            AppAssets.msgBox,
+                                            fit: BoxFit.fill,
+                                          ),
+                                          gapHC(30),
+                                          tssb(
+                                              "Total Amount",
+                                              Colors.grey.shade600,
+                                              FontWeight.w500),
+                                          tcustom(
+                                              "\u{20B9}${claimController.selectedCategories.expand((category) => category.items).toList().map((v) => v).toList().map(
+                                                    (e) => e.amount,
+                                                  ).toList().fold(0.0, (sum, item) => sum + item!.toDouble()).toStringAsFixed(2)}",
+                                              primaryColor,
+                                              20.0,
+                                              FontWeight.w500),
+                                          gapHC(30),
+                                          tcCustomhead(
+                                              "Are you sure you want to \n"
+                                              "submit the claim?",
+                                              Colors.black87,
+                                              size: 21.0,
+                                              align: TextAlign.center,
+                                              FontWeight.w500)
+                                        ],
                                       ),
-                                      gapHC(30),
-                                      tssb("Total Amount", Colors.grey.shade600, FontWeight.w500)
-                                      ,
-                                      tcustom("\u{20B9}${claimController.selectedCategories
-                                          .expand((category) => category.items)
-                                          .toList().map((v) => v).toList().map((e) => e.amount,).toList().fold(0.0, (sum, item) => sum + item!.toDouble())}", primaryColor, 20.0, FontWeight.w500),
-                                      gapHC(30),
-                                      tcCustomhead("Are you sure you want to \n"
-                                          "submit the claim?", Colors.black87,
-                                          size: 21.0,
-                                          align: TextAlign.center, FontWeight.w500)
-
-
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          child: Custombutton(onTap: (){
-                                            Navigator.pop(context);
-                                          }, buttonName: "Cancel",
-                                              buttonColor: Colors.white,
-                                              buttonBorderColor: Colors.grey.shade400,
-                                              buttonTextColor: Colors.black)
-                                      ),
-                                      gapWC(20),
-                                      Expanded(
-                                          child: Obx((){
-                                            if(claimController.isBusy.isTrue){
-                                              return const SpinKitThreeBounce(color:primaryColor,size: 20,);
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                              child: Custombutton(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  buttonName: "Cancel",
+                                                  buttonColor: Colors.white,
+                                                  buttonBorderColor:
+                                                      Colors.grey.shade400,
+                                                  buttonTextColor:
+                                                      Colors.black)),
+                                          gapWC(20),
+                                          Expanded(child: Obx(() {
+                                            if (claimController.isBusy.isTrue) {
+                                              return const SpinKitThreeBounce(
+                                                color: primaryColor,
+                                                size: 20,
+                                              );
                                             }
-                                            return Custombutton(onTap: claimController.save, buttonName: "Submit", buttonColor: primaryColor,
-                                                buttonTextColor: Colors.white
-                                            );
-                                          })
+                                            return Custombutton(
+                                                onTap: claimController.save,
+                                                buttonName: "Submit",
+                                                buttonColor: primaryColor,
+                                                buttonTextColor: Colors.white);
+                                          })),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                gapHC(20)
-                              ],
-                            ));
-
-                      }, buttonName: "Submit", buttonColor: primaryColor,
-                          buttonTextColor: Colors.white)
-                  ),
+                                    ),
+                                    gapHC(20)
+                                  ],
+                                ));
+                          },
+                          buttonName: "Submit",
+                          buttonColor: primaryColor,
+                          buttonTextColor: Colors.white)),
                 ],
               ),
             ),
             gapHC(20)
           ],
         ),
-
-
       ),
     );
   }

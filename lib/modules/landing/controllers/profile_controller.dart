@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_claim/models/user.dart';
 import 'package:travel_claim/modules/login/login_page.dart';
 import 'package:travel_claim/resources/auth_repository.dart';
 import 'package:travel_claim/resources/user_profile_repository.dart';
+import 'package:travel_claim/utils/shared_preferences_data_provider.dart';
 import 'package:travel_claim/views/components/app_dialog.dart';
 
 class ProfileController extends GetxController {
@@ -57,15 +59,20 @@ class ProfileController extends GetxController {
     },negativeOnPressed: Get.back);
   }
 
-  void logout(){
-    AuthRepository().logoutUser();
-    Get.offAllNamed(LoginPage.routeName);
+  void logout()async{
+    try {
+      await AuthRepository().logoutUser();
+    }catch(_){}
+    finally {
+      Get.offAllNamed(LoginPage.routeName);
+      SharedPreferencesDataProvider().clear();
+    }
   }
 
   void saveFcm()async{
     try{
       var body = {
-        "registration_id": await FirebaseMessaging.instance.getToken(),
+        "fcm_token": await FirebaseMessaging.instance.getToken(),
         "type": Platform.isAndroid ? "android" : "ios"
       };
       print('fcm');

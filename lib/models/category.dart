@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:travel_claim/models/claim_form.dart';
 
 class CategoryResponse {
@@ -38,6 +39,8 @@ class Category {
   late bool hasDocumentDate;
   late bool hasStartMeter;
   late bool hasEndMeter;
+  late bool hasClass;
+  late int noOfDays;
   late String imageUrl;
   late List<CategoryClass>? classes;
   late List<ClaimFormData> items;
@@ -51,6 +54,8 @@ class Category {
     this.hasDocumentDate = false,
     this.hasStartMeter = false,
     this.hasEndMeter = false,
+    this.hasClass = false,
+    this.noOfDays = 0,
     this.imageUrl = '',
     this.classes,
     this.items = const []
@@ -66,7 +71,9 @@ class Category {
     hasDocumentDate = json['document_date_flag'];
     hasStartMeter = json['start_meter_flag'];
     hasEndMeter = json['end_meter_flag'];
+    hasClass = json['class_flg'];
     imageUrl = json['image_url'];
+    noOfDays = json['no_of_days'];
     classes = <CategoryClass>[];
     if (json['subcategorydetails'] != null) {
 
@@ -82,9 +89,9 @@ class Category {
         items.add(ClaimFormData.fromJson(v));
       });
     }
-    items = <ClaimFormData>[];
-    if (json['claim_details'] != null) {
 
+    if (json['claim_details'] != null) {
+      items = <ClaimFormData>[];
       json['claim_details'].forEach((v) {
         items.add(ClaimFormData.fromApiJson(v));
       });
@@ -102,7 +109,9 @@ class Category {
     data['document_date_flag'] = hasDocumentDate;
     data['start_meter_flag'] = hasStartMeter;
     data['end_meter_flag'] = hasEndMeter;
+    data['class_flg'] = hasClass;
     data['image_url'] = imageUrl;
+    data['no_of_days'] = noOfDays;
     data['subcategorydetails'] =
         classes?.map((v) => v.toJson()).toList();
     data['items'] = items.map((v) => v.toJson()).toList();

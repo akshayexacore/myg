@@ -25,10 +25,11 @@ class TextinputfieldContainer extends StatefulWidget {
   final Color ? boxRadiusColor;
   final FocusNode ? focusNode;
   final EdgeInsetsGeometry ? contentPadding;
+  final TextCapitalization textCapitalization;
   final List<TextInputFormatter> ? inputFormattor;
 
 
-  const TextinputfieldContainer({super.key, required this.showIcon,  this.hintText,  this.controller,  this.keybordType, required this.isEnable,    this.suffixIcon, this.suffixIconOnclick, this.validate, required this.isObscure,  this.maxline, this.verticalPadding, this.boxRadius, this.boxRadiusColor, this.contentPadding, this.focusNode, this.onSubmitted, this.textInputAction, this.onchange, this.inputFormattor,this.onEditingComplete,this.suffix});
+  const TextinputfieldContainer({super.key, required this.showIcon,  this.hintText,  this.controller,  this.keybordType, required this.isEnable,    this.suffixIcon, this.suffixIconOnclick, this.validate, required this.isObscure,  this.maxline, this.verticalPadding, this.boxRadius, this.boxRadiusColor, this.contentPadding, this.focusNode, this.onSubmitted, this.textInputAction, this.onchange, this.inputFormattor,this.onEditingComplete,this.suffix, this.textCapitalization = TextCapitalization.sentences});
 
   @override
   State<TextinputfieldContainer> createState() => _TextinputfieldContainerState();
@@ -38,6 +39,7 @@ class _TextinputfieldContainerState extends State<TextinputfieldContainer> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textCapitalization: widget.textCapitalization,
       controller: widget.controller,
       validator:   widget.validate,
       obscureText: widget.isObscure,
@@ -52,7 +54,7 @@ class _TextinputfieldContainerState extends State<TextinputfieldContainer> {
       decoration: InputDecoration(
 
         contentPadding:widget.contentPadding?? EdgeInsets.symmetric(
-          horizontal: 10,
+          horizontal: 16,
             vertical: widget.verticalPadding??0.0
         ),
         suffixIcon: widget.suffix ?? (widget.showIcon ? Bounce(

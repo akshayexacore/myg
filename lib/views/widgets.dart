@@ -69,10 +69,12 @@ Widget expansionTile(String ?image,String ? title){
   );
 }
 
-Widget showToastMessage({String ?msg, Color? iconColor, IconData? icon}){
+Widget showToastMessage({String ?msg, Color? iconColor, IconData? icon,Color bgColor = primaryColor,required double width}){
   return   Container(
+    width: width - 28,
     padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
-    decoration: boxDecoration(primaryColor, 20.0),
+    margin: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
+    decoration: boxDecoration(bgColor, 20.0),
     child: Row(
       children: [
         Container(

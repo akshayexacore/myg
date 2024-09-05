@@ -40,7 +40,7 @@ class LoginPage extends StatelessWidget {
           ),
           FractionallySizedBox(
             alignment: Alignment.bottomCenter,
-            heightFactor: 0.46,
+            heightFactor: 0.48,
             child: Container(
               decoration:boxBaseDecorationC(Colors.white,
                   30, 30, 0, 0),
@@ -58,14 +58,23 @@ class LoginPage extends StatelessWidget {
                           // / mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            thb("Lets sign you in", Colors.black),
                             gapHC(10),
+                            Text(
+                              "Lets sign you in",
+                              style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 22,
+                                  color: textColor),
+                            ),
+                            gapHC(13),
                             ts("Employee ID", Colors.black),
                             gapHC(3),
                             TextinputfieldContainer(
                                 showIcon: false,
                                 isEnable: true,
                                 isObscure: false,
+                                textCapitalization: TextCapitalization.characters,
                                 hintText: "Enter your employee ID",
                                 controller: loginController.textControllerUsername,
                                 validate:(value){
@@ -84,6 +93,7 @@ class LoginPage extends StatelessWidget {
                             TextinputfieldContainer(
                                 showIcon: true,
                                 maxline: 1,
+                                textCapitalization: TextCapitalization.none,
                                 suffixIcon:loginController.showPassword.isTrue? Icons.visibility_off_outlined:Icons.visibility_outlined,
                                 suffixIconOnclick: (){
                                   loginController.showPassword.toggle();
@@ -105,6 +115,7 @@ class LoginPage extends StatelessWidget {
                             loginController.busy.isFalse?    Bounce(
                               duration: const Duration(seconds: 110),
                               onTap: (){
+                                FocusScope.of(context).unfocus();
                                 loginController.login();
 
                               },
@@ -125,9 +136,12 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  if(MediaQuery.of(context).viewInsets.bottom==0)
                   gapHC(10),
-                  tss("cc@2024myGtravelClaim", Colors.black, 13.0)
-                  ,gapHC(10),
+                   if(MediaQuery.of(context).viewInsets.bottom==0)
+                   tss("cc@2024myGtravelClaim", Colors.black, 13.0),
+                  if(MediaQuery.of(context).viewInsets.bottom==0)
+                  gapHC(10),
                 ],
               )),
             ),

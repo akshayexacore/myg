@@ -49,6 +49,9 @@ class ClaimController extends GetxController
     selectedBranch(claimFrom.value!.branch);
     textEditingControllerPurpose.text = claimFrom.value!.purpose;
     selectedCategories(claimFrom.value!.categories);
+    if(claimFrom.value!.storageId.isNotEmpty) {
+      openedSections([]);
+    }
   }
 
   getCategories({bool isSilent = false}) async {

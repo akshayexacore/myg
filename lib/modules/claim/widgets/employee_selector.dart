@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:travel_claim/models/employee.dart';
 import 'package:travel_claim/modules/claim/widgets/select_tag.dart';
 import 'package:travel_claim/resources/myg_repository.dart';
+import 'package:travel_claim/views/components/app_dialog.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/style/colors.dart';
 import 'package:travel_claim/views/widgets.dart';
@@ -38,11 +39,13 @@ class _EmployeeSelectorState extends State<EmployeeSelector> {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
         enableBorderColor: Colors.grey.shade400,
         focusedBorderColor: Colors.grey.shade400,
+        backgroundColor: Colors.white,
+        suggestionsBoxBackgroundColor: Colors.white,
         borderRadius: 10,
         borderSize: 1,
         multiselect: true,
         inputDecoration: InputDecoration(
-          hintText: "Type to search employees",
+          hintText: "Type Employee Code to search",
           contentPadding: const EdgeInsets.symmetric(horizontal: 10,vertical: 0),
           errorStyle: TextStyle(fontSize: 1,color: Colors.transparent),
           hintStyle: hintTextStyle()
@@ -74,22 +77,24 @@ class _EmployeeSelectorState extends State<EmployeeSelector> {
               .indexWhere((element) => element.id == data.id);
           var selectedData = data;
           return Material(
+            color: Colors.white,
               child: GestureDetector(
                 onPanDown: (_) {
-                  if(selectedItems.length>=widget.maxSelection){
-                    fToast.showToast(
-                        child: Center(
-                          child: showToastMessage(msg: "You can only select ${widget.maxSelection} employee",
-                              iconColor: Colors.red,icon: Icons.close_rounded),
-                        ));
-                    return;
-                  }
 
                   var existingIndex = selectedItems.indexWhere(
                           (element) => element.id == data.id);
                   if (existingIndex >= 0) {
                     selectedItems.removeAt(existingIndex);
                   } else {
+                    if(selectedItems.length>=widget.maxSelection){
+                      AppDialog.showToast("You can only select ${widget.maxSelection} employee",isError: true);
+                      /*fToast.showToast(
+                        child: Center(
+                          child: showToastMessage(msg: ,
+                              iconColor: Colors.red,icon: Icons.close_rounded),
+                        ));*/
+                      return;
+                    }
                     selectedItems.add(data);
                   }
 
@@ -101,9 +106,9 @@ class _EmployeeSelectorState extends State<EmployeeSelector> {
                   selected: existingIndex >= 0,
                   titleTextStyle: TextStyle(fontSize: 14,color: existingIndex >= 0 ? Colors.white : Colors.black),
                   trailing:
-                  existingIndex >= 0 ? const Icon(Icons.check) : null,
+                  existingIndex >= 0 ? const Icon(Icons.close) : null,
                   selectedColor: Colors.white,
-                  selectedTileColor: Colors.black26,
+                  selectedTileColor: primaryColorLight.withOpacity(0.7),
                   title: Text('${selectedData.name} (${selectedData.employeeId})'),
                 ),
               ));

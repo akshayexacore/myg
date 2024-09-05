@@ -197,11 +197,11 @@ class _SpecialapprovelinnerState extends State<Specialapprovelinner> {
                       specialApprovals("reject", (){
 
                         Get.back();
-                        fToast.showToast(
+                        /*fToast.showToast(
                             child: Center(
                               child: showToastMessage(msg: "Special Approval has been Rejected",
                                   iconColor: Colors.red,icon: Icons.close_rounded),
-                            ));
+                            ));*/
                       });
                       FocusManager.instance.primaryFocus?.unfocus();
                     }
@@ -216,11 +216,11 @@ class _SpecialapprovelinnerState extends State<Specialapprovelinner> {
 
                       specialApprovals("approve", (){
                         Get.back();
-                        fToast.showToast(
+                        /*fToast.showToast(
                             child: Center(
                               child: showToastMessage(msg: "Special Approval has been Approved",
                                   iconColor: Colors.green,icon: Icons.check_circle_rounded),
-                            ));
+                            ));*/
                       });
                       FocusManager.instance.primaryFocus?.unfocus();
                     }

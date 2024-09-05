@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -59,7 +60,7 @@ class LoginController extends GetxController {
     } catch (_) {
       print(_.toString());
       busy(false);
-      AppDialog.showToast('Something went wrong! Try again.',isError: true);
+      AppDialog.showToast(_ is FetchDataTimeOutException ? 'Request timeout! Try again.' :'Something went wrong! Try again.',isError: true);
     } finally {}
   }
 

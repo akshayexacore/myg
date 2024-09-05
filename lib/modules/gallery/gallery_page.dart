@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:travel_claim/modules/gallery/widgets/gallery_item.dart';
+import 'package:travel_claim/views/style/colors.dart';
 
 class GalleryPhotoViewWrapper extends StatefulWidget {
   GalleryPhotoViewWrapper({
@@ -66,7 +67,10 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
               onPageChanged: onPageChanged,
               scrollDirection: widget.scrollDirection,
             ),
-            SafeArea(child: Align(alignment: Alignment.topRight,child: IconButton(onPressed: Get.back, icon: Icon(Icons.close,color: Colors.white,))))
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: SafeArea(child: Align(alignment: Alignment.topRight,child: IconButton(onPressed: Get.back, icon: Icon(Icons.close,color: Colors.white,),style: IconButton.styleFrom(backgroundColor: Colors.black),highlightColor: primaryColor,))),
+            )
           ],
         ),
       ),

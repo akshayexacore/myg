@@ -1,6 +1,7 @@
 import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/components/customButton.dart';
 import 'package:travel_claim/views/const/appassets.dart';
@@ -97,47 +98,45 @@ Future<void> endBottomSheetDialog(title,subtitle,btnYesName,btnNoName,[fnEnd]) a
   return   Get.bottomSheet(
       barrierColor: Colors.black.withOpacity(0.7),
       Container(
-        height:  subtitle.toString().isEmpty?180: 220,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.fromLTRB(20,66,20,30),
         decoration: boxDecorationC(Colors.white, 35.0, 35.0, 0.0, 0.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            gapHC(20),
+            Image.asset(AppAssets.logoutRed,height: 70,),
+            gapHC(50),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  tcn(title.toString(), Colors.black,15),
-                  subtitle.toString().isEmpty?gapHC(0):tc(subtitle.toString(), Colors.black54,14.0),
-                  subtitle.toString().isEmpty?  gapHC(10):gapHC(15),
-
+                  Text(title,
+                      style: GoogleFonts.roboto(fontSize: 22, color: textColor, fontWeight: FontWeight.w400),textAlign: TextAlign.center,)
                 ],
               ),
             ),
             Row(
               children: [
                 Expanded(
-                  flex: 7,
+                  flex: 5,
+                  child: Custombutton(
+                      buttonName: btnNoName,
+                      buttonColor: Colors.white,
+                      buttonBorderColor: Color(0xffCCCCCC),
+                      buttonTextColor: textColor,
+                      onTap: (){
+                        Get.back();
+
+                      }),
+                ),
+                gapWC(20),
+                Expanded(
+                  flex: 5,
                   child: Custombutton(
                       buttonName: btnYesName,
                       buttonColor: primaryColor,
                       buttonTextColor: Colors.white,
                       onTap: (){
                         fnEnd();
-
-                      }),
-                ),
-                gapWC(8),
-                Expanded(
-                  flex: 3,
-                  child: Custombutton(
-                      buttonName: btnNoName,
-                      buttonColor: primaryColor,
-
-                      buttonTextColor: Colors.white,
-                      onTap: (){
-                       Get.back();
 
                       }),
                 ),

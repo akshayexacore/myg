@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_form.dart';
 import 'package:travel_claim/modules/claim/widgets/count_widget.dart';
@@ -43,6 +45,8 @@ class _FormItemState extends State<FormItem> {
 
   @override
   void initState() {
+
+    //Logger().i(widget.formData.toJson());
     textEditingControllerFrom.text = widget.formData.tripFrom ?? '';
     textEditingControllerTo.text = widget.formData.tripTo ?? '';
     textEditingControllerOdoMeterFrom.text =
@@ -55,11 +59,22 @@ class _FormItemState extends State<FormItem> {
     if (widget.formData.toDate == null && widget.category.hasToDate) {
       widget.formData.toDate = DateTime.now();
     }
+
+    if(widget.category.classes!=null && widget.category.classes!.length == 1 && !widget.category.hasClass && widget.formData.selectedClass == null){
+      widget.formData.selectedClass = widget.category.classes!.first;
+      widget.formData.classId = widget.category.classes!.first.id;
+      widget.formData.policyId = widget.category.classes!.first.policy?.id;
+      isUpdated.toggle();
+    }
+
+    
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     Size size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -315,16 +330,18 @@ class _FormItemState extends State<FormItem> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         DatePicker(
-          title: widget.category.hasFromDate ? "Check-In" : "Date",
+          title: widget.category.hasFromDate ? "Check-in date" : "Date",
           selectedDate: widget.formData.fromDate,
+          lastDate: DateTime.now().subtract(Duration(days: widget.category.noOfDays)),
           onChanged: (date) {
             widget.formData.fromDate = date;
           },
         ),
         if (widget.category.hasToDate)
           DatePicker(
-            title: widget.category.hasFromDate ? "Check-Out" : "Date",
+            title: widget.category.hasFromDate ? "Check-out date" : "Date",
             selectedDate: widget.formData.toDate,
+            lastDate: DateTime.now().subtract(Duration(days: widget.category.noOfDays)),
             onChanged: (date) {
               widget.formData.toDate = date;
             },
@@ -344,6 +361,7 @@ class _FormItemState extends State<FormItem> {
             onChanged: (value) {
               setState(() {
                 widget.formData.noOfEmployees = int.tryParse(value) ?? 1;
+                print('employee: ${widget.formData.noOfEmployees}');
               });
             }),
         if (widget.formData.noOfEmployees > 1) gapHC(12),
@@ -363,15 +381,15 @@ class _FormItemState extends State<FormItem> {
   }
 
   Widget buildClass() {
-    return widget.category.classes != null &&
-            widget.category.classes!.isNotEmpty
+    return widget.category.hasClass
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ts("Class", Colors.black),
+              ts(widget.category.name.toLowerCase().contains('fuel')? 'Vehicle type' : "Class", Colors.black),
               gapHC(3),
               DropDownWidget(
                 selectedClass: widget.formData.selectedClass,
+                hint: widget.category.name.toLowerCase().contains('fuel')? 'Select Vehicle type' : "Select Class",
                 items: widget.category.classes!,
                 onChanged: (value) {
                   widget.formData.selectedClass = value;
