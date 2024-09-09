@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart' as picker;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:travel_claim/configs/app_config.dart';
 import 'package:travel_claim/modules/gallery/gallery_page.dart';
@@ -163,7 +164,7 @@ class _FilePickerState extends State<FilePicker> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: pickFromCamera,
+                          onTap: ()=> pickFromCamera(context),
                           child: Column(
                             children: [
                               CircleAvatar(
@@ -185,7 +186,7 @@ class _FilePickerState extends State<FilePicker> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: pickFromGallery,
+                          onTap: ()=> pickFromGallery(context),
                           child: Column(
                             children: [
                               CircleAvatar(
@@ -207,7 +208,7 @@ class _FilePickerState extends State<FilePicker> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: pickFromFiles,
+                          onTap: ()=> pickFromFiles(context),
                           child: Column(
                             children: [
                               CircleAvatar(
@@ -240,7 +241,7 @@ class _FilePickerState extends State<FilePicker> {
         backgroundColor: Colors.white);
   }
 
-  pickFromFiles() async {
+  pickFromFiles(BuildContext context) async {
     Get.back();
     picker.FilePickerResult? result = await picker.FilePicker.platform
         .pickFiles(allowedExtensions: ['pdf'], type: picker.FileType.custom);
@@ -256,7 +257,7 @@ class _FilePickerState extends State<FilePicker> {
         return;
       }
 
-      String newFile = await uploadFile(file.path);
+      String newFile = await uploadFile(file.path,context);
       if (newFile.isNotEmpty) {
         setState(() {
           if (widget.multiple) {
@@ -270,7 +271,7 @@ class _FilePickerState extends State<FilePicker> {
     }
   }
 
-  void pickFromCamera() async {
+  void pickFromCamera(BuildContext context) async {
     Get.back();
     final ImagePicker _picker = ImagePicker();
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera,imageQuality: 80);
@@ -285,7 +286,7 @@ class _FilePickerState extends State<FilePicker> {
       }
 
 
-      String newFile = await uploadFile(photo.path);
+      String newFile = await uploadFile(photo.path,context);
       if (newFile.isNotEmpty) {
         setState(() {
           if (widget.multiple) {
@@ -299,7 +300,7 @@ class _FilePickerState extends State<FilePicker> {
     }
   }
 
-  void pickFromGallery() async {
+  void pickFromGallery(BuildContext context) async {
     Get.back();
     final ImagePicker _picker = ImagePicker();
     final XFile? photo = await _picker.pickImage(source: ImageSource.gallery,imageQuality: 80);
@@ -313,7 +314,7 @@ class _FilePickerState extends State<FilePicker> {
         return;
       }
 
-      String newFile = await uploadFile(photo.path);
+      String newFile = await uploadFile(photo.path,context);
       if (newFile.isNotEmpty) {
         setState(() {
           if (widget.multiple) {
@@ -327,9 +328,11 @@ class _FilePickerState extends State<FilePicker> {
     }
   }
 
-  Future<String> uploadFile(String file) async {
+  Future<String> uploadFile(String file,BuildContext context) async {
     try {
       print('file: $file');
+      Get.context!.loaderOverlay.show();
+      print('shown overlay');
       var response = await MygRepository().uploadFile(file);
       if (response.success) {
         widget.errorMsg = '';
@@ -341,6 +344,8 @@ class _FilePickerState extends State<FilePicker> {
     }catch(_){
       AppDialog.showToast("Something went wrong! Try again.",isError: true);
       return '';
+    }finally{
+      Get.context!.loaderOverlay.hide();
     }
   }
 }
