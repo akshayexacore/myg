@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return KeyboardDismisser(
+      gestures: const [GestureType.onTap,GestureType.onVerticalDragStart],
       child: GlobalLoaderOverlay(
         useDefaultLoading: false,
         disableBackButton: true,

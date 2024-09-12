@@ -95,7 +95,7 @@ class ProfilePage extends StatelessWidget {
                         duration: const Duration(milliseconds: 110),
                         onTap: (){
                           endBottomSheetDialog(
-                              "Are you sure you want to Logout",
+                              "Are you sure you want to Logout?",
                               "",
                               "Logout",
                               "Cancel",
@@ -107,11 +107,12 @@ class ProfilePage extends StatelessWidget {
 
                         },
                         child: Container(
+                          height: 46,
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(vertical: 12),
 
                           decoration: boxBaseDecoration(primaryColor, 10),
-                          child: Center(child: tc("Logout", Colors.white,14)),
+                          child: Center(child: tc("Logout", Colors.white,16)),
                         )
                     ),
                     gapHC(20),

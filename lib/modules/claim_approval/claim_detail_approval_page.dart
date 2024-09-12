@@ -228,7 +228,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                     .toList()
                     .join("")),
                 itemCount: _controller.claim.value!.categories!.length,
-                maxOpened: 2,
+                maxOpened: 20,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                 physics: const NeverScrollableScrollPhysics(),
                 separatorBuilder: (context, index) => const SizedBox(
@@ -542,7 +542,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                     .categories![index]
                                                     .items[formIndex]
                                                     .selectedClass
-                                                    ?.name),
+                                                    ?.name ?? ''),
                                           if (_controller
                                               .claim
                                               .value!
@@ -964,7 +964,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                             "Class",
                             form
                                 .selectedClass
-                                ?.name),
+                                ?.name ?? ''),
                       if (form.selectedClass !=
                           null)
                         gapHC(10),

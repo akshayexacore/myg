@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_claim/models/user.dart';
 import 'package:travel_claim/modules/login/login_page.dart';
 import 'package:travel_claim/resources/auth_repository.dart';
 import 'package:travel_claim/resources/user_profile_repository.dart';
+import 'package:travel_claim/utils/local_storage_data_provider.dart';
 import 'package:travel_claim/utils/shared_preferences_data_provider.dart';
 import 'package:travel_claim/views/components/app_dialog.dart';
 
@@ -32,10 +34,12 @@ class ProfileController extends GetxController {
   final _userProfileRepository = UserProfileRepository();
   var user = User().obs;
   var error = "".obs;
+  var appVersion = "".obs;
   @override
   void onInit() {
     getUser();
     saveFcm();
+    getPackageInfo();
     super.onInit();
   }
 
@@ -66,6 +70,7 @@ class ProfileController extends GetxController {
     finally {
       Get.offAllNamed(LoginPage.routeName);
       SharedPreferencesDataProvider().clear();
+      //LocalStorageDataProvider().clear();
     }
   }
 
@@ -80,5 +85,13 @@ class ProfileController extends GetxController {
       final response = await _userProfileRepository.saveFcmToken(body: body);
     }catch(_){
     }
+  }
+
+  void getPackageInfo()async{
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    String version = packageInfo.version;
+    String buildNumber = packageInfo.buildNumber;
+    appVersion("Version $version($buildNumber)");
   }
 }

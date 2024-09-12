@@ -444,7 +444,7 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                         .selectedCategories[
                                                             index]
                                                         .classes!
-                                                        .isNotEmpty)
+                                                        .isNotEmpty && claimController.selectedCategories[index].hasClass)
                                                   headTitle(
                                                       "Class",
                                                       claimController
@@ -452,7 +452,7 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                               index]
                                                           .items[formIndex]
                                                           .selectedClass
-                                                          ?.name),
+                                                          ?.name ?? ''),
                                                 if (claimController
                                                             .selectedCategories[
                                                                 index]

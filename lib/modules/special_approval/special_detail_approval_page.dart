@@ -441,7 +441,7 @@ class SpecialDetailApprovalPage extends StatelessWidget {
                                                .categories![index]
                                                .items[formIndex]
                                                .selectedClass
-                                               ?.name),
+                                               ?.name ?? ''),
                                      if (_controller
                                          .claim
                                          .value!
@@ -591,8 +591,10 @@ class SpecialDetailApprovalPage extends StatelessWidget {
                    ],
                  );
               }, separatorBuilder: (context, index) => SizedBox(height: 15,), itemCount: _controller.claim.value!.categories!.length),
+              if(showBottomActions())
               Divider(),
               gapHC(5),
+              if(showBottomActions())
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
@@ -603,6 +605,7 @@ class SpecialDetailApprovalPage extends StatelessWidget {
                 ),
               ),
               gapHC(3),
+              if(showBottomActions())
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: TextinputfieldContainer(

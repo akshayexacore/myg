@@ -196,11 +196,12 @@ class _ClaimConfirmationScreenState extends State<ClaimConfirmationScreen> {
                                                itemBuilder: (context,index){
                                                  var name = claimapprovelController.numberOfemployeelist.value[index];
                                              return Container(
+                                               height: 46,
                                                padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
                                                margin: EdgeInsets.only(bottom: 5),
 
-                                               decoration: boxBaseDecoration(primaryColor, 20.0),
-                                               child: Center(child: ts(name, Colors.white)),
+                                               decoration: boxBaseDecoration(primaryColor, 20.0,),
+                                               child: Center(child: ts(name, Colors.white,)),
                                              );
 
                                            }),

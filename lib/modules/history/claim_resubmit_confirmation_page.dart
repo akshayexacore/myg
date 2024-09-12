@@ -376,7 +376,7 @@ class ClaimResubmitConfirmationPage extends StatelessWidget {
                                       gapHC(10),
 
                                       if(_controller.reSubmittedCategories[index].items[formIndex].selectedClass!=null)
-                                        headTitle("Class", _controller.reSubmittedCategories[index].items[formIndex].selectedClass?.name),
+                                        headTitle("Class", _controller.reSubmittedCategories[index].items[formIndex].selectedClass?.name ?? ''),
                                       if(_controller.reSubmittedCategories[index].items[formIndex].selectedClass!=null)
                                         gapHC(10),
                                       headTitle("Remark", _controller.reSubmittedCategories[index].items[formIndex].remarks.isEmpty ? 'Nil' : _controller.reSubmittedCategories[index].items[formIndex].remarks),

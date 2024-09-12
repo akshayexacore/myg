@@ -15,6 +15,7 @@ class AttachedFileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(file);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: (){

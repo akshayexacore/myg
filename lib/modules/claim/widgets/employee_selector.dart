@@ -46,7 +46,7 @@ class _EmployeeSelectorState extends State<EmployeeSelector> {
         multiselect: true,
         inputDecoration: InputDecoration(
           hintText: "Type Employee Code to search",
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10,vertical: 0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 15,vertical: 0),
           errorStyle: TextStyle(fontSize: 1,color: Colors.transparent),
           hintStyle: hintTextStyle()
         ),

@@ -90,7 +90,7 @@ class NotificationScreen extends StatelessWidget {
                                   height: 4,
                                   decoration: boxDecorationC(
                                       notificationController
-                                          .notifications[index].status == "unread" ? primaryColor : Colors.grey.shade500, 0.0, 0.0, 52, 52),
+                                          .notifications[index].status == "unread" ? primaryColor : primaryColor.withOpacity(0.6), 0.0, 0.0, 52, 52),
                                 ),
                               ],
                             ),

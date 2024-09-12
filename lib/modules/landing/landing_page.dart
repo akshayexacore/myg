@@ -31,6 +31,7 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: primaryColor,
       body: Stack(
@@ -68,6 +69,7 @@ class LandingPage extends StatelessWidget {
                       ),
                     ),
                     gapHC(31),
+                    if(_profileController.user.value.grade.hasPermission(Permission.newClaim) || _profileController.user.value.grade.hasPermission(Permission.requestAdvance))
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -92,7 +94,9 @@ class LandingPage extends StatelessWidget {
                                     AppAssets.reqAdv_img, "Request\nAdvance")) : const SizedBox()),
                       ],
                     ),
+                    if(_profileController.user.value.grade.hasPermission(Permission.newClaim) || _profileController.user.value.grade.hasPermission(Permission.requestAdvance))
                     gapHC(20),
+                    if(_profileController.user.value.grade.hasPermission(Permission.drafts) || _profileController.user.value.grade.hasPermission(Permission.history))
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
@@ -211,6 +215,7 @@ class LandingPage extends StatelessWidget {
               ),
             );
           }),
+          Align(alignment: Alignment.bottomCenter,child: Obx(() => Text(_profileController.appVersion.value,style: TextStyle(fontSize: 11,color: Colors.black87,fontWeight: FontWeight.w400),),))
         ],
       ),
     );

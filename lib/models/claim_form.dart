@@ -1,4 +1,5 @@
 
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:travel_claim/models/branch.dart';
 import 'package:travel_claim/models/category.dart';
@@ -88,6 +89,7 @@ class ClaimFormData {
   late ClaimStatus status;
   late bool sentForApproval;
   late int rejectionCount;
+  late GlobalKey<FormState> formKey;
 
   ClaimFormData({
     this.id,
@@ -110,7 +112,7 @@ class ClaimFormData {
     this.status = ClaimStatus.none,
     this.sentForApproval = false,
     this.rejectionCount = 0,
-  });
+  }): formKey = GlobalKey<FormState>();
 
   ClaimFormData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -143,6 +145,7 @@ class ClaimFormData {
     }
     status = json['status'].toString().toClaimStatus;
     fileError = '';
+    formKey = GlobalKey<FormState>();
   }
 
   ClaimFormData.fromApiJson(Map<String, dynamic> json) {
@@ -185,6 +188,7 @@ class ClaimFormData {
     classId = selectedClass?.id;
     policyId = selectedClass?.policy?.id;
     fileError = '';
+    formKey = GlobalKey<FormState>();
   }
 
   Map<String, dynamic> toJson() {

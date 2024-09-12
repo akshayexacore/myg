@@ -16,9 +16,10 @@ class Custombutton extends StatelessWidget {
     return Bounce(
       onTap: onTap,
       child: Container(
+        height: 46,
         decoration: boxOutlineCustom(buttonColor,10.0,buttonBorderColor??buttonColor),
         padding:  EdgeInsets.symmetric(vertical: verticaPadding?? 9,horizontal: 20),
-        child: tssb(buttonName, buttonTextColor, FontWeight.bold),
+        child: Center(child: tssb(buttonName, buttonTextColor, FontWeight.bold)),
       ),
     );
   }

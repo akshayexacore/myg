@@ -25,7 +25,7 @@ class ApiBaseHelper {
   ApiBaseHelper() {
     http = customHttp.InterceptedClient.build(interceptors: [
       CsmApiInterceptor(),
-    ], retryPolicy: ExpiredTokenRetryPolicy(),requestTimeout: const Duration(seconds: 6));
+    ], retryPolicy: ExpiredTokenRetryPolicy(),requestTimeout: const Duration(seconds: 10));
   }
 
   Future<dynamic> get(

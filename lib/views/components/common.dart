@@ -40,7 +40,7 @@ Text tssb(text, color, bold, {height}) => Text(
       style: TextStyle(
           fontFamily: 'Roboto',
           height: height,
-          fontSize: 14,
+          fontSize: 16,
           color: color,
           fontWeight: bold),
     );

@@ -199,6 +199,9 @@ class HistoryDetailPage extends StatelessWidget {
                 List<Category> cats = _controller.claim.value!.categories!.where((element) {
                   return element.items.where((e) => e.status == ClaimStatus.rejected).isNotEmpty;
                 },).toList();
+                if(_controller.claim.value!.status==ClaimStatus.pending){
+                  return SizedBox.shrink();
+                }
 
                 return ListView.builder(padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),shrinkWrap: true,physics: NeverScrollableScrollPhysics(),itemBuilder: (context, index) {
                   return Column(

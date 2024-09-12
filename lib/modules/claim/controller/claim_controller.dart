@@ -103,8 +103,13 @@ class ClaimController extends GetxController
 
   void addNewFormItem(Category category) {
     isFormAddBusy(true);
-    category.items.add(ClaimFormData());
+    var claim = ClaimFormData();
+    category.items.add(claim);
     isFormAddBusy(false);
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      scrollToWidget(claim);
+    },);
+
   }
 
   void emitFormUpdate() {
@@ -238,6 +243,7 @@ class ClaimController extends GetxController
       }
     } catch (_) {
       print('saving error: ${_.toString()}');
+      AppDialog.showToast(_.toString());
     } finally {
       isBusy(false);
     }
@@ -254,6 +260,22 @@ class ClaimController extends GetxController
       print('saving error: ${_.toString()}');
     } finally {
       isBusy(false);
+    }
+  }
+
+
+  void scrollToWidget(ClaimFormData claim) {
+    final context = claim.formKey.currentContext;//selectedCategories.first.items.first.formKey.currentContext;
+    print('scrolling check');
+    if (context != null) {
+      print('scrolling');
+      Scrollable.ensureVisible(
+        context,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+        alignment: 0.0,
+      );
     }
   }
 }

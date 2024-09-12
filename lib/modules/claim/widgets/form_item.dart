@@ -77,6 +77,7 @@ class _FormItemState extends State<FormItem> {
 
     Size size = MediaQuery.of(context).size;
     return Column(
+      key: widget.formData.formKey,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(

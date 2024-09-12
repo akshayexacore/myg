@@ -16,7 +16,7 @@ Widget headTitle(head,value,{colors,txtalign,fonsize}){
  
       Expanded(
         flex: 5,
-        child: Text(value,textAlign: txtalign??TextAlign.left,overflow: TextOverflow.fade,style:  TextStyle(
+        child: Text(value ?? '',textAlign: txtalign??TextAlign.left,overflow: TextOverflow.fade,style:  TextStyle(
             fontFamily: 'Roboto',fontSize: fonsize??14,
             fontWeight: FontWeight.w500,color:colors?? Color(0xff333333))),
       ),

@@ -87,11 +87,12 @@ class AppDialog {
                                 duration: const Duration(seconds: 110),
                                 onTap: positiveOnPressed,
                                 child: Container(
+                                  height: 46,
                                   width: double.infinity,
                                   padding: const EdgeInsets.symmetric(vertical: 12),
 
                                   decoration: boxBaseDecoration(primaryColor, 10),
-                                  child: Center(child: tc(positiveText, Colors.white,14)),
+                                  child: Center(child: tc(positiveText, Colors.white,16)),
 
                                 ),
                               ),
