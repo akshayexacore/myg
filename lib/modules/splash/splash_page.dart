@@ -31,6 +31,7 @@ class SplashPage extends StatelessWidget {
           Center(
               child:  Image.asset(
                 AppAssets.appIcon,
+                width: MediaQuery.sizeOf(context).width*0.5,
 
               )
           ),
