@@ -9,6 +9,8 @@ import 'package:travel_claim/modules/claim/widgets/date_picker.dart';
 import 'package:travel_claim/modules/claim/widgets/dropdown_widget.dart';
 import 'package:travel_claim/modules/claim/widgets/employee_selector.dart';
 import 'package:travel_claim/modules/claim/widgets/file_picker.dart';
+import 'package:travel_claim/modules/landing/controllers/profile_controller.dart';
+import 'package:travel_claim/resources/myg_repository.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/components/textInputField.dart';
 
@@ -42,6 +44,9 @@ class _FormItemState extends State<FormItem> {
   TextEditingController textEditingControllerAmount = TextEditingController();
 
   var isUpdated = false.obs;
+  var eligibleAmount = 0.0.obs;
+  var max = 0.0.obs;
+  var totalKms = 0.0.obs;
 
   @override
   void initState() {
@@ -64,11 +69,61 @@ class _FormItemState extends State<FormItem> {
       widget.formData.selectedClass = widget.category.classes!.first;
       widget.formData.classId = widget.category.classes!.first.id;
       widget.formData.policyId = widget.category.classes!.first.policy?.id;
+    }
+
+    if(widget.formData.selectedClass!=null){
+      print('grade from draft: ${widget.category.classes!.first.policy?.gradeAmount}');
+      eligibleAmount(widget.category.classes!.first.policy?.gradeAmount);
+      widget.formData.eligibleAmount = eligibleAmount.value;
+      max.value = eligibleAmount.value;
       isUpdated.toggle();
     }
 
-    
+    if(widget.formData.employees.isNotEmpty){
+      widget.formData.employees.removeWhere((element) => element.id == Get.find<ProfileController>().user.value.id,);
+      calculateClass();
+    }
+
+    isUpdated.listen((p0) {
+      print('amount: ${widget.formData.selectedClass?.policy?.gradeAmount}');
+      if (widget.formData.selectedClass != null &&
+          widget.formData.selectedClass?.policy?.gradeAmount != null &&
+          widget.formData.amount != null) {
+        print('amount: ${eligibleAmount.value}');
+        max.value = eligibleAmount.value;
+        totalKms.value = 0;
+        if (widget.category.hasStartMeter) {
+          double start =
+              double.tryParse(widget.formData.odoMeterStart ?? '0') ?? 0;
+          double end =
+              double.tryParse(widget.formData.odoMeterEnd ?? '0') ?? 0;
+          if (start == 0 && end == 0) {
+            return;
+          }
+
+          if(start>=0 && end>0) {
+            totalKms.value = end - start;
+
+            max.value = totalKms.value *
+                widget.formData.selectedClass!.policy!.gradeAmount!;
+
+            if(mounted) {
+              textEditingControllerAmount.text = max.toStringAsFixed(2);
+            }
+            widget.formData.amount = max.value;
+          }
+        }
+    }},);
+
+    eligibleAmount.listen((p0) {
+      widget.formData.eligibleAmount = eligibleAmount.value;
+    },);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -192,35 +247,19 @@ class _FormItemState extends State<FormItem> {
               widget.formData.amount = double.tryParse(val) ?? 0;
               isUpdated.toggle();
             },
-            isEnable: true,
+            isEnable: widget.category.hasStartMeter ? false : true,
             isObscure: false),
         Obx(() {
           debugPrint(isUpdated.value.toString()); // do not remove
           if (widget.formData.selectedClass != null &&
               widget.formData.selectedClass?.policy?.gradeAmount != null &&
-              widget.formData.amount != null) {
-            double max = widget.formData.selectedClass!.policy!.gradeAmount!;
-            double totalKms = 0;
-            if (widget.category.hasStartMeter) {
-              double start =
-                  double.tryParse(widget.formData.odoMeterStart ?? '0') ?? 0;
-              double end =
-                  double.tryParse(widget.formData.odoMeterEnd ?? '0') ?? 0;
-              if (start == 0 && end == 0) {
-                return const SizedBox.shrink();
-              }
+              widget.formData.amount != null && !widget.category.hasStartMeter) {
 
-              totalKms = end - start;
-
-              max = totalKms *
-                  widget.formData.selectedClass!.policy!.gradeAmount!;
-            }
-
-            if (widget.formData.amount! > max) {
+            if (widget.formData.amount! > max.value) {
               return Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                  "(Eligible amount ${max.toStringAsFixed(2)} INR ${widget.category.hasStartMeter ? 'for $totalKms Kms @ ${widget.formData.selectedClass!.policy!.gradeAmount!} INR/Km' : ''})",
+                  "(Eligible amount ${max.value.toStringAsFixed(2)} INR ${widget.category.hasStartMeter ? 'for ${totalKms.value} Kms @ ${widget.formData.selectedClass!.policy!.gradeAmount!} INR/Km' : ''})",
                   style: const TextStyle(color: Colors.red),
                 ),
               );
@@ -362,6 +401,16 @@ class _FormItemState extends State<FormItem> {
             onChanged: (value) {
               setState(() {
                 widget.formData.noOfEmployees = int.tryParse(value) ?? 1;
+
+                if((widget.formData.noOfEmployees - 1)<widget.formData.employees.length){
+                  widget.formData.employees.removeLast();
+                  if(widget.formData.employees.isNotEmpty){
+                    calculateClass();
+                  }else{
+                      eligibleAmount(widget.formData.selectedClass?.policy?.gradeAmount);
+                  }
+                  isUpdated.toggle();
+                }
                 print('employee: ${widget.formData.noOfEmployees}');
               });
             }),
@@ -371,6 +420,13 @@ class _FormItemState extends State<FormItem> {
             maxSelection: widget.formData.noOfEmployees - 1,
             onChanged: (list) {
               widget.formData.employees = list;
+              if(!widget.category.hasStartMeter && widget.formData.employees.isNotEmpty) {
+                calculateClass();
+              }
+
+              if(list.isEmpty){
+                eligibleAmount(widget.formData.selectedClass?.policy?.gradeAmount);
+              }
               print(list.length);
             },
             items: widget.formData.employees.isNotEmpty
@@ -396,11 +452,31 @@ class _FormItemState extends State<FormItem> {
                   widget.formData.selectedClass = value;
                   widget.formData.classId = value.id;
                   widget.formData.policyId = value.policy?.id;
+                  if(widget.formData.employees.isEmpty){
+                    eligibleAmount(value.policy?.gradeAmount);
+                  }
                   isUpdated.toggle();
                 },
               )
             ],
           )
         : const SizedBox.shrink();
+  }
+
+  void calculateClass() async {
+    try {
+      var body = {
+        'category_id': widget.category.id,
+        'grade_ids': [Get.find<ProfileController>().user.value.grade,...widget.formData.employees.map((e) => e.grade,)]
+      };
+      var response = await MygRepository().getClassCalculation(body: body);
+      if (response.success) {
+        eligibleAmount.value = response.amount;
+        widget.formData.eligibleAmount = response.amount;
+        isUpdated.toggle();
+      }
+    }catch(_){
+      print(_.toString());
+    }
   }
 }

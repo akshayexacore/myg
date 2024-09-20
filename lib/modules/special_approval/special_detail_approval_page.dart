@@ -515,7 +515,7 @@ class SpecialDetailApprovalPage extends StatelessWidget {
                                        if (_controller.claim.value!.categories![index].items[formIndex].selectedClass != null &&
                                            _controller.claim.value!.categories![index].items[formIndex].selectedClass?.policy?.gradeAmount != null &&
                                            _controller.claim.value!.categories![index].items[formIndex].amount != null) {
-                                         double max = _controller.claim.value!.categories![index].items[formIndex].selectedClass!.policy!.gradeAmount!;
+                                         double max = _controller.claim.value!.categories![index].items[formIndex].eligibleAmount ?? _controller.claim.value!.categories![index].items[formIndex].selectedClass!.policy!.gradeAmount!;
                                          double totalKms = 0;
                                          if (_controller.claim.value!.categories![index].hasStartMeter) {
                                            double start =

@@ -27,4 +27,5 @@ class ApiConstants {
   static String viewClaimSpecialApprover = '/api/viewClaimSpecialApprover';
   static String advanceRequest = '/api/advanceRequest';
   static String advanceList = '/api/advanceList';
+  static String classCalculation = '/api/classCalculation';
 }

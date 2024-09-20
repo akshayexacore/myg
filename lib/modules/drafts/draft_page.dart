@@ -54,7 +54,7 @@ class DraftPage extends StatelessWidget {
                                 children: [
                                   headTitle("Date", AppFormatter.formatDDMMMYYYY(_controller.items[index].createdAt)),
                                   headTitle("Type of trip", _controller.items[index].tripType.name),
-                                  headTitle("Branch name", _controller.items[index].branch.name),
+                                  headTitle("Branch name", _controller.items[index].branch?.name ?? 'NA'),
                                 ],
                               ),
 

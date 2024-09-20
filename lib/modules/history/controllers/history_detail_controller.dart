@@ -193,8 +193,25 @@ class HistoryDetailController extends GetxController with GetSingleTickerProvide
     isFormAddBusy(false);
   }
 
-  bool _validateForm() {
+  /*bool _validateForm() {
     if (formKey.currentState!.validate()) {
+      return true;
+    }else {
+      AppDialog.showToast("Please fill all the mandatory fields",isError: true);
+      return false;
+    }
+  }*/
+
+  bool _validateForm() {
+
+    bool isFormValid = formKey.currentState!.validate();
+    bool areFilesValid = _validateFiles();
+
+    if (isFormValid && areFilesValid) {
+      if (reSubmittedCategories.isEmpty) {
+        AppDialog.showToast("Please select at least one category",isError: true);
+        return false;
+      }
       return true;
     }else {
       AppDialog.showToast("Please fill all the mandatory fields",isError: true);
@@ -202,8 +219,30 @@ class HistoryDetailController extends GetxController with GetSingleTickerProvide
     }
   }
 
+  bool _validateFiles(){
+    bool valid = true;
+    reSubmittedCategories.forEach((element) {
+      print('here 1');
+      element.items.forEach((form) {
+        print('here 2');
+        if(form.files.isEmpty && element.name.toLowerCase()!='food'){
+          form.fileError = "This is a mandatory field";
+          print('here');
+          emitFormUpdate();
+          emitFormChange();
+          valid = false;
+        }
+      },);
+    },);
+
+    return valid;
+  }
+
   void gotoResubmitPreview(){
-    Get.toNamed(ClaimResubmitConfirmationPage.routeName);
+    if (_validateForm()) {
+      Get.toNamed(ClaimResubmitConfirmationPage.routeName);
+    }
+
   }
 
   void resubmit()async{

@@ -90,7 +90,7 @@ class ClaimConfirmationPage extends StatelessWidget {
                               .toList()
                               .join("")),
                           itemCount: claimController.selectedCategories.length,
-                          maxOpened: 2,
+                          maxOpened: 20,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 0),
                           physics: const NeverScrollableScrollPhysics(),
@@ -548,6 +548,10 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                               .amount !=
                                                           null) {
                                                     double max = claimController
+                                                        .selectedCategories[
+                                                    index]
+                                                        .items[formIndex]
+                                                        .eligibleAmount ?? claimController
                                                         .selectedCategories[
                                                             index]
                                                         .items[formIndex]

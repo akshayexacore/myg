@@ -12,7 +12,7 @@ class ClaimForm {
   late int id;
   late String storageId;
   late TripType tripType;
-  late Branch branch;
+  Branch? branch;
   late DateTime createdAt;
   late String purpose;
   late List<Category> categories;
@@ -21,7 +21,7 @@ class ClaimForm {
     this.id = 0,
     this.storageId = '',
     required this.tripType,
-    required this.branch,
+    this.branch,
     required this.createdAt,
     required this.purpose,
     required this.categories,
@@ -31,7 +31,7 @@ ClaimForm.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     storageId = json['storage_id'] ?? '';
     tripType =  TripType.fromJson(json['trip_type']);
-    branch =  Branch.fromJson(json['branch']);
+    branch = json['branch']!=null ?  Branch.fromJson(json['branch']) : null;
     createdAt =  DateTime.parse(json['created_at']);
     purpose = json['purpose'] ?? '';
     categories = <Category>[];
@@ -47,7 +47,7 @@ ClaimForm.fromJson(Map<String, dynamic> json) {
     data['id'] = id;
     data['storage_id'] = storageId;
     data['trip_type'] = tripType.toJson();
-    data['branch'] = branch.toJson();
+    data['branch'] = branch?.toJson();
     data['created_at'] = createdAt.toString();
     data['purpose'] = purpose;
     data['categories'] = categories.map((v) => v.toJson()).toList();
@@ -58,7 +58,7 @@ ClaimForm.fromJson(Map<String, dynamic> json) {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = id;
     data['triptype_id'] = tripType.id;
-    data['visit_branch_id'] = branch.id;
+    data['visit_branch_id'] = branch?.id;
     data['trip_purpose'] = purpose;
     data['claim_details'] = categories
         .expand((category) => category.items)
@@ -83,6 +83,7 @@ class ClaimFormData {
   late String remarks;
   late String approverRemarks;
   double? amount;
+  double? eligibleAmount;
   late List<String> files;
   late String fileError;
   CategoryClass? selectedClass;
@@ -107,6 +108,7 @@ class ClaimFormData {
     this.fileError = '',
     this.approverRemarks = '',
     this.amount=0,
+    this.eligibleAmount=0,
     this.files = const [],
     this.selectedClass,
     this.status = ClaimStatus.none,
@@ -133,7 +135,8 @@ class ClaimFormData {
     }
     remarks = json['remarks'] ?? '';
     approverRemarks = json['approver_remarks'] ?? '';
-    amount = json['amount'];
+    amount = json['amount'] ?? json['unit_amount'];
+    eligibleAmount = null;
     files = <String>[];
     if (json['files'] != null) {
       json['files'].forEach((v) {
@@ -172,6 +175,7 @@ class ClaimFormData {
     remarks = json['remarks'] ?? '';
     approverRemarks = json['approver_remarks'] ?? '';
     amount = double.tryParse(json['unit_amount'].toString()) ?? 0;
+    eligibleAmount = double.tryParse(json['eligible_amount'].toString()) ?? 0;
     files = <String>[];
     if(json['file_url']!=null){
       files = [json['file_url']];

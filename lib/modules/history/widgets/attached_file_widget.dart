@@ -55,6 +55,9 @@ class AttachedFileWidget extends StatelessWidget {
             imageUrl:
             "${AppConfig.imageBaseUrl}${file}",
             height: 50,
+            key: ValueKey('thumb-$file'),
+            memCacheHeight: 50 * 2,
+            maxHeightDiskCache: 50 * 2,
           )
               : Image.asset(
             AppAssets.file,

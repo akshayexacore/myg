@@ -38,7 +38,7 @@ class Employee {
     id = json['id'];
     employeeId = json['emp_id'];
     name = json['emp_name'] ?? '';
-    grade = json['grade'] ?? 0;
+    grade = json['grade'] ?? (json['emp_grade'] ?? 0);
     empBranch = json['emp_branch'] ?? '';
     empBaseLocation = json['emp_baselocation'] ?? '';
   }

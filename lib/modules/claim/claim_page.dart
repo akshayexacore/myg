@@ -233,7 +233,7 @@ class ClaimPage extends StatelessWidget {
                           }
                         },
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (claimController.selectedTripType.value?.name.toLowerCase() != "others" && (value == null || value.isEmpty)) {
                             return 'This is a mandatory field';
                           }
                           return null;

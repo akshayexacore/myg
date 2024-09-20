@@ -404,7 +404,7 @@ class ClaimResubmitConfirmationPage extends StatelessWidget {
                                         if (_controller.reSubmittedCategories[index].items[formIndex].selectedClass != null &&
                                             _controller.reSubmittedCategories[index].items[formIndex].selectedClass?.policy?.gradeAmount != null &&
                                             _controller.reSubmittedCategories[index].items[formIndex].amount != null) {
-                                          double max = _controller.reSubmittedCategories[index].items[formIndex].selectedClass!.policy!.gradeAmount!;
+                                          double max = _controller.reSubmittedCategories[index].items[formIndex].eligibleAmount ?? _controller.reSubmittedCategories[index].items[formIndex].selectedClass!.policy!.gradeAmount!;
                                           double totalKms = 0;
                                           if (_controller.reSubmittedCategories[index].hasStartMeter) {
                                             double start =

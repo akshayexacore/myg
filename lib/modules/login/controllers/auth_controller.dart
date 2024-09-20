@@ -22,12 +22,6 @@ class AuthController extends GetxController {
     busy(true);
     try {
 
-      // todo remove this after pr
-      DateTime expiry = DateTime(2024,9,20);
-      if(DateTime.now().isAfter(expiry)){
-        return;
-      }
-
       String token = await _authRepository.getAccessToken();
       if (token.isNotEmpty) {
         // if (user.name.isNotEmpty) {

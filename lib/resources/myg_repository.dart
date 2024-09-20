@@ -139,4 +139,9 @@ class MygRepository {
     return AdvanceHistoryResponse.fromJson(response);
   }
 
+  Future<ClassCalculationResponse> getClassCalculation({required Map<String,dynamic> body}) async {
+    final response = await _api.post(ApiConstants.classCalculation,headers: {},body: body);
+    return ClassCalculationResponse.fromJson(response);
+  }
+
 }

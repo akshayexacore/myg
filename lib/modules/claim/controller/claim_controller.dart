@@ -129,7 +129,7 @@ class ClaimController extends GetxController
         if (claimFrom.value == null) {
           claimFrom(ClaimForm(
               tripType: selectedTripType.value!,
-              branch: selectedBranch.value!,
+              branch: selectedBranch.value,
               createdAt: DateTime.now(),
               purpose: textEditingControllerPurpose.text,
               categories: selectedCategories));
@@ -161,7 +161,7 @@ class ClaimController extends GetxController
       AppDialog.showToast("Please select a Trip type",isError: true);
       return false;
     }
-    if (selectedBranch.value == null) {
+    if (selectedTripType.value?.name.toLowerCase() != "others" && selectedBranch.value == null) {
       AppDialog.showToast("Please select a branch",isError: true);
       return false;
     }
@@ -195,7 +195,7 @@ class ClaimController extends GetxController
       print('here 1');
       element.items.forEach((form) {
         print('here 2');
-        if(form.files.isEmpty){
+        if(form.files.isEmpty && element.name.toLowerCase()!='food'){
           form.fileError = "This is a mandatory field";
           print('here');
           emitFormUpdate();
@@ -215,13 +215,13 @@ class ClaimController extends GetxController
         if (claimFrom.value == null) {
           claimFrom(ClaimForm(
               tripType: selectedTripType.value!,
-              branch: selectedBranch.value!,
+              branch: selectedBranch.value,
               createdAt: DateTime.now(),
               purpose: textEditingControllerPurpose.text,
               categories: selectedCategories));
         } else {
           claimFrom.value!.tripType = selectedTripType.value!;
-          claimFrom.value!.branch = selectedBranch.value!;
+          claimFrom.value!.branch = selectedBranch.value;
           claimFrom.value!.purpose = textEditingControllerPurpose.text;
           claimFrom.value!.categories = selectedCategories;
           claimFrom(claimFrom.value);
