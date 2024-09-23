@@ -15,11 +15,18 @@ import 'package:travel_claim/routes/routes.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:travel_claim/views/style/colors.dart';
-
+import 'dart:io';
+ class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-
+HttpOverrides.global = MyHttpOverrides();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -68,7 +75,7 @@ class MyApp extends StatelessWidget {
           );
         },
         child: GetMaterialApp(
-          title: 'MyG Travel Claim',
+          title: 'My Gourney',
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(

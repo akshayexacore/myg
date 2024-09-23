@@ -59,8 +59,9 @@ class ApiBaseHelper {
         headers.addAll(_headers);
       }
       var uri = Uri.parse(_baseUrl + url);
+      print("the url is here $uri");
       final response =
-      await http.post(uri, body: jsonEncode(body), headers: headers);
+      await http.post(uri, body: jsonEncode(body), headers: headers)  .timeout(Duration(seconds: 30));
       print(body);
       responseJson = _returnResponse(response);
     } on SocketException {

@@ -115,10 +115,6 @@ validCheck(String s) {
   return s;
 }
  stringToBoolean(String booleanString) {
-  if (booleanString == null) {
-    throw ArgumentError("The input string cannot be null.");
-  }
-
   switch (booleanString.toLowerCase()) {
     case 'true':
     case 'yes':
