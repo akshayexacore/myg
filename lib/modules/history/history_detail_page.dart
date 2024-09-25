@@ -409,6 +409,7 @@ class HistoryDetailPage extends StatelessWidget {
                                       if(_controller.claim.value!.categories![index].items[formIndex].selectedClass!=null)
                                         gapHC(10),
                                       headTitle("Remark", _controller.claim.value!.categories![index].items[formIndex].remarks.isEmpty ? 'Nil' : _controller.claim.value!.categories![index].items[formIndex].remarks),
+                                    if(_controller.claim.value?.status!=ClaimStatus.pending)  headTitle("Approver remark", _controller.claim.value!.categories![index].items[formIndex].approverRemarks.isEmpty ? 'Nil' : _controller.claim.value!.categories![index].items[formIndex].approverRemarks),
                                       gapHC(10),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
