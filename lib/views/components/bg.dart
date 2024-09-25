@@ -32,11 +32,11 @@ Widget backgroundImg(context,bottomContainerXaxis,upperContainerXaxis){
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                  AppAssets.myGpngicon,
+                  AppAssets.splash_appIcon,height: 120,
               ),
-            tcustomhight("Travel Claim", Colors.white, 20.0, FontWeight.w500,
+            // tcustomhight("Travel Claim", Colors.white, 20.0, FontWeight.w500,
 
-              )
+            //   )
             ],
           )
       ),

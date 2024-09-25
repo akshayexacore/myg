@@ -288,51 +288,50 @@ class SpecialDetailApprovalPage extends StatelessWidget {
                                          crossAxisAlignment:
                                          CrossAxisAlignment.start,
                                          children: [
-                                           Flexible(
-                                               flex: 5,
-                                               child: Column(
-                                                 crossAxisAlignment:
-                                                 CrossAxisAlignment.start,
-                                                 children: [
-                                                   ts(
-                                                       "Odometer reading before",
-                                                       const Color(0xff333333)
-                                                           .withOpacity(0.8)),
-                                                   Text(
-                                                       _controller
-                                                           .claim
-                                                           .value!
-                                                           .categories![
-                                                       index]
-                                                           .items[formIndex]
-                                                           .odoMeterStart ??
-                                                           'NA',
-                                                       style: const TextStyle(
-                                                           fontFamily: 'Roboto',
-                                                           fontSize: 14,
-                                                           fontWeight:
-                                                           FontWeight.w700,
-                                                           color: Color(
-                                                               0xff333333)))
-                                                 ],
-                                               )),
+                                          //  Flexible(
+                                          //      flex: 5,
+                                          //      child: Column(
+                                          //        crossAxisAlignment:
+                                          //        CrossAxisAlignment.start,
+                                          //        children: [
+                                          //          ts(
+                                          //              "Odometer reading before",
+                                          //              const Color(0xff333333)
+                                          //                  .withOpacity(0.8)),
+                                          //          Text(
+                                          //              _controller
+                                          //                  .claim
+                                          //                  .value!
+                                          //                  .categories![
+                                          //              index]
+                                          //                  .items[formIndex]
+                                          //                  .odoMeterStart ??
+                                          //                  'NA',
+                                          //              style: const TextStyle(
+                                          //                  fontFamily: 'Roboto',
+                                          //                  fontSize: 14,
+                                          //                  fontWeight:
+                                          //                  FontWeight.w700,
+                                          //                  color: Color(
+                                          //                      0xff333333)))
+                                          //        ],
+                                          //      )),
                                            Expanded(
                                              flex: 5,
-                                             child: Column(
-                                               crossAxisAlignment:
-                                               CrossAxisAlignment.start,
-                                               children: [
-                                                 ts(
-                                                     "Odometer reading after",
-                                                     const Color(0xff333333)
-                                                         .withOpacity(0.8)),
-                                                 Text(
-                                                     _controller
+                                             child: ts(
+                                                 "Total dometer reading",
+                                                 const Color(0xff333333)
+                                                     .withOpacity(0.8)),
+                                           ),
+                                           Expanded(
+                                             flex: 5,
+                                             child: Text(
+                                                    "${ _controller
                                                          .claim
                                                          .value!
                                                          .categories![index]
                                                          .items[formIndex]
-                                                         .odoMeterEnd ??
+                                                         .odoMeterEnd} KM "??
                                                          'NA',
                                                      textAlign: TextAlign.left,
                                                      overflow: TextOverflow.fade,
@@ -343,8 +342,6 @@ class SpecialDetailApprovalPage extends StatelessWidget {
                                                          FontWeight.bold,
                                                          color:
                                                          Color(0xff333333))),
-                                               ],
-                                             ),
                                            ),
                                          ],
                                        ),

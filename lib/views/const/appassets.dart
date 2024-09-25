@@ -1,6 +1,7 @@
 class AppAssets{
 
   static const String appIcon ='assets/icons/appicon.png';
+  static const String splash_appIcon ='assets/icons/splashscreenAppicon.png';
   static const String backimg ='assets/images/bground.png';
   static const String newClaim_img ='assets/icons/add.svg';
   static const String reqAdv_img ='assets/icons/reqAdv.svg';
