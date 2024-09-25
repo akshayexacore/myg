@@ -286,50 +286,50 @@ class _FormItemState extends State<FormItem> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        if (widget.category.hasStartMeter)
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ts("Odometer reading beforedddd", Colors.black),
-                gapHC(3),
-                TextinputfieldContainer(
-                    showIcon: false,
-                    boxRadiusColor: primaryColor,
-                    verticalPadding: 6,
-                    maxline: 1,
-                    controller: textEditingControllerOdoMeterFrom,
-                    textInputAction: TextInputAction.done,
-                    keybordType: TextInputType.number,
-                    suffix: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Km",style: TextStyle(color: Colors.black54),),
-                      ],
-                    ),
-                    onchange: (val) {
-                      widget.formData.odoMeterStart = val;
-                      isUpdated.toggle();
-                    },
-                    validate: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'This is a mandatory field';
-                      }
-                      return null; // Valid input
-                    },
-                    hintText: "Enter reading",
-                    isEnable: true,
-                    isObscure: false),
-              ],
-            ),
-          ),
-        if (widget.category.hasEndMeter) gapWC(20),
+        // if (widget.category.hasStartMeter)
+        //   Flexible(
+        //     child: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         ts("Odometer reading before", Colors.black),
+        //         gapHC(3),
+        //         TextinputfieldContainer(
+        //             showIcon: false,
+        //             boxRadiusColor: primaryColor,
+        //             verticalPadding: 6,
+        //             maxline: 1,
+        //             controller: textEditingControllerOdoMeterFrom,
+        //             textInputAction: TextInputAction.done,
+        //             keybordType: TextInputType.number,
+        //             suffix: const Column(
+        //               mainAxisAlignment: MainAxisAlignment.center,
+        //               children: [
+        //                 Text("Km",style: TextStyle(color: Colors.black54),),
+        //               ],
+        //             ),
+        //             onchange: (val) {
+        //               widget.formData.odoMeterStart = val;
+        //               isUpdated.toggle();
+        //             },
+        //             validate: (value) {
+        //               if (value == null || value.isEmpty) {
+        //                 return 'This is a mandatory field';
+        //               }
+        //               return null; // Valid input
+        //             },
+        //             hintText: "Enter reading",
+        //             isEnable: true,
+        //             isObscure: false),
+        //       ],
+        //     ),
+        //   ),
+        // if (widget.category.hasEndMeter) gapWC(20),
         if (widget.category.hasEndMeter)
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ts("Odometer reading after", Colors.black),
+                ts("Total odometer reading", Colors.black),
                 gapHC(3),
                 TextinputfieldContainer(
                     showIcon: false,

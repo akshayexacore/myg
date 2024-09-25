@@ -344,7 +344,7 @@ class HistoryDetailPage extends StatelessWidget {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    ts("Odometer reading before", Color(0xff333333).withOpacity(0.8)),
+                                                    ts("Odometer reading beforess", Color(0xff333333).withOpacity(0.8)),
                                                     Text(_controller.claim.value!.categories![index].items[formIndex].odoMeterStart ?? 'NA',style:  const TextStyle(
                                                         fontFamily: 'Roboto',fontSize: 14,
                                                         fontWeight: FontWeight.w700,color: Color(0xff333333)))
