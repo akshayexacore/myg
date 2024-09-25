@@ -83,6 +83,7 @@ class ClaimFormData {
   late String remarks;
   late String approverRemarks;
   double? amount;
+  double? deductedAmount;
   double? eligibleAmount;
   late List<String> files;
   late String fileError;
@@ -109,6 +110,7 @@ class ClaimFormData {
     this.approverRemarks = '',
     this.amount=0,
     this.eligibleAmount=0,
+    this.deductedAmount=0,
     this.files = const [],
     this.selectedClass,
     this.status = ClaimStatus.none,
@@ -136,6 +138,7 @@ class ClaimFormData {
     remarks = json['remarks'] ?? '';
     approverRemarks = json['approver_remarks'] ?? '';
     amount = json['amount'] ?? json['unit_amount'];
+    deductedAmount=json["deduct_amount"]??0;
     eligibleAmount = null;
     files = <String>[];
     if (json['files'] != null) {

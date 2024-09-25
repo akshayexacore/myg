@@ -430,6 +430,7 @@ class HistoryDetailPage extends StatelessWidget {
                                       ),
                                       gapHC(10),
                                       headTitle("Amount", "${_controller.claim.value!.categories![index].items[formIndex].amount!.toStringAsFixed(2)} INR"),
+                                     if(_controller.claim.value?.status!=ClaimStatus.pending) headTitle("Deduct amount", "${_controller.claim.value!.categories![index].items[formIndex].deductedAmount!=null?_controller.claim.value!.categories![index].items[formIndex].deductedAmount!.toStringAsFixed(2):0} INR"),
                                       Obx(() {
                                         if (_controller.claim.value!.categories![index].items[formIndex].selectedClass != null &&
                                             _controller.claim.value!.categories![index].items[formIndex].selectedClass?.policy?.gradeAmount != null &&
