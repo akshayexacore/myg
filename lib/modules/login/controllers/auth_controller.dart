@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:travel_claim/modules/landing/landing_page.dart';
@@ -23,6 +24,7 @@ class AuthController extends GetxController {
     try {
 
       String token = await _authRepository.getAccessToken();
+      debugPrint("the token case$token");
       if (token.isNotEmpty) {
         // if (user.name.isNotEmpty) {
         final user = await _userProfileRepository.getUserOffline();
