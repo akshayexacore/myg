@@ -71,6 +71,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   loader_overlay: ^4.0.1
   package_info_plus: ^8.0.2
+  dio: ^5.7.0
   #flutter pub run flutter_launcher_icons:main
 dev_dependencies:
   flutter_test:

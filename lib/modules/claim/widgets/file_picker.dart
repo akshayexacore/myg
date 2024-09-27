@@ -1,4 +1,6 @@
 
+import 'dart:typed_data';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart' as picker;
 import 'package:flutter/material.dart';
@@ -11,9 +13,11 @@ import 'package:travel_claim/modules/gallery/gallery_page.dart';
 import 'package:travel_claim/modules/gallery/pdf_viewer.dart';
 import 'package:travel_claim/modules/gallery/widgets/gallery_item.dart';
 import 'package:travel_claim/resources/myg_repository.dart';
+import 'package:travel_claim/utils/api_base_helper.dart';
 import 'package:travel_claim/views/components/app_dialog.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/components/customButton.dart';
+import 'package:travel_claim/views/components/image_dispalya.ssl.dart';
 import 'package:travel_claim/views/const/appassets.dart';
 import 'package:travel_claim/views/style/colors.dart';
 import 'package:path/path.dart';
@@ -102,11 +106,13 @@ class _FilePickerState extends State<FilePicker> {
                                   .last
                                   .toLowerCase()
                                   .endsWith('png')
-                          ? CachedNetworkImage(
-                              imageUrl:
-                                  "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
-                              height: 70,
-                            )
+                          ? 
+                           CustomSslImageDispaly(url: "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}")
+                          // CachedNetworkImage(
+                          //     imageUrl:
+                          //         "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
+                          //     height: 70,
+                          //   )
                           : Image.asset(
                               AppAssets.file,
                               height: 70,
@@ -348,3 +354,5 @@ class _FilePickerState extends State<FilePicker> {
     }
   }
 }
+
+

@@ -16,9 +16,11 @@ import 'package:travel_claim/modules/claim/controller/claim_controller.dart';
 import 'package:travel_claim/modules/claim/widgets/form_item.dart';
 import 'package:travel_claim/modules/landing/controllers/landing_controller.dart';
 import 'package:travel_claim/modules/landing/controllers/profile_controller.dart';
+import 'package:travel_claim/utils/api_base_helper.dart';
 import 'package:travel_claim/views/components/bg.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/components/customButton.dart';
+import 'package:travel_claim/views/components/image_dispalya.ssl.dart';
 import 'package:travel_claim/views/components/textInputField.dart';
 import 'package:travel_claim/views/style/colors.dart';
 
@@ -232,7 +234,10 @@ class ClaimPage extends StatelessWidget {
                           }
                         },
                         validator: (value) {
-                          if (claimController.selectedTripType.value?.name.toLowerCase() != "others" && (value == null || value.isEmpty)) {
+                          if (claimController.selectedTripType.value?.name
+                                      .toLowerCase() !=
+                                  "others" &&
+                              (value == null || value.isEmpty)) {
                             return 'This is a mandatory field';
                           }
                           return null;
@@ -438,12 +443,10 @@ class ClaimPage extends StatelessWidget {
                                                 ),
                                               ),
                                               gapWC(4),
-                                              CachedNetworkImage(
-                                                imageUrl: claimController
-                                                    .categories[index].imageUrl,
-                                                height: 18,
-                                                width: 18,
-                                              ),
+                                              CustomSslImageDispaly(url: claimController
+                                                        .categories[index]
+                                                        .imageUrl),
+                                            
                                               gapWC(4),
                                               Expanded(
                                                   child: tchcus(
@@ -509,12 +512,9 @@ class ClaimPage extends StatelessWidget {
                                 claimController.selectedCategories[index].name,
                                 Colors.black,
                                 15.0),
-                            leading: Image.network(
-                              claimController
-                                  .selectedCategories[index].imageUrl,
-                              height: 25,
-                              width: 25,
-                            ),
+                            leading: CustomSslImageDispaly(url: claimController
+                                  .selectedCategories[index].imageUrl),
+                             
                             trailing: Icon(
                               Icons.keyboard_arrow_down,
                               color: primaryColor.withOpacity(0.8),
@@ -572,7 +572,7 @@ class ClaimPage extends StatelessWidget {
                                   child: Container(
                                     decoration: boxOutlineCustom(
                                         Colors.white, 10.0, primaryColor),
-                                    height:46,
+                                    height: 46,
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 9, horizontal: 20),
                                     child: Row(

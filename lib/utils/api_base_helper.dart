@@ -2,11 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:http/io_client.dart';
+import 'package:http_interceptor/http/intercepted_client.dart';
 import 'package:http_interceptor/http_interceptor.dart' as customHttp;
 import 'package:path/path.dart';
 import 'package:http/http.dart' as flutter_http;
@@ -15,6 +19,32 @@ import 'package:travel_claim/configs/app_config.dart';
 import 'package:travel_claim/modules/login/controllers/auth_controller.dart';
 import 'package:travel_claim/utils/app_exception.dart';
 import 'package:travel_claim/utils/shared_preferences_data_provider.dart';
+
+class CustomImageProvider extends CachedNetworkImageProvider {
+  final Dio dio = Dio();
+
+  CustomImageProvider(String url) : super(url) {
+    // Configure Dio to ignore SSL errors
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+    };
+  }
+}
+
+Future<Uint8List> fetchImage(String url) async {
+  Dio dio = Dio();
+  (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+      (HttpClient client) {
+    client.badCertificateCallback =
+        (X509Certificate cert, String host, int port) => true;
+  };
+
+  final response = await dio.get<List<int>>(url,
+      options: Options(responseType: ResponseType.bytes));
+  return Uint8List.fromList(response.data!);
+}
 
 class ApiBaseHelper {
   final String _baseUrl = AppConfig.baseUrl;
@@ -32,7 +62,7 @@ class ApiBaseHelper {
         requestTimeout: const Duration(seconds: 10));
   }
 
-  Future<IOClient> createIoClient() async {
+  Future<InterceptedClient> createIoClient() async {
     // Create a custom SecurityContext
     SecurityContext context = SecurityContext();
 
@@ -41,7 +71,11 @@ class ApiBaseHelper {
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
 
-    return IOClient(httpClient);
+    return InterceptedClient.build(
+      client: IOClient(httpClient),
+      interceptors: [CsmApiInterceptor()],
+      retryPolicy: ExpiredTokenRetryPolicy(),
+    );
   }
 
   Future<dynamic> get(
@@ -58,12 +92,13 @@ class ApiBaseHelper {
           Uri.parse(_baseUrl + url).replace(queryParameters: queryParameters);
       print("the url is get here $uri");
 
-      //     final client = await createIoClient();
+      final client = await createIoClient();
 
-      // // Perform the GET request using the IOClient
-      // final response = await client.get(uri, headers: headers);
+      // Perform the GET request using the IOClient
+      final response = await client.get(uri, headers: headers);
 
-      final response = await http.get(uri, headers: headers); //original
+      // final response = await http.get(uri, headers: headers); //original
+
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -90,7 +125,7 @@ class ApiBaseHelper {
           .timeout(Duration(seconds: 30));
 
       // final response = await http
-      //     .post(uri, body: jsonEncode(body), headers: headers)
+      //     .post(uri, body: jsonEncode(body), headers: headers) //actual
       //     .timeout(Duration(seconds: 30));
       print(body);
       responseJson = _returnResponse(response);
@@ -111,8 +146,12 @@ class ApiBaseHelper {
         headers.addAll(_headers);
       }
       var uri = Uri.parse(_baseUrl + url);
-      final response =
-          await http.patch(uri, body: jsonEncode(body), headers: headers);
+      final client = await createIoClient();
+      final response = await client
+          .patch(uri, body: jsonEncode(body), headers: headers)
+          .timeout(Duration(seconds: 30));
+      // final response =
+      //     await http.patch(uri, body: jsonEncode(body), headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -133,6 +172,7 @@ class ApiBaseHelper {
     dynamic responseJson;
     try {
       var uri = Uri.parse((baseUrl ?? _baseUrl) + url);
+
       var request = customHttp.MultipartRequest(
         isPut
             ? customHttp.HttpMethod.PUT.asString
@@ -159,8 +199,10 @@ class ApiBaseHelper {
           print(element);
         }
       }
+      final client = await createIoClient();
+      final streamedResponse = await client.send(request);
 
-      final streamedResponse = await http.send(request);
+      // final streamedResponse = await http.send(request);//orginal
       final response = await customHttp.Response.fromStream(streamedResponse);
       responseJson = _returnResponse(response);
     } on SocketException {
@@ -178,8 +220,10 @@ class ApiBaseHelper {
     try {
       header.addAll(_headers);
       var uri = Uri.parse(_baseUrl + url);
+      final client = await createIoClient();
       final response =
-          await http.put(uri, body: jsonEncode(body), headers: header);
+          await client.put(uri, body: jsonEncode(body), headers: header);
+      // final response = await http.put(uri, body: jsonEncode(body), headers: header);
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -195,7 +239,9 @@ class ApiBaseHelper {
     try {
       header.addAll(_headers);
       var uri = Uri.parse(_baseUrl + url);
-      final response = await http.delete(uri, headers: header);
+      final client = await createIoClient();
+      final response = await client.delete(uri, headers: header);
+      // final response = await http.delete(uri, headers: header);
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -279,7 +325,6 @@ class ExpiredTokenRetryPolicy extends customHttp.RetryPolicy {
         String refreshToken = await _preferences.getRefreshToken();
         final headers = AppConfig.headers;
         var uri = Uri.parse(AppConfig.baseUrl + ApiConstants.refreshToken);
-        print(jsonEncode({'random_string': refreshToken}));
         final response = await flutter_http.post(uri,
             headers: headers,
             body: jsonEncode({'random_string': refreshToken}));

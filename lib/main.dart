@@ -16,6 +16,9 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:travel_claim/views/style/colors.dart';
 import 'dart:io';
+
+
+
  class MyHttpOverrides extends HttpOverrides{
   @override
   HttpClient createHttpClient(SecurityContext? context){
@@ -23,10 +26,13 @@ import 'dart:io';
       ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
   }
 }
+
+
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async{
+  HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
-HttpOverrides.global = MyHttpOverrides();
+
  ByteData data = await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
   SecurityContext.defaultContext.setTrustedCertificatesBytes(data.buffer.asUint8List());
   await Firebase.initializeApp(

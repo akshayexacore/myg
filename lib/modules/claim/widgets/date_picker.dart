@@ -49,7 +49,8 @@ class _DatePickerState extends State<DatePicker> {
                   ts(
                       setDate(
                           6,
-                          widget.selectedDate ?? DateTime.now()),
+                          widget.selectedDate ?? DateTime.now()
+                          ),
                       Colors.black),
                   const Icon(
                     Icons.calendar_month,
