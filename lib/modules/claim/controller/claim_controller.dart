@@ -176,14 +176,24 @@ class ClaimController extends GetxController
 
     bool isFormValid = formKey.currentState!.validate();
     bool areFilesValid = _validateFiles();
+    bool isDateEmpty=_validateDates(
+      
+    );
+    print("isDateEmpty$isDateEmpty");
 
     if (isFormValid && areFilesValid) {
       if (selectedCategories.isEmpty) {
         AppDialog.showToast("Please select at least one category",isError: true);
         return false;
       }
+      else if(isDateEmpty){
+        AppDialog.showToast("Please fill all the mandatory fields",isError: true);
+         return false;
+    }
       return true;
-    }else {
+   
+    }
+    else {
       AppDialog.showToast("Please fill all the mandatory fields",isError: true);
       return false;
     }
@@ -201,6 +211,52 @@ class ClaimController extends GetxController
           emitFormUpdate();
           emitFormChange();
           valid = false;
+        }
+      },);
+    },);
+
+    return valid;
+  }
+  bool _validateDates(){
+    bool valid = true;
+    selectedCategories.forEach((element) {
+      print('here 1');
+      element.items.forEach((form) {
+        print('here 2');
+        if(element.hasFromDate){
+          if(form.fromDate==null ){
+            form.isFrmdateEmpty=true;
+          emitFormUpdate();
+          emitFormChange();
+          valid = true;}else{
+            form.isFrmdateEmpty=false;
+            emitFormUpdate();
+          emitFormChange();
+          valid = false;
+          }
+          if(form.toDate==null ){
+            form.isToDateIsEmpty=true;
+          emitFormUpdate();
+          emitFormChange();
+          valid = true;
+          }
+          else{
+             form.isToDateIsEmpty=false;
+            emitFormUpdate();
+          emitFormChange();
+          valid = false;
+          }
+         
+        }else{
+          if(form.fromDate==null ){form.isFrmdateEmpty=true;
+          emitFormUpdate();
+          emitFormChange();
+          valid = true;}else{
+            form.isFrmdateEmpty=false;
+            emitFormUpdate();
+          emitFormChange();
+          valid = false;
+          }
         }
       },);
     },);

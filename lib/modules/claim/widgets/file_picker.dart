@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -21,6 +20,7 @@ import 'package:travel_claim/views/components/image_dispalya.ssl.dart';
 import 'package:travel_claim/views/const/appassets.dart';
 import 'package:travel_claim/views/style/colors.dart';
 import 'package:path/path.dart';
+  var selectedImageFile;
 class FilePicker extends StatefulWidget {
   List<String> selectedFiles;
   final ValueChanged<List<String>> onChanged;
@@ -32,8 +32,7 @@ class FilePicker extends StatefulWidget {
       required this.onChanged,
       required this.selectedFiles,
       this.multiple = false,
-        this.errorMsg = ''
-      });
+      this.errorMsg = ''});
 
   @override
   State<FilePicker> createState() => _FilePickerState();
@@ -61,11 +60,16 @@ class _FilePickerState extends State<FilePicker> {
         ),
         if (widget.errorMsg.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.only(left: 12,top: 6),
-            child: Text(widget.errorMsg,style: TextStyle(color: Theme.of(context).colorScheme.error,fontSize: 12,fontWeight: FontWeight.w400),),
+            padding: const EdgeInsets.only(left: 12, top: 6),
+            child: Text(
+              widget.errorMsg,
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400),
+            ),
           ),
-        if (widget.errorMsg.isNotEmpty)
-          gapHC(4),
+        if (widget.errorMsg.isNotEmpty) gapHC(4),
         if (widget.selectedFiles.isNotEmpty) gapHC(10),
         if (widget.selectedFiles.isNotEmpty) ts("File", Colors.black),
         if (widget.selectedFiles.isNotEmpty) gapHC(3),
@@ -75,23 +79,70 @@ class _FilePickerState extends State<FilePicker> {
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: (){
-                    if(extension(widget.selectedFiles[index]).toLowerCase().endsWith('pdf')){
-                      Get.to(()=>PdfViewer(file: "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}"));
-                    }else{
-                      Navigator.push(
-                        Get.context!,
-                        MaterialPageRoute(
-                          builder: (context) => GalleryPhotoViewWrapper(
-                            galleryItems: [GalleryItem(id: "id:1", resource: "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}")],
-                            backgroundDecoration: const BoxDecoration(
-                              color: Colors.black,
+                  onTap: () {
+                    if (extension(widget.selectedFiles[index])
+                        .toLowerCase()
+                        .endsWith('pdf')) {
+                      Get.to(() => PdfViewer(
+                          file:
+                              "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}"));
+                    } else {
+                      print("object");
+showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Dialog(
+                  backgroundColor: Colors.transparent,
+                  insetPadding: EdgeInsets.all(0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    color: Colors.black,
+                    child: Stack(
+                      children: [
+                        // Full-screen content
+                        CustomSslImageDispaly(
+                              url:
+                                  "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
+                              height: MediaQuery.of(context).size.height,
+                              width:  MediaQuery.of(context).size.width,
                             ),
-                            initialIndex: 0,
-                            scrollDirection: Axis.horizontal,
+                        // Close button at the top right corner
+                        Positioned(
+                          top: 40,
+                          right: 20,
+                          child: IconButton(
+                            icon: Icon(Icons.close,color: Colors.white,),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
                           ),
                         ),
-                      );
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+                      
+                      // Navigator.push(
+                      //   Get.context!,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => GalleryPhotoViewWrapper(
+                      //       galleryItems: [
+                      //         GalleryItem(
+                      //             id: "id:1",
+                      //             resource:
+                      //                 "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}")
+                      //       ],
+                      //       backgroundDecoration: const BoxDecoration(
+                      //         color: Colors.black,
+                      //       ),
+                      //       initialIndex: 0,
+                      //       scrollDirection: Axis.horizontal,
+                      //     ),
+                      //   ),
+                      // );
                     }
                   },
                   child: Row(
@@ -106,8 +157,11 @@ class _FilePickerState extends State<FilePicker> {
                                   .last
                                   .toLowerCase()
                                   .endsWith('png')
-                          ? 
-                           CustomSslImageDispaly(url: "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}")
+                          ? CustomSslImageDispaly(
+                              url:
+                                  "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
+                              height: 70,
+                            )
                           // CachedNetworkImage(
                           //     imageUrl:
                           //         "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
@@ -119,11 +173,12 @@ class _FilePickerState extends State<FilePicker> {
                             ),
                       gapWC(10),
                       Expanded(
-                          child: ts(''/*widget.selectedFiles[index].split("/").last*/,
+                          child: ts(
+                              '' /*widget.selectedFiles[index].split("/").last*/,
                               Colors.black)),
                       gapWC(10),
                       GestureDetector(
-                        behavior: HitTestBehavior.opaque,
+                          behavior: HitTestBehavior.opaque,
                           onTap: () {
                             setState(() {
                               widget.selectedFiles.removeAt(index);
@@ -169,7 +224,7 @@ class _FilePickerState extends State<FilePicker> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: ()=> pickFromCamera(context),
+                          onTap: () => pickFromCamera(context),
                           child: Column(
                             children: [
                               CircleAvatar(
@@ -191,7 +246,7 @@ class _FilePickerState extends State<FilePicker> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: ()=> pickFromGallery(context),
+                          onTap: () => pickFromGallery(context),
                           child: Column(
                             children: [
                               CircleAvatar(
@@ -213,7 +268,7 @@ class _FilePickerState extends State<FilePicker> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: ()=> pickFromFiles(context),
+                          onTap: () => pickFromFiles(context),
                           child: Column(
                             children: [
                               CircleAvatar(
@@ -246,6 +301,7 @@ class _FilePickerState extends State<FilePicker> {
         backgroundColor: Colors.white);
   }
 
+
   pickFromFiles(BuildContext context) async {
     Get.back();
     picker.FilePickerResult? result = await picker.FilePicker.platform
@@ -258,11 +314,14 @@ class _FilePickerState extends State<FilePicker> {
       double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
 
       if (fileSizeInMB > 16) {
-        AppDialog.showToast('File size exceeds the 16MB limit. Please choose a smaller file.',isError: true);
+        selectedImageFile = null;
+        AppDialog.showToast(
+            'File size exceeds the 16MB limit. Please choose a smaller file.',
+            isError: true);
         return;
       }
-
-      String newFile = await uploadFile(file.path,context);
+      selectedImageFile = file;
+      String newFile = await uploadFile(file.path, context);
       if (newFile.isNotEmpty) {
         setState(() {
           if (widget.multiple) {
@@ -279,19 +338,22 @@ class _FilePickerState extends State<FilePicker> {
   void pickFromCamera(BuildContext context) async {
     Get.back();
     final ImagePicker _picker = ImagePicker();
-    final XFile? photo = await _picker.pickImage(source: ImageSource.camera,imageQuality: 80);
+    final XFile? photo =
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 80);
     if (photo != null) {
-
       int fileSizeInBytes = await photo.length();
       double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
 
       if (fileSizeInMB > 16) {
-        AppDialog.showToast('File size exceeds the 16MB limit. Please choose a smaller file.',isError: true);
+        selectedImageFile = null;
+        AppDialog.showToast(
+            'File size exceeds the 16MB limit. Please choose a smaller file.',
+            isError: true);
         return;
       }
+      selectedImageFile = photo;
 
-
-      String newFile = await uploadFile(photo.path,context);
+      String newFile = await uploadFile(photo.path, context);
       if (newFile.isNotEmpty) {
         setState(() {
           if (widget.multiple) {
@@ -308,18 +370,20 @@ class _FilePickerState extends State<FilePicker> {
   void pickFromGallery(BuildContext context) async {
     Get.back();
     final ImagePicker _picker = ImagePicker();
-    final XFile? photo = await _picker.pickImage(source: ImageSource.gallery,imageQuality: 80);
+    final XFile? photo =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (photo != null) {
-
       int fileSizeInBytes = await photo.length();
       double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
 
       if (fileSizeInMB > 16) {
-        AppDialog.showToast('File size exceeds the 16MB limit. Please choose a smaller file.',isError: true);
+        AppDialog.showToast(
+            'File size exceeds the 16MB limit. Please choose a smaller file.',
+            isError: true);
         return;
       }
 
-      String newFile = await uploadFile(photo.path,context);
+      String newFile = await uploadFile(photo.path, context);
       if (newFile.isNotEmpty) {
         setState(() {
           if (widget.multiple) {
@@ -333,7 +397,7 @@ class _FilePickerState extends State<FilePicker> {
     }
   }
 
-  Future<String> uploadFile(String file,BuildContext context) async {
+  Future<String> uploadFile(String file, BuildContext context) async {
     try {
       print('file: $file');
       Get.context!.loaderOverlay.show();
@@ -343,16 +407,14 @@ class _FilePickerState extends State<FilePicker> {
         widget.errorMsg = '';
         return response.path;
       } else {
-        AppDialog.showToast(response.message,isError: true);
+        AppDialog.showToast(response.message, isError: true);
         return '';
       }
-    }catch(_){
-      AppDialog.showToast("Something went wrong! Try again.",isError: true);
+    } catch (_) {
+      AppDialog.showToast("Something went wrong! Try again.", isError: true);
       return '';
-    }finally{
+    } finally {
       Get.context!.loaderOverlay.hide();
     }
   }
 }
-
-

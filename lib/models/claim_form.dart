@@ -78,6 +78,8 @@ class ClaimFormData {
   String? tripTo;
   String? odoMeterStart;
   String? odoMeterEnd;
+ late bool isFrmdateEmpty;
+ late bool isToDateIsEmpty;
   late int noOfEmployees;
   late List<Employee> employees;
   late String remarks;
@@ -103,6 +105,8 @@ class ClaimFormData {
     this.tripTo,
     this.odoMeterStart,
     this.odoMeterEnd,
+    this.isFrmdateEmpty=false,
+    this.isToDateIsEmpty=false,
     this.noOfEmployees = 1,
     this.employees = const [],
     this.remarks = '',

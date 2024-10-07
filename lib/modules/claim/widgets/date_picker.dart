@@ -47,10 +47,10 @@ class _DatePickerState extends State<DatePicker> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ts(
-                      setDate(
+                  widget.selectedDate!=null?    setDate(
                           6,
-                          widget.selectedDate ?? DateTime.now()
-                          ),
+                          widget.selectedDate!
+                          ):"",
                       Colors.black),
                   const Icon(
                     Icons.calendar_month,

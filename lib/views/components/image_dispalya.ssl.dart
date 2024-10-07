@@ -7,9 +7,12 @@ class CustomSslImageDispaly extends StatelessWidget {
   const CustomSslImageDispaly({
     super.key,
     required this.url,
+    this.height, this.width,
   });
 
   final String url;
+  final double? height;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +24,10 @@ class CustomSslImageDispaly extends StatelessWidget {
                                    .connectionState ==
                                ConnectionState.waiting) {
                              return Container(
-                               width:
+                               width:height??
                                    24.0, 
                                height:
-                                   24.0, 
+                                  height?? 24.0, 
                                child:
                                   SizedBox(),
                              );
@@ -35,7 +38,8 @@ class CustomSslImageDispaly extends StatelessWidget {
                              return Image.memory(
                                snapshot.data
                                    as Uint8List,
-                               height: 25,
+                               height: height?? 24.0,
+                               width:width??width ,
                              );
                            }
                          },

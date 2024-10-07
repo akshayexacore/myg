@@ -60,9 +60,9 @@ class _FormItemState extends State<FormItem> {
     textEditingControllerRemarks.text = widget.formData.remarks ?? '';
     textEditingControllerAmount.text =
         (widget.formData.amount==0 || widget.formData.amount== null ? '' : widget.formData.amount!.toStringAsFixed(2)).toString();
-    widget.formData.fromDate ??= DateTime.now();
+    widget.formData.fromDate ??=null;
     if (widget.formData.toDate == null && widget.category.hasToDate) {
-      widget.formData.toDate = DateTime.now();
+      widget.formData.toDate = null;
     }
 
     if(widget.category.classes!=null && widget.category.classes!.length == 1 && !widget.category.hasClass && widget.formData.selectedClass == null){
@@ -369,23 +369,41 @@ class _FormItemState extends State<FormItem> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        DatePicker(
-          title: widget.category.hasFromDate ? "Check-in date" : "Date",
-          selectedDate: widget.formData.fromDate,
-          lastDate: DateTime.now().subtract(Duration(days: widget.category.noOfDays)),
-          onChanged: (date) {
-            widget.formData.fromDate = date;
-          },
+        Column(
+          children: [
+            DatePicker(
+              title: widget.category.hasFromDate ? "Check-in date" : "Date",
+              selectedDate: widget.formData.fromDate,
+              lastDate: DateTime.now().subtract(Duration(days: widget.category.noOfDays)),
+              onChanged: (date) {
+                widget.formData.fromDate = date;
+              },
+            ),
+            if(widget.formData.isFrmdateEmpty)  Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text("This is a mandatory field",style: TextStyle(color: Theme.of(context).colorScheme.error,fontSize: 12,fontWeight: FontWeight.w400),),
+          ),
+          ],
         ),
         if (widget.category.hasToDate)
-          DatePicker(
-            title: widget.category.hasFromDate ? "Check-out date" : "Date",
-            selectedDate: widget.formData.toDate,
-            lastDate: DateTime.now().subtract(Duration(days: widget.category.noOfDays)),
-            onChanged: (date) {
-              widget.formData.toDate = date;
-            },
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DatePicker(
+                title: widget.category.hasFromDate ? "Check-out date" : "Date",
+                selectedDate: widget.formData.toDate,
+                lastDate: DateTime.now().subtract(Duration(days: widget.category.noOfDays)),
+                onChanged: (date) {
+                  widget.formData.toDate = date;
+                },
+              ),
+           if(widget.formData.isToDateIsEmpty)        Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text("This is a mandatory field",style: TextStyle(color: Theme.of(context).colorScheme.error,fontSize: 12,fontWeight: FontWeight.w400),),
           ),
+            ],
+          ),
+          
       ],
     );
   }
@@ -442,11 +460,11 @@ class _FormItemState extends State<FormItem> {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ts( "Vehicle type", Colors.black),
+              ts(widget.category.name.toLowerCase().contains('train')? "Class": "Vehicle type", Colors.black),
               gapHC(3),
               DropDownWidget(
                 selectedClass: widget.formData.selectedClass,
-                hint: 'Select Vehicle type',
+                hint:widget.category.name.toLowerCase().contains('train')?"Select class": 'Select Vehicle',
                 items: widget.category.classes!,
                 onChanged: (value) {
                   widget.formData.selectedClass = value;
