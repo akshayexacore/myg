@@ -16,7 +16,7 @@ class PdfViewer extends StatefulWidget {
 
 class _PdfViewerState extends State<PdfViewer> {
   bool _isLoading = true;
-  late PDFDocument document;
+   PDFDocument? document;
   DownloadProgress? downloadProgress;
 
   @override
@@ -105,12 +105,12 @@ class _PdfViewerState extends State<PdfViewer> {
     return Scaffold(
       appBar: customAppBar(basename(widget.file)),
       body: SafeArea(
-        child: _isLoading
+        child: _isLoading ||document==null
             ? const Center(
           child: CircularProgressIndicator(),
         )
             : PDFViewer(
-          document: document,
+          document: document!,
         ),
       ),
     );

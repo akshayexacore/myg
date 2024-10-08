@@ -104,8 +104,8 @@ showDialog(
                         CustomSslImageDispaly(
                               url:
                                   "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
-                              height: MediaQuery.of(context).size.height,
-                              width:  MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height/1.1,
+                              width:  MediaQuery.of(context).size.width/1.5,
                             ),
                         // Close button at the top right corner
                         Positioned(
