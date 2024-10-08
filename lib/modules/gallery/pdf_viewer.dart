@@ -16,7 +16,7 @@ class PdfViewer extends StatefulWidget {
 
 class _PdfViewerState extends State<PdfViewer> {
   bool _isLoading = true;
-  late PDFDocument document;
+   PDFDocument? document;
   DownloadProgress? downloadProgress;
 
   @override
@@ -32,49 +32,49 @@ class _PdfViewerState extends State<PdfViewer> {
     }
   }
 
-  // void loadDocument() async {
+  void loadDocument() async {
 
-  //   PDFDocument.fromURLWithDownloadProgress(
-  //     widget.file,
-  //     downloadProgress: (downloadProgress) => setState(() {
-  //       this.downloadProgress = downloadProgress;
-  //     }),
-  //     onDownloadComplete: (document) => setState(() {
-  //       this.document = document;
-  //       _isLoading = false;
-  //     }),
-  //   );
-  // }
-
-
-    Future<void> loadDocument() async {
-  try {
-    // Download the PDF to local storage
-    var dir = await getApplicationDocumentsDirectory();
-    String filePath = "${dir.path}/sample.pdf";
-
-    var response = await http.get(Uri.parse(widget.file));
-    
-    if (response.statusCode != 200) {
-      throw Exception('Failed to load PDF: ${response.statusCode}');
-    }
-
-    File file = File(filePath);
-    await file.writeAsBytes(response.bodyBytes);
-
-    // Load the PDF document from the local file
-    PDFDocument doc = await PDFDocument.fromFile(file);
-    setState(() {
-      document = doc;
-      _isLoading = false;
-    });
-  } catch (e) {
-    print('Error loading PDF: $e');
-    setState(() {
-      _isLoading = false;
-    });
+    PDFDocument.fromURLWithDownloadProgress(
+      widget.file,
+      downloadProgress: (downloadProgress) => setState(() {
+        this.downloadProgress = downloadProgress;
+      }),
+      onDownloadComplete: (document) => setState(() {
+        this.document = document;
+        _isLoading = false;
+      }),
+    );
   }
-}
+
+
+//     Future<void> loadDocument() async {
+//   try {
+//     // Download the PDF to local storage
+//     var dir = await getApplicationDocumentsDirectory();
+//     String filePath = "${dir.path}/sample.pdf";
+
+//     var response = await http.get(Uri.parse(widget.file));
+    
+//     if (response.statusCode != 200) {
+//       throw Exception('Failed to load PDF: ${response.statusCode}');
+//     }
+
+//     File file = File(filePath);
+//     await file.writeAsBytes(response.bodyBytes);
+
+//     // Load the PDF document from the local file
+//     PDFDocument doc = await PDFDocument.fromFile(file);
+//     setState(() {
+//       document = doc;
+//       _isLoading = false;
+//     });
+//   } catch (e) {
+//     print('Error loading PDF: $e');
+//     setState(() {
+//       _isLoading = false;
+//     });
+//   }
+// }
 
 
   Widget buildProgress() {
@@ -105,12 +105,12 @@ class _PdfViewerState extends State<PdfViewer> {
     return Scaffold(
       appBar: customAppBar(basename(widget.file)),
       body: SafeArea(
-        child: _isLoading
+        child: _isLoading ||document==null
             ? const Center(
           child: CircularProgressIndicator(),
         )
             : PDFViewer(
-          document: document,
+          document: document!,
         ),
       ),
     );

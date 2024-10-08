@@ -35,11 +35,13 @@ class CustomSslImageDispaly extends StatelessWidget {
                                .hasError) {
                              return Icon(Icons.error);
                            } else {
-                             return Image.memory(
-                               snapshot.data
-                                   as Uint8List,
-                               height: height?? 24.0,
-                               width:width??width ,
+                             return Center(
+                               child: Image.memory(
+                                 snapshot.data
+                                     as Uint8List,
+                                 height: height?? 24.0,
+                                 width:width??width ,
+                               ),
                              );
                            }
                          },

@@ -88,61 +88,61 @@ class _FilePickerState extends State<FilePicker> {
                               "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}"));
                     } else {
                       print("object");
-showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return Dialog(
-                  backgroundColor: Colors.transparent,
-                  insetPadding: EdgeInsets.all(0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    color: Colors.black,
-                    child: Stack(
-                      children: [
-                        // Full-screen content
-                        CustomSslImageDispaly(
-                              url:
-                                  "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
-                              height: MediaQuery.of(context).size.height,
-                              width:  MediaQuery.of(context).size.width,
+// showDialog(
+//               context: context,
+//               builder: (BuildContext context) {
+//                 return Dialog(
+//                   backgroundColor: Colors.transparent,
+//                   insetPadding: EdgeInsets.all(0),
+//                   child: Container(
+//                     width: MediaQuery.of(context).size.width,
+//                     height: MediaQuery.of(context).size.height,
+//                     color: Colors.black,
+//                     child: Stack(
+//                       children: [
+//                         // Full-screen content
+//                         CustomSslImageDispaly(
+//                               url:
+//                                   "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
+//                               height: MediaQuery.of(context).size.height-200,
+//                               width:  MediaQuery.of(context).size.width,
+//                             ),
+//                         // Close button at the top right corner
+//                         Positioned(
+//                           top: 30,
+//                           right: 20,
+//                           child: IconButton(
+//                             icon: Icon(Icons.close,color: Colors.white,),
+//                             onPressed: () {
+//                               Navigator.of(context).pop();
+//                             },
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 );
+//               },
+//             );
+                      
+                      Navigator.push(
+                        Get.context!,
+                        MaterialPageRoute(
+                          builder: (context) => GalleryPhotoViewWrapper(
+                            galleryItems: [
+                              GalleryItem(
+                                  id: "id:1",
+                                  resource:
+                                      "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}")
+                            ],
+                            backgroundDecoration: const BoxDecoration(
+                              color: Colors.black,
                             ),
-                        // Close button at the top right corner
-                        Positioned(
-                          top: 40,
-                          right: 20,
-                          child: IconButton(
-                            icon: Icon(Icons.close,color: Colors.white,),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
+                            initialIndex: 0,
+                            scrollDirection: Axis.horizontal,
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
-                      
-                      // Navigator.push(
-                      //   Get.context!,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => GalleryPhotoViewWrapper(
-                      //       galleryItems: [
-                      //         GalleryItem(
-                      //             id: "id:1",
-                      //             resource:
-                      //                 "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}")
-                      //       ],
-                      //       backgroundDecoration: const BoxDecoration(
-                      //         color: Colors.black,
-                      //       ),
-                      //       initialIndex: 0,
-                      //       scrollDirection: Axis.horizontal,
-                      //     ),
-                      //   ),
-                      // );
+                      );
                     }
                   },
                   child: Row(
