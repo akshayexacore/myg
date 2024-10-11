@@ -249,6 +249,7 @@ class ClaimResubmitPage extends StatelessWidget {
                       content: Column(
                         children: [
                           Obx(() {
+                            debugPrint(_controller.isFormAddBusy.isTrue.toString());
                             if (_controller.isFormAddBusy.isTrue) {
                               // do nothing
                             }

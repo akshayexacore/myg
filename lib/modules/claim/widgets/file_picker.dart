@@ -157,16 +157,17 @@ class _FilePickerState extends State<FilePicker> {
                                   .last
                                   .toLowerCase()
                                   .endsWith('png')
-                          ? CustomSslImageDispaly(
-                              url:
-                                  "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
-                              height: 70,
-                            )
-                          // CachedNetworkImage(
-                          //     imageUrl:
+                          ?
+                          //  CustomSslImageDispaly(
+                          //     url:
                           //         "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
                           //     height: 70,
                           //   )
+                          CachedNetworkImage(
+                              imageUrl:
+                                  "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
+                              height: 70,
+                            )
                           : Image.asset(
                               AppAssets.file,
                               height: 70,

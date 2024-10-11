@@ -443,9 +443,15 @@ class ClaimPage extends StatelessWidget {
                                                 ),
                                               ),
                                               gapWC(4),
-                                              CustomSslImageDispaly(url: claimController
-                                                        .categories[index]
-                                                        .imageUrl),
+                                                CachedNetworkImage(
+                                                imageUrl: claimController
+                                                    .categories[index].imageUrl,
+                                                height: 18,
+                                                width: 18,
+                                              ),
+                                              // CustomSslImageDispaly(url: claimController
+                                              //           .categories[index]
+                                              //           .imageUrl),
                                             
                                               gapWC(4),
                                               Expanded(
@@ -512,8 +518,14 @@ class ClaimPage extends StatelessWidget {
                                 claimController.selectedCategories[index].name,
                                 Colors.black,
                                 15.0),
-                            leading: CustomSslImageDispaly(url: claimController
-                                  .selectedCategories[index].imageUrl),
+                            leading:Image.network(
+                              claimController
+                                  .selectedCategories[index].imageUrl,
+                              height: 25,
+                              width: 25,
+                            ),
+                            //  CustomSslImageDispaly(url: claimController
+                            //       .selectedCategories[index].imageUrl),
                              
                             trailing: Icon(
                               Icons.keyboard_arrow_down,

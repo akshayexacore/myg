@@ -50,6 +50,7 @@ class _FormItemState extends State<FormItem> {
 
   @override
   void initState() {
+    print("formadata${widget.formData}");
 
     //Logger().i(widget.formData.toJson());
     textEditingControllerFrom.text = widget.formData.tripFrom ?? '';
