@@ -380,7 +380,7 @@ class _FormItemState extends State<FormItem> {
                 widget.formData.fromDate = date;
               },
             ),
-            if(widget.formData.isFrmdateEmpty)  Padding(
+            if(widget.formData.isFrmdateEmpty==true)  Padding(
             padding: const EdgeInsets.only(top: 6),
             child: Text("This is a mandatory field",style: TextStyle(color: Theme.of(context).colorScheme.error,fontSize: 12,fontWeight: FontWeight.w400),),
           ),

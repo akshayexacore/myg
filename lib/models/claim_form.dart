@@ -78,7 +78,7 @@ class ClaimFormData {
   String? tripTo;
   String? odoMeterStart;
   String? odoMeterEnd;
- late bool isFrmdateEmpty;
+  bool? isFrmdateEmpty;
  late bool isToDateIsEmpty;
   late int noOfEmployees;
   late List<Employee> employees;
@@ -124,6 +124,7 @@ class ClaimFormData {
 
   ClaimFormData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+   
     classId = json['class_id'];
     policyId = json['policy_id'];
     fromDate = json['from_date']!=null ? DateTime.tryParse(json['from_date']) : null;

@@ -902,6 +902,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                 .sentForApproval,
                                             child: Custombutton(
                                                 onTap: () {
+                                                  
                                                   approvalRequest(
                                                       context,
                                                       _controller.claim.value!
@@ -912,7 +913,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                           .categories![index]
                                                           .items[formIndex]);
                                                 },
-                                                buttonName: "Send Approval",
+                                                buttonName:"Send Approval",
                                                 buttonColor: _controller
                                                         .claim
                                                         .value!

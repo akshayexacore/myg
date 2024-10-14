@@ -202,10 +202,10 @@ class ClaimController extends GetxController
   bool _validateFiles(){
     bool valid = true;
     selectedCategories.forEach((element) {
-      print('here 1');
+      
       element.items.forEach((form) {
-        print('here 2');
-        if(form.files.isEmpty && element.name.toLowerCase()!='food'){
+        
+        if(form.files.isEmpty && element.name.toLowerCase()!='food' && element.name.toLowerCase()!='cab'){
           form.fileError = "This is a mandatory field";
           print('here');
           emitFormUpdate();
@@ -265,7 +265,7 @@ class ClaimController extends GetxController
   }
 
   void save() async {
-    print("claimFrom.value!${claimFrom.value!}");
+    
     try {
       isBusy(true);
       if (_validateForm()) {
