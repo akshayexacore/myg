@@ -79,7 +79,7 @@ class ClaimFormData {
   String? odoMeterStart;
   String? odoMeterEnd;
   bool? isFrmdateEmpty;
- late bool isToDateIsEmpty;
+  bool? isToDateIsEmpty;
   late int noOfEmployees;
   late List<Employee> employees;
   late String remarks;
