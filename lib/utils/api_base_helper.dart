@@ -117,7 +117,7 @@ class ApiBaseHelper {
         headers.addAll(_headers);
       }
       var uri = Uri.parse(_baseUrl + url);
-      print("the url is post here $uri");
+      print("the url is post here $uri$body");
 
       final client = await createIoClient();
       final response = await client

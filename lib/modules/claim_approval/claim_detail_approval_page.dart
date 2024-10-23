@@ -9,6 +9,7 @@ import 'package:travel_claim/models/claim_form.dart';
 import 'package:travel_claim/models/employee.dart';
 import 'package:travel_claim/modules/claim_approval/controllers/claim_detail_approval_controller.dart';
 import 'package:travel_claim/modules/history/widgets/attached_file_widget.dart';
+import 'package:travel_claim/modules/landing/controllers/profile_controller.dart';
 import 'package:travel_claim/utils/app_enums.dart';
 import 'package:travel_claim/utils/app_formatter.dart';
 import 'package:travel_claim/views/components/alertDialog.dart';
@@ -27,13 +28,15 @@ class ClaimDetailApprovalPage extends StatelessWidget {
   static const routeName = '/claim_detail_approval';
 
   final _controller = Get.find<ClaimDetailApprovalController>();
+  final _profileController = Get.find<ProfileController>();
+
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
-      appBar: customAppBar("Claim approvald"),
+      appBar: customAppBar("Claim approval"),
       body: Obx(() {
         if (_controller.isBusy.isTrue) {
           return const Center(
@@ -1470,10 +1473,12 @@ class ClaimDetailApprovalPage extends StatelessWidget {
   }
 
   bool showBottomActions() {
+   
     bool canResubmit = _controller.claim.value!.categories!
         .expand((category) => category.items)
         .toList()
-        .where((e) => e.status == ClaimStatus.pending)
+        .where((e) {
+          return e.status == ClaimStatus.pending && e.approverId==_profileController.user.value.employeeId;})
         .toList()
         .isNotEmpty;
 

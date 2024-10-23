@@ -91,6 +91,7 @@ class ClaimFormData {
   late String fileError;
   CategoryClass? selectedClass;
   late ClaimStatus status;
+  String ? approverId;
   late bool sentForApproval;
   late int rejectionCount;
   late GlobalKey<FormState> formKey;
@@ -119,6 +120,7 @@ class ClaimFormData {
     this.selectedClass,
     this.status = ClaimStatus.none,
     this.sentForApproval = false,
+    this.approverId="",
     this.rejectionCount = 0,
   }): formKey = GlobalKey<FormState>();
 
@@ -162,6 +164,7 @@ class ClaimFormData {
   ClaimFormData.fromApiJson(Map<String, dynamic> json) {
     id = json['trip_claim_details_id'];
     status = json['status'].toString().toClaimStatus;
+    approverId=json["approver_id"].toString();
     classId = json['class_id'];
     policyId = json['policy_id'];
     fromDate = json['from_date']!=null ? DateTime.tryParse(json['from_date']) : null;
@@ -208,6 +211,7 @@ class ClaimFormData {
     data['id'] = id;
     data['trip_claim_details_id'] = id;
     data['class_id'] = classId;
+    data["approver_id"]=approverId;
     data['policy_id'] = policyId;
     data['from_date'] = fromDate.toString();
     data['to_date'] = toDate.toString();
