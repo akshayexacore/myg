@@ -125,6 +125,7 @@ class ClaimFormData {
   }): formKey = GlobalKey<FormState>();
 
   ClaimFormData.fromJson(Map<String, dynamic> json) {
+    debugPrint("the deduct amount${json["deduct_amount"]}");
     id = json['id'];
    
     classId = json['class_id'];
@@ -146,6 +147,7 @@ class ClaimFormData {
     approverRemarks = json['approver_remarks'] ?? '';
     amount = json['amount'] ?? json['unit_amount'];
     deductedAmount=json["deduct_amount"]??0;
+      debugPrint("the deduct amount${json["deduct_amount"]}");
     eligibleAmount = null;
     files = <String>[];
     if (json['files'] != null) {
@@ -186,6 +188,7 @@ class ClaimFormData {
     remarks = json['remarks'] ?? '';
     approverRemarks = json['approver_remarks'] ?? '';
     amount = double.tryParse(json['unit_amount'].toString()) ?? 0;
+     deductedAmount = double.tryParse(json['deduct_amount'].toString()) ?? 0;
     eligibleAmount = double.tryParse(json['eligible_amount'].toString()) ?? 0;
     files = <String>[];
     if(json['file_url']!=null){

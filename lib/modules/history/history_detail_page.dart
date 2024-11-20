@@ -827,51 +827,51 @@ class HistoryDetailPage extends StatelessWidget {
                                                   .items[formIndex]
                                                   .status
                                                   .color),
-                                        if (_controller
-                                                .claim
-                                                .value!
-                                                .categories![index]
-                                                .items[formIndex]
-                                                .status ==
-                                            ClaimStatus.rejected)
-                                          gapHC(20),
-                                        if (_controller
-                                                .claim
-                                                .value!
-                                                .categories![index]
-                                                .items[formIndex]
-                                                .status ==
-                                            ClaimStatus.rejected)
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Obx(() {
-                                                  if (_controller
-                                                      .isUpdateBusy.isTrue) {
-                                                    return const SpinKitDoubleBounce(
-                                                      color: primaryColor,
-                                                    );
-                                                  }
-                                                  return Custombutton(
-                                                      onTap: () {
-                                                        _controller.removeSingle(
-                                                            context,
-                                                            _controller
-                                                                    .claim
-                                                                    .value!
-                                                                    .categories![
-                                                                        index]
-                                                                    .items[
-                                                                formIndex]);
-                                                      },
-                                                      buttonName: "Remove",
-                                                      buttonColor: Colors.red,
-                                                      buttonTextColor:
-                                                          Colors.white);
-                                                }),
-                                              ),
-                                            ],
-                                          )
+                                        // if (_controller
+                                        //         .claim
+                                        //         .value!
+                                        //         .categories![index]
+                                        //         .items[formIndex]
+                                        //         .status ==
+                                        //     ClaimStatus.rejected)
+                                        //   gapHC(20),
+                                        // if (_controller
+                                        //         .claim
+                                        //         .value!
+                                        //         .categories![index]
+                                        //         .items[formIndex]
+                                        //         .status ==
+                                        //     ClaimStatus.rejected)
+                                        //   Row(
+                                        //     children: [
+                                        //       Expanded(
+                                        //         child: Obx(() {
+                                        //           if (_controller
+                                        //               .isUpdateBusy.isTrue) {
+                                        //             return const SpinKitDoubleBounce(
+                                        //               color: primaryColor,
+                                        //             );
+                                        //           }
+                                        //           return Custombutton(
+                                        //               onTap: () {
+                                        //                 _controller.removeSingle(
+                                        //                     context,
+                                        //                     _controller
+                                        //                             .claim
+                                        //                             .value!
+                                        //                             .categories![
+                                        //                                 index]
+                                        //                             .items[
+                                        //                         formIndex]);
+                                        //               },
+                                        //               buttonName: "Remove",
+                                        //               buttonColor: Colors.red,
+                                        //               buttonTextColor:
+                                        //                   Colors.white);
+                                        //         }),
+                                        //       ),
+                                        //     ],
+                                        //   )
                                       ],
                                     ),
                                   );

@@ -225,7 +225,7 @@ class HistoryDetailController extends GetxController with GetSingleTickerProvide
       print('here 1');
       element.items.forEach((form) {
         print('here 2');
-        if(form.files.isEmpty && element.name.toLowerCase()!='food'){
+        if(form.files.isEmpty  && element.name.toLowerCase()!='food' && element.name.toLowerCase()!='cab' && element.name.toLowerCase()!='two-wheeler'  && element.name.toLowerCase()!='four-wheeler'){
           form.fileError = "This is a mandatory field";
           print('here');
           emitFormUpdate();

@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
           );
         },
         child: GetMaterialApp(
-          title: 'My Gourney',
+          title: 'myClaim',
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(

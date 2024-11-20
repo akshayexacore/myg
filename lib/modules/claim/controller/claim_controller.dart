@@ -205,7 +205,7 @@ class ClaimController extends GetxController
       
       element.items.forEach((form) {
         
-        if(form.files.isEmpty && element.name.toLowerCase()!='food' && element.name.toLowerCase()!='cab'){
+        if(form.files.isEmpty && element.name.toLowerCase()!='food' && element.name.toLowerCase()!='cab' && element.name.toLowerCase()!='two-wheeler'  && element.name.toLowerCase()!='four-wheeler'){
           form.fileError = "This is a mandatory field";
           print('here');
           emitFormUpdate();

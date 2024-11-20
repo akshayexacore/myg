@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:travel_claim/views/components/alertDialog.dart';
 import 'package:travel_claim/views/components/bg.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/components/customButton.dart';
