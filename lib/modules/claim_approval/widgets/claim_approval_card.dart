@@ -62,7 +62,7 @@ class ClaimApprovalCard extends StatelessWidget {
                 ),
               ],
             ),
-            Divider(),
+           const Divider(),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

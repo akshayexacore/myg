@@ -461,11 +461,11 @@ class _FormItemState extends State<FormItem> {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ts(widget.category.name.toLowerCase().contains('train')? "Class": "Vehicle type", Colors.black),
+              ts(widget.category.name.toLowerCase().contains('train')? "Class": "Type", Colors.black),
               gapHC(3),
               DropDownWidget(
                 selectedClass: widget.formData.selectedClass,
-                hint:widget.category.name.toLowerCase().contains('train')?"Select class": 'Select Vehicle',
+                hint:widget.category.name.toLowerCase().contains('train')?"Select class": 'Select Type',
                 items: widget.category.classes!,
                 onChanged: (value) {
                   widget.formData.selectedClass = value;

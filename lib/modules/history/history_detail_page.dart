@@ -411,7 +411,14 @@ class HistoryDetailPage extends StatelessWidget {
                                                               .withOpacity(
                                                                   0.8)),
                                                       Text(
-                                                          AppFormatter.formatDDMMMYYYY(
+                                                      _controller
+                                                                  .claim
+                                                                  .value!
+                                                                  .categories![
+                                                                      index]
+                                                                  .items[
+                                                                      formIndex]
+                                                                  .fromDate!=null?    AppFormatter.formatDDMMMYYYY(
                                                               _controller
                                                                   .claim
                                                                   .value!
@@ -419,7 +426,7 @@ class HistoryDetailPage extends StatelessWidget {
                                                                       index]
                                                                   .items[
                                                                       formIndex]
-                                                                  .fromDate!),
+                                                                  .fromDate!):"",
                                                           style: const TextStyle(
                                                               fontFamily:
                                                                   'Roboto',
@@ -442,7 +449,14 @@ class HistoryDetailPage extends StatelessWidget {
                                                         Color(0xff333333)
                                                             .withOpacity(0.8)),
                                                     Text(
-                                                        AppFormatter
+                                                    _controller
+                                                                    .claim
+                                                                    .value!
+                                                                    .categories![
+                                                                        index]
+                                                                    .items[
+                                                                        formIndex]
+                                                                    .toDate!=null?    AppFormatter
                                                             .formatDDMMMYYYY(
                                                                 _controller
                                                                     .claim
@@ -451,7 +465,7 @@ class HistoryDetailPage extends StatelessWidget {
                                                                         index]
                                                                     .items[
                                                                         formIndex]
-                                                                    .toDate!),
+                                                                    .toDate!):"",
                                                         textAlign:
                                                             TextAlign.left,
                                                         overflow:
@@ -528,13 +542,18 @@ class HistoryDetailPage extends StatelessWidget {
                                             .categories![index].hasToDate)
                                           headTitle(
                                               "Document date",
-                                              AppFormatter.formatDDMMMYYYY(
+                                          _controller
+                                                      .claim
+                                                      .value!
+                                                      .categories![index]
+                                                      .items[formIndex]
+                                                      .fromDate!=null?     AppFormatter.formatDDMMMYYYY(
                                                   _controller
                                                       .claim
                                                       .value!
                                                       .categories![index]
                                                       .items[formIndex]
-                                                      .fromDate!)),
+                                                      .fromDate!):""),
                                         if (!_controller.claim.value!
                                             .categories![index].hasToDate)
                                           gapHC(10),
@@ -642,6 +661,7 @@ class HistoryDetailPage extends StatelessWidget {
                                                     .items[formIndex]
                                                     .remarks),
                                         if (_controller.claim.value?.status !=
+                                            ClaimStatus.pending ||_controller.claim.value?.financeStatus !=
                                             ClaimStatus.pending)
                                           headTitle(
                                               "Approver remark",
@@ -833,7 +853,12 @@ class HistoryDetailPage extends StatelessWidget {
                                                 .categories![index]
                                                 .items[formIndex]
                                                 .status ==
-                                            ClaimStatus.rejected)
+                                            ClaimStatus.rejected &&_controller
+                                                .claim
+                                                .value!
+                                                .categories![index]
+                                                .items[formIndex]
+                                                .rejectionCount<2)
                                           gapHC(20),
                                         if (_controller
                                                 .claim
@@ -841,7 +866,12 @@ class HistoryDetailPage extends StatelessWidget {
                                                 .categories![index]
                                                 .items[formIndex]
                                                 .status ==
-                                            ClaimStatus.rejected)
+                                            ClaimStatus.rejected &&_controller
+                                                .claim
+                                                .value!
+                                                .categories![index]
+                                                .items[formIndex]
+                                                .rejectionCount<2 )
                                           Row(
                                             children: [
                                         Expanded(
@@ -937,7 +967,7 @@ class HistoryDetailPage extends StatelessWidget {
         .expand((category) => category.items)
         .toList()
         .where(
-          (e) => e.rejectionCount < 2,
+          (e) => e.rejectionCount < 2 && e.status!=ClaimStatus.approved,
         )
         .toList()
         .isNotEmpty;
