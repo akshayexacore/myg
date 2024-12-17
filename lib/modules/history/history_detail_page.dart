@@ -144,8 +144,10 @@ class HistoryDetailPage extends StatelessWidget {
                                               .claim.value!.tripApprovedDate
                                           : _controller.claim.value!.status ==
                                                   ClaimStatus.rejected
-                                              ? _controller
-                                                  .claim.value!.tripRejectedDate
+                                              ?_controller
+                                                  .claim.value?.tripRejectedDate!="NA"? _controller
+                                                  .claim.value?.tripRejectedDate: _controller
+                                                  .claim.value!.tripApprovedDate
                                               : _controller.claim.value!
                                                   .financeApprovedDate,
                                       Colors.black,
@@ -171,8 +173,9 @@ class HistoryDetailPage extends StatelessWidget {
                                                   ClaimStatus.rejected ||
                                               _controller.claim.value!.status ==
                                                   ClaimStatus.approved
-                                          ? "${_controller.claim.value!.approverDetails?.name} (${_controller.claim.value!.approverDetails?.employeeId})"
-                                          : "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})",
+                                          ? _controller.claim.value!.approverStatus ==
+                                                  ClaimStatus.rejected? "${_controller.claim.value!.approverDetails?.name} (${_controller.claim.value!.approverDetails?.employeeId})":
+                                      "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})"    : "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})",
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
                                           fontFamily: 'Roboto',
@@ -217,31 +220,31 @@ class HistoryDetailPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                 child: Divider(),
               ),
-              _controller.claim.value!.status != ClaimStatus.pending
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          tssb(
-                              _controller.claim.value!.status ==
-                                      ClaimStatus.rejected
-                                  ? "Reason for rejection"
-                                  : "Remarks",
-                              Colors.black,
-                              FontWeight.w400),
-                          if (_controller
-                              .claim.value!.tripApproverRemarks.isNotEmpty)
-                            gapHC(5),
-                          if (_controller
-                              .claim.value!.tripApproverRemarks.isNotEmpty)
-                            ts(_controller.claim.value!.tripApproverRemarks,
-                                Colors.black.withOpacity(0.6))
-                        ],
-                      ),
-                    )
-                  : const SizedBox(),
+              // _controller.claim.value!.status != ClaimStatus.pending
+              //     ? Padding(
+              //         padding: const EdgeInsets.symmetric(
+              //             horizontal: 15, vertical: 5),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: [
+              //             tssb(
+              //                 _controller.claim.value!.status ==
+              //                         ClaimStatus.rejected
+              //                     ? "Reason for rejection"
+              //                     : "Remarks",
+              //                 Colors.black,
+              //                 FontWeight.w400),
+              //             if (_controller
+              //                 .claim.value!.tripApproverRemarks.isNotEmpty)
+              //               gapHC(5),
+              //             if (_controller
+              //                 .claim.value!.tripApproverRemarks.isNotEmpty)
+              //               ts(_controller.claim.value!.tripApproverRemarks,
+              //                   Colors.black.withOpacity(0.6))
+              //           ],
+              //         ),
+              //       )
+              //     : const SizedBox(),
               Builder(
                 builder: (context) {
                   List<Category> cats =
