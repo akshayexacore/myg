@@ -71,6 +71,7 @@ class ClaimHistory {
   late ClaimStatus financeStatus;
   late String tmgId;
   late String date;
+  late String? finanaceRemarks;
   late String tripApprovedDate;
   late String tripRejectedDate;
   late String financeApprovedDate;
@@ -81,6 +82,8 @@ class ClaimHistory {
         this.tripTypeDetails,
         this.approverDetails,
         this.userDetails,
+        this.finanaceRemarks="",
+
         this.financeApproverDetails,
         this.tripPurpose = '',
         this.pendingFrom = '',
@@ -102,6 +105,7 @@ class ClaimHistory {
   ClaimHistory.fromJson(Map<String, dynamic> json) {
     tripClaimId = json['trip_claim_id'] ?? '';
     status = json['trip_status'].toString().toClaimStatus;
+    finanaceRemarks=json["finance_remarks"] ??"";
     tripHistoryStatus = json['trip_history_status'].toString().toClaimStatus;
     approverStatus = json['approver_status'].toString().toClaimStatus;
     financeStatus = json['finance_status'].toString().toClaimStatus;

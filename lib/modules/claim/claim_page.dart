@@ -50,7 +50,7 @@ class ClaimPage extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: Scaffold(
           backgroundColor: Colors.white,
-          appBar: customAppBar("Add Expense"),
+          appBar: customAppBar("Add Expenses"),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
