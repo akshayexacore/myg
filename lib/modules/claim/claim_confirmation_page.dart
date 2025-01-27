@@ -34,7 +34,7 @@ class ClaimConfirmationPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: customAppBar("Claim confirmation"),
+        appBar: customAppBar("Claim confirmations"),
         body: Column(
           children: [
             Expanded(
