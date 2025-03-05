@@ -39,6 +39,7 @@ class _TextinputfieldContainerState extends State<TextinputfieldContainer> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      
       textCapitalization: widget.textCapitalization,
       controller: widget.controller,
       validator:   widget.validate,

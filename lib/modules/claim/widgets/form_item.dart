@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:travel_claim/models/category.dart';
@@ -154,6 +155,9 @@ class _FormItemState extends State<FormItem> {
           TextinputfieldContainer(
               showIcon: false,
               verticalPadding: 6,
+              inputFormattor: [ 
+            LengthLimitingTextInputFormatter(100), // Limits input to 10 characters
+              ],
               maxline: 1,
               controller: textEditingControllerFrom,
               textInputAction: TextInputAction.done,
@@ -177,6 +181,10 @@ class _FormItemState extends State<FormItem> {
               showIcon: false,
               verticalPadding: 6,
               maxline: 1,
+               inputFormattor: [ 
+             LengthLimitingTextInputFormatter(100), // Limits input to 10 characters
+              ],
+              
               controller: textEditingControllerTo,
               textInputAction: TextInputAction.done,
               validate: (value) {
@@ -206,6 +214,9 @@ class _FormItemState extends State<FormItem> {
             showIcon: false,
             verticalPadding: 6,
             maxline: 3,
+             inputFormattor: [ 
+            LengthLimitingTextInputFormatter(400), // Limits input to 10 characters
+              ],
             controller: textEditingControllerRemarks,
             textInputAction: TextInputAction.done,
             onchange: (val) {
