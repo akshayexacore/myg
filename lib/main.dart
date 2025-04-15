@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:appspector/appspector.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -17,24 +15,24 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:travel_claim/views/style/colors.dart';
 import 'dart:io';
 
-
-
- class MyHttpOverrides extends HttpOverrides{
+class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context){
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
-
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-void main() async{
+void main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
 
- ByteData data = await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
-  SecurityContext.defaultContext.setTrustedCertificatesBytes(data.buffer.asUint8List());
+  ByteData data =
+      await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
+  SecurityContext.defaultContext
+      .setTrustedCertificatesBytes(data.buffer.asUint8List());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -55,7 +53,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return KeyboardDismisser(
-      gestures: const [GestureType.onTap,GestureType.onVerticalDragStart],
+      gestures: const [GestureType.onTap, GestureType.onVerticalDragStart],
       child: GlobalLoaderOverlay(
         useDefaultLoading: false,
         disableBackButton: true,
@@ -64,18 +62,20 @@ class MyApp extends StatelessWidget {
         overlayWidgetBuilder: (progress) {
           return Center(
             child: Container(
-              width: MediaQuery.sizeOf(context).width*0.8,
+              width: MediaQuery.sizeOf(context).width * 0.8,
               height: 120,
               color: Colors.white,
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
-                  SizedBox(height: 12,),
+                  SizedBox(
+                    height: 12,
+                  ),
                   Text(
                     'Uploading file...',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: textColor,fontSize: 16),
+                    style: TextStyle(color: textColor, fontSize: 16),
                   )
                 ],
               ),
@@ -102,13 +102,11 @@ class MyApp extends StatelessWidget {
 void runAppSpector() {
   final config = Config()
     ..iosApiKey = "Your iOS API_KEY"
-    ..androidApiKey = "android_Y2M2YzVjMmUtYjUxOC00MzA4LWE5ZDEtNDk4MjZiYTcwMWQ2"
-  ;
+    ..androidApiKey =
+        "android_Y2M2YzVjMmUtYjUxOC00MzA4LWE5ZDEtNDk4MjZiYTcwMWQ2";
 
   // If you don't want to start all monitors you can specify a list of necessary ones
   config.monitors = [Monitors.http, Monitors.logs, Monitors.screenshot];
 
   AppSpectorPlugin.run(config);
 }
-
-

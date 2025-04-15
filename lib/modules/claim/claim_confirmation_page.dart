@@ -444,15 +444,20 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                         .selectedCategories[
                                                             index]
                                                         .classes!
-                                                        .isNotEmpty && claimController.selectedCategories[index].hasClass)
+                                                        .isNotEmpty &&
+                                                    claimController
+                                                        .selectedCategories[
+                                                            index]
+                                                        .hasClass)
                                                   headTitle(
                                                       "Class",
                                                       claimController
-                                                          .selectedCategories[
-                                                              index]
-                                                          .items[formIndex]
-                                                          .selectedClass
-                                                          ?.name ?? ''),
+                                                              .selectedCategories[
+                                                                  index]
+                                                              .items[formIndex]
+                                                              .selectedClass
+                                                              ?.name ??
+                                                          ''),
                                                 if (claimController
                                                             .selectedCategories[
                                                                 index]
@@ -548,16 +553,17 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                               .amount !=
                                                           null) {
                                                     double max = claimController
-                                                        .selectedCategories[
-                                                    index]
-                                                        .items[formIndex]
-                                                        .eligibleAmount ?? claimController
-                                                        .selectedCategories[
-                                                            index]
-                                                        .items[formIndex]
-                                                        .selectedClass!
-                                                        .policy!
-                                                        .gradeAmount!;
+                                                            .selectedCategories[
+                                                                index]
+                                                            .items[formIndex]
+                                                            .eligibleAmount ??
+                                                        claimController
+                                                            .selectedCategories[
+                                                                index]
+                                                            .items[formIndex]
+                                                            .selectedClass!
+                                                            .policy!
+                                                            .gradeAmount!;
                                                     double totalKms = 0;
                                                     if (claimController
                                                         .selectedCategories[
@@ -665,7 +671,8 @@ class ClaimConfirmationPage extends StatelessWidget {
                   blurRadius: 5.0,
                   spreadRadius: 1,
                   offset: Offset(0, -3),
-                ),BoxShadow(
+                ),
+                BoxShadow(
                   color: Colors.white,
                   blurRadius: 0.0,
                   spreadRadius: 0,
