@@ -33,23 +33,23 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.myg.travel_claim"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
-    buildToolsVersion "34.0.0"
+    buildToolsVersion "35.0.0"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
     }
-
+    
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.myg.travel_claim"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = 21
-        targetSdk = 34
-        versionCode = 14
+        targetSdk = 35
+        versionCode = 15
         versionName = "1.0.1"
     }
     signingConfigs {

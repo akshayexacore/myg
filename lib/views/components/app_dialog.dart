@@ -125,17 +125,18 @@ class AppDialog {
     late FToast fToast;
     fToast = FToast();
     fToast.init(navigatorKey.currentContext!);
-    fToast.showToast(
-      positionedToastBuilder: (context, child) {
-        return Positioned(
-          child: child,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-        );
-      },
-      child: showToastMessage(msg: message,
-          iconColor: isError ? Color(0xffFF1212) : Colors.green,icon: isError ? Icons.error_rounded : Icons.check_circle_rounded,bgColor: isError ? Color(0xffFF1212) : primaryColor,width: MediaQuery.sizeOf(navigatorKey.currentContext!).width),
-    );
-    /*Fluttertoast.showToast(
+    // fToast.showToast(
+    //   positionedToastBuilder: (context, child) {
+    //     return 
+    //     Positioned(
+    //       child: child,
+    //       bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+    //     );
+    //   },
+    //   child: showToastMessage(msg: message,
+    //       iconColor: isError ? Color(0xffFF1212) : Colors.green,icon: isError ? Icons.error_rounded : Icons.check_circle_rounded,bgColor: isError ? Color(0xffFF1212) : primaryColor,width: MediaQuery.sizeOf(navigatorKey.currentContext!).width),
+    // );
+    Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
@@ -143,6 +144,6 @@ class AppDialog {
         backgroundColor: primaryColor,
         textColor: Colors.white,
         fontSize: 14.0
-    );*/
+    );
   }
 }

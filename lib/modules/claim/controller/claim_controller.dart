@@ -126,22 +126,26 @@ class ClaimController extends GetxController
     try {
       isDraftBusy(true);
       if (_validateBaseForm()) {
+
+print("is valid${claimFrom.value == null }");
+
         if (claimFrom.value == null) {
           claimFrom(ClaimForm(
-              tripType: selectedTripType.value!,
+              tripType: selectedTripType.value??TripType (),
               branch: selectedBranch.value,
               createdAt: DateTime.now(),
               purpose: textEditingControllerPurpose.text,
               categories: selectedCategories));
         } else {
-          claimFrom.value!.tripType = selectedTripType.value!;
-          claimFrom.value!.branch = selectedBranch.value!;
+          claimFrom.value!.tripType = selectedTripType.value??TripType ();
+          claimFrom.value!.branch = selectedBranch.value??Branch();
           claimFrom.value!.purpose = textEditingControllerPurpose.text;
           claimFrom.value!.categories = selectedCategories;
           claimFrom(claimFrom.value);
         }
 
         bool response = await _localRepository.saveOrUpdate(claimFrom.value!);
+        print("is response${response }");
         if (response) {
           Get.until((route) => Get.currentRoute == LandingPage.routeName);
           AppDialog.showToast("Saved to drafts");
