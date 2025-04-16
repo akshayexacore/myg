@@ -22,13 +22,10 @@ import 'package:collection/collection.dart';
 
 class ClaimConfirmationPage extends StatelessWidget {
   ClaimConfirmationPage({super.key});
-
   static const routeName = '/claim_confirmation';
-
   final profileController = Get.find<ProfileController>();
   final claimController = Get.find<ClaimController>();
   final landingController = Get.find<LandingController>();
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -592,9 +589,7 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                         return const SizedBox
                                                             .shrink();
                                                       }
-
                                                       totalKms = end - start;
-
                                                       max = totalKms *
                                                           claimController
                                                               .selectedCategories[
@@ -604,7 +599,6 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                               .policy!
                                                               .gradeAmount!;
                                                     }
-
                                                     if (claimController
                                                             .selectedCategories[
                                                                 index]

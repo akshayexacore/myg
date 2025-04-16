@@ -19,9 +19,7 @@ import 'package:travel_claim/views/widgets.dart';
 
 class LandingPage extends StatelessWidget {
   static const routeName = '/landing';
-
   LandingPage({Key? key}) : super(key: key);
-
   final LandingController _controller = Get.find();
   final ProfileController _profileController = Get.find();
 

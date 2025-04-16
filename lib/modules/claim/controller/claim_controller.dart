@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:travel_claim/main.dart';
 import 'package:travel_claim/models/branch.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_form.dart';
@@ -26,14 +25,10 @@ class ClaimController extends GetxController
   final _repository = MygRepository();
   final _localRepository = LocalStorageDataProvider();
   TextEditingController textEditingControllerPurpose = TextEditingController();
-
   var categories = <Category>[].obs;
   var selectedCategories = <Category>[].obs;
-
   final formKey = GlobalKey<FormState>();
-
   var openedSections = [0].obs;
-
   @override
   void onInit() {
     claimFrom(Get.arguments);

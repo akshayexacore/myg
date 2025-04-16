@@ -23,7 +23,6 @@ import 'package:travel_claim/views/components/customButton.dart';
 import 'package:travel_claim/views/components/image_dispalya.ssl.dart';
 import 'package:travel_claim/views/components/textInputField.dart';
 import 'package:travel_claim/views/style/colors.dart';
-
 import 'package:travel_claim/views/widgets.dart';
 
 class ClaimPage extends StatelessWidget {
@@ -452,7 +451,6 @@ class ClaimPage extends StatelessWidget {
                                               // CustomSslImageDispaly(url: claimController
                                               //           .categories[index]
                                               //           .imageUrl),
-                                            
                                               gapWC(4),
                                               Expanded(
                                                   child: tchcus(

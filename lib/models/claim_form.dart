@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:travel_claim/models/branch.dart';
@@ -27,12 +26,12 @@ class ClaimForm {
     required this.categories,
   });
 
-ClaimForm.fromJson(Map<String, dynamic> json) {
+  ClaimForm.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     storageId = json['storage_id'] ?? '';
-    tripType =  TripType.fromJson(json['trip_type']);
-    branch = json['branch']!=null ?  Branch.fromJson(json['branch']) : null;
-    createdAt =  DateTime.parse(json['created_at']);
+    tripType = TripType.fromJson(json['trip_type']);
+    branch = json['branch'] != null ? Branch.fromJson(json['branch']) : null;
+    createdAt = DateTime.parse(json['created_at']);
     purpose = json['purpose'] ?? '';
     categories = <Category>[];
     if (json['categories'] != null) {
@@ -62,11 +61,12 @@ ClaimForm.fromJson(Map<String, dynamic> json) {
     data['trip_purpose'] = purpose;
     data['claim_details'] = categories
         .expand((category) => category.items)
-        .toList().map((v) => v.toApiJson()).toList();
+        .toList()
+        .map((v) => v.toApiJson())
+        .toList();
     return data;
   }
 }
-
 
 class ClaimFormData {
   String? id;
@@ -91,7 +91,7 @@ class ClaimFormData {
   late String fileError;
   CategoryClass? selectedClass;
   late ClaimStatus status;
-  String ? approverId;
+  String? approverId;
   late bool sentForApproval;
   late int rejectionCount;
   late GlobalKey<FormState> formKey;
@@ -106,32 +106,34 @@ class ClaimFormData {
     this.tripTo,
     this.odoMeterStart,
     this.odoMeterEnd,
-    this.isFrmdateEmpty=false,
-    this.isToDateIsEmpty=false,
+    this.isFrmdateEmpty = false,
+    this.isToDateIsEmpty = false,
     this.noOfEmployees = 1,
     this.employees = const [],
     this.remarks = '',
     this.fileError = '',
     this.approverRemarks = '',
-    this.amount=0,
-    this.eligibleAmount=0,
-    this.deductedAmount=0,
+    this.amount = 0,
+    this.eligibleAmount = 0,
+    this.deductedAmount = 0,
     this.files = const [],
     this.selectedClass,
     this.status = ClaimStatus.none,
     this.sentForApproval = false,
-    this.approverId="",
+    this.approverId = "",
     this.rejectionCount = 0,
-  }): formKey = GlobalKey<FormState>();
+  }) : formKey = GlobalKey<FormState>();
 
   ClaimFormData.fromJson(Map<String, dynamic> json) {
     debugPrint("the deduct amount${json["deduct_amount"]}");
     id = json['id'];
-   
+
     classId = json['class_id'];
     policyId = json['policy_id'];
-    fromDate = json['from_date']!=null ? DateTime.tryParse(json['from_date']) : null;
-    toDate = json['to_date']!=null ? DateTime.tryParse(json['to_date']) : null;
+    fromDate =
+        json['from_date'] != null ? DateTime.tryParse(json['from_date']) : null;
+    toDate =
+        json['to_date'] != null ? DateTime.tryParse(json['to_date']) : null;
     tripFrom = json['trip_from'];
     tripTo = json['trip_to'];
     odoMeterStart = json['odo_meter_start'];
@@ -146,8 +148,8 @@ class ClaimFormData {
     remarks = json['remarks'] ?? '';
     approverRemarks = json['approver_remarks'] ?? '';
     amount = json['amount'] ?? json['unit_amount'];
-    deductedAmount=json["deduct_amount"]??0;
-      debugPrint("the deduct amount${json["deduct_amount"]}");
+    deductedAmount = json["deduct_amount"] ?? 0;
+    debugPrint("the deduct amount${json["deduct_amount"]}");
     eligibleAmount = null;
     files = <String>[];
     if (json['files'] != null) {
@@ -155,7 +157,7 @@ class ClaimFormData {
         files.add(v);
       });
     }
-    if(json['selected_class']!=null){
+    if (json['selected_class'] != null) {
       selectedClass = CategoryClass.fromJson(json['selected_class']);
     }
     status = json['status'].toString().toClaimStatus;
@@ -166,17 +168,24 @@ class ClaimFormData {
   ClaimFormData.fromApiJson(Map<String, dynamic> json) {
     id = json['trip_claim_details_id'];
     status = json['status'].toString().toClaimStatus;
-    approverId=json["approver_id"].toString();
+    approverId = json["approver_id"].toString();
     classId = json['class_id'];
     policyId = json['policy_id'];
-    fromDate = json['from_date']!=null ? DateTime.tryParse(json['from_date']) : null;
-    toDate = json['to_date']!=null ? DateTime.tryParse(json['to_date']) : null;
-    fromDate = json['document_date']!=null ? DateTime.tryParse(json['document_date']) : null;
+    fromDate =
+        json['from_date'] != null ? DateTime.tryParse(json['from_date']) : null;
+    toDate =
+        json['to_date'] != null ? DateTime.tryParse(json['to_date']) : null;
+    fromDate = json['document_date'] != null
+        ? DateTime.tryParse(json['document_date'])
+        : null;
     tripFrom = json['trip_from'];
     tripTo = json['trip_to'];
-    odoMeterStart = json['start_meter']!=null ? json['start_meter'].toString() : null;
-    odoMeterEnd = json['end_meter']!=null ? json['end_meter'].toString() : null;
-    noOfEmployees = json['no_of_persons'] ?? (json['no_of_person'] ?? (json['no_of_employees'] ?? 1));
+    odoMeterStart =
+        json['start_meter'] != null ? json['start_meter'].toString() : null;
+    odoMeterEnd =
+        json['end_meter'] != null ? json['end_meter'].toString() : null;
+    noOfEmployees = json['no_of_persons'] ??
+        (json['no_of_person'] ?? (json['no_of_employees'] ?? 1));
     sentForApproval = json['send_approver_flag'] ?? false;
     rejectionCount = json['rejection_count'] ?? 0;
     employees = <Employee>[];
@@ -188,10 +197,10 @@ class ClaimFormData {
     remarks = json['remarks'] ?? '';
     approverRemarks = json['approver_remarks'] ?? '';
     amount = double.tryParse(json['unit_amount'].toString()) ?? 0;
-     deductedAmount = double.tryParse(json['deduct_amount'].toString()) ?? 0;
+    deductedAmount = double.tryParse(json['deduct_amount'].toString()) ?? 0;
     eligibleAmount = double.tryParse(json['eligible_amount'].toString()) ?? 0;
     files = <String>[];
-    if(json['file_url']!=null){
+    if (json['file_url'] != null) {
       files = [json['file_url']];
     }
     /*if (json['files'] != null) {
@@ -199,7 +208,7 @@ class ClaimFormData {
         files.add(v);
       });
     }*/
-    if(json['policy_details']!=null){
+    if (json['policy_details'] != null) {
       selectedClass = CategoryClass.fromJson(json['policy_details']);
     }
 
@@ -214,7 +223,7 @@ class ClaimFormData {
     data['id'] = id;
     data['trip_claim_details_id'] = id;
     data['class_id'] = classId;
-    data["approver_id"]=approverId;
+    data["approver_id"] = approverId;
     data['policy_id'] = policyId;
     data['from_date'] = fromDate.toString();
     data['to_date'] = toDate.toString();
@@ -238,11 +247,14 @@ class ClaimFormData {
     data['trip_claim_details_id'] = id;
     data['class_id'] = classId;
     data['policy_id'] = policyId;
-    data['from_date'] = fromDate!=null ? AppFormatter.formatYYYYMMDD(fromDate!) : null;
-    data['to_date'] = toDate!=null ? AppFormatter.formatYYYYMMDD(toDate!) : null;
+    data['from_date'] =
+        fromDate != null ? AppFormatter.formatYYYYMMDD(fromDate!) : null;
+    data['to_date'] =
+        toDate != null ? AppFormatter.formatYYYYMMDD(toDate!) : null;
     data['trip_from'] = tripFrom;
     data['trip_to'] = tripTo;
-    data['document_date'] = fromDate!=null ? AppFormatter.formatYYYYMMDD(fromDate!) : null;
+    data['document_date'] =
+        fromDate != null ? AppFormatter.formatYYYYMMDD(fromDate!) : null;
     data['start_meter'] = odoMeterStart;
     data['end_meter'] = odoMeterEnd;
     data['qty'] = 1;

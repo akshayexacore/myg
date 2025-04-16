@@ -13,7 +13,6 @@ import 'package:travel_claim/modules/landing/controllers/profile_controller.dart
 import 'package:travel_claim/resources/myg_repository.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/components/textInputField.dart';
-
 import '../../../views/style/colors.dart';
 
 class FormItem extends StatefulWidget {
@@ -21,14 +20,12 @@ class FormItem extends StatefulWidget {
   final int index;
   ClaimFormData formData;
   final VoidCallback? onDelete;
-
   FormItem(
       {super.key,
       required this.category,
       required this.formData,
       required this.index,
       this.onDelete});
-
   @override
   State<FormItem> createState() => _FormItemState();
 }
@@ -42,7 +39,6 @@ class _FormItemState extends State<FormItem> {
       TextEditingController();
   TextEditingController textEditingControllerRemarks = TextEditingController();
   TextEditingController textEditingControllerAmount = TextEditingController();
-
   var isUpdated = false.obs;
   var eligibleAmount = 0.0.obs;
   var max = 0.0.obs;
@@ -53,7 +49,7 @@ class _FormItemState extends State<FormItem> {
     }
     int days = toDate.difference(fromDate).inDays;
     print("the total days befor addition$days");
-    return days == 0 ? 1 : days ;
+    return days == 0 ? 1 : days;
   }
 
   @override
@@ -76,7 +72,6 @@ class _FormItemState extends State<FormItem> {
     if (widget.formData.toDate == null && widget.category.hasToDate) {
       widget.formData.toDate = null;
     }
-
     if (widget.category.classes != null &&
         widget.category.classes!.length == 1 &&
         !widget.category.hasClass &&
@@ -85,7 +80,6 @@ class _FormItemState extends State<FormItem> {
       widget.formData.classId = widget.category.classes!.first.id;
       widget.formData.policyId = widget.category.classes!.first.policy?.id;
     }
-
     if (widget.formData.selectedClass != null) {
       print(
           'grade from draft: ${widget.category.classes!.first.policy?.gradeAmount}');
@@ -94,14 +88,12 @@ class _FormItemState extends State<FormItem> {
       max.value = eligibleAmount.value;
       isUpdated.toggle();
     }
-
     if (widget.formData.employees.isNotEmpty) {
       widget.formData.employees.removeWhere(
         (element) => element.id == Get.find<ProfileController>().user.value.id,
       );
       calculateClass();
     }
-
     isUpdated.listen(
       (p0) {
         print('amount: ${widget.formData.selectedClass?.policy?.gradeAmount}');
@@ -119,13 +111,10 @@ class _FormItemState extends State<FormItem> {
             if (start == 0 && end == 0) {
               return;
             }
-
             if (start >= 0 && end > 0) {
               totalKms.value = end - start;
-
               max.value = totalKms.value *
                   widget.formData.selectedClass!.policy!.gradeAmount!;
-
               if (mounted) {
                 textEditingControllerAmount.text = max.toStringAsFixed(2);
               }
@@ -138,18 +127,19 @@ class _FormItemState extends State<FormItem> {
             if (totaldays != 0) {
               double? totalAmount =
                   totaldays * (widget.formData.eligibleAmount ?? 0);
-                   max.value =totalAmount;
-              if (mounted) {
-                textEditingControllerAmount.text =
-                    totalAmount.toStringAsFixed(2);
-              }
-              widget.formData.amount = totalAmount ?? 0;
-            } else {
-              if (mounted) {
-                textEditingControllerAmount.text = "0";
-              }
-              widget.formData.amount = 0;
+              max.value = totalAmount;
+              // if (mounted) {
+              //   // textEditingControllerAmount.text =
+              //   //     totalAmount.toStringAsFixed(2);
+              // }
+              // widget.formData.amount = totalAmount ?? 0;
             }
+            //  else {
+            //   if (mounted) {
+            //     textEditingControllerAmount.text = "0";
+            //   }
+            //   widget.formData.amount = 0;
+            // }
           }
         }
       },

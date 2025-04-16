@@ -33,9 +33,9 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.myg.travel_claim"
-    compileSdk = 35
+    compileSdk = 34
     ndkVersion = flutter.ndkVersion
-    buildToolsVersion "35.0.0"
+    buildToolsVersion "34.0.0"
 
     compileOptions {
     sourceCompatibility JavaVersion.VERSION_17
@@ -48,8 +48,8 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = 21
-        targetSdk = 35
-        versionCode = 15
+        targetSdk = 34
+        versionCode = 16
         versionName = "1.0.1"
     }
     signingConfigs {
@@ -66,6 +66,8 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
             
         }
     }
@@ -75,7 +77,7 @@ flutter {
     source = "../.."
 }
 dependencies {
-    
     implementation("com.google.android.material:material:1.9.0")
-    
+  
+
 }
