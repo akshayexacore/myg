@@ -426,8 +426,28 @@ class _FormItemState extends State<FormItem> {
               lastDate: DateTime.now()
                   .subtract(Duration(days: widget.category.noOfDays)),
               onChanged: (date) {
-                widget.formData.fromDate = date;
+                    if (widget.category.id == 4 &&
+        widget.formData.toDate != null &&
+        (date.isAfter(widget.formData.toDate!))) {
+      // Invalid: Check-in is after or same as Check-out
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Invalid Check-in Date"),
+          content: const Text("Check-in date must be before the Check-out date."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("OK"),
+            )
+          ],
+        ),
+      );
+    }else{
+       widget.formData.fromDate = date;
                 isUpdated.toggle();
+    }
+               
               },
             ),
             if (widget.formData.isFrmdateEmpty == true)
@@ -453,8 +473,27 @@ class _FormItemState extends State<FormItem> {
                 lastDate: DateTime.now()
                     .subtract(Duration(days: widget.category.noOfDays)),
                 onChanged: (date) {
-                  widget.formData.toDate = date;
-                  isUpdated.toggle();
+                    if (widget.category.id == 4 &&
+        widget.formData.fromDate != null &&
+        (date.isBefore(widget.formData.fromDate!) )) {
+      // Show error popup if category is 4 and checkout date is invalid
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Invalid Date"),
+          content: const Text("Check-out date must be after the Check-in date."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("OK"),
+            )
+          ],
+        ),
+      );
+    }else{    widget.formData.toDate = date;
+                  isUpdated.toggle();}
+                  
+              
                 },
               ),
               if (widget.formData.isToDateIsEmpty == true)

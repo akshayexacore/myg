@@ -29,6 +29,7 @@ class ClaimController extends GetxController
   var selectedCategories = <Category>[].obs;
   final formKey = GlobalKey<FormState>();
   var openedSections = [0].obs;
+  
   @override
   void onInit() {
     claimFrom(Get.arguments);

@@ -563,41 +563,76 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                             .gradeAmount!;
                                                     double totalKms = 0;
                                                     if (claimController
-                                                        .selectedCategories[
-                                                            index]
-                                                        .hasStartMeter) {
-                                                      double start = double.tryParse(
-                                                              claimController
-                                                                      .selectedCategories[
-                                                                          index]
-                                                                      .items[
-                                                                          formIndex]
-                                                                      .odoMeterStart ??
-                                                                  '0') ??
-                                                          0;
-                                                      double end = double.tryParse(
-                                                              claimController
-                                                                      .selectedCategories[
-                                                                          index]
-                                                                      .items[
-                                                                          formIndex]
-                                                                      .odoMeterEnd ??
-                                                                  '0') ??
-                                                          0;
-                                                      if (start == 0 &&
-                                                          end == 0) {
-                                                        return const SizedBox
-                                                            .shrink();
-                                                      }
-                                                      totalKms = end - start;
-                                                      max = totalKms *
+                                                            .selectedCategories[
+                                                                index]
+                                                            .id ==
+                                                        4) {
+                                                      int totaldays = getNumberOfDays(
                                                           claimController
                                                               .selectedCategories[
                                                                   index]
                                                               .items[formIndex]
-                                                              .selectedClass!
-                                                              .policy!
-                                                              .gradeAmount!;
+                                                              .fromDate,
+                                                          claimController
+                                                              .selectedCategories[
+                                                                  index]
+                                                              .items[formIndex]
+                                                              .toDate);
+                                                      if (totaldays != 0) {
+                                                        double? totalAmount = totaldays *
+                                                            (claimController
+                                                                    .selectedCategories[
+                                                                        index]
+                                                                    .items[
+                                                                        formIndex]
+                                                                    .eligibleAmount ??
+                                                                0);
+                                                        max = totalAmount;
+                                                        // if (mounted) {
+                                                        //   // textEditingControllerAmount.text =
+                                                        //   //     totalAmount.toStringAsFixed(2);
+                                                        // }
+                                                        // widget.formData.amount = totalAmount ?? 0;
+                                                      }
+                                                    } else {
+                                                      if (claimController
+                                                          .selectedCategories[
+                                                              index]
+                                                          .hasStartMeter) {
+                                                        double start = double.tryParse(
+                                                                claimController
+                                                                        .selectedCategories[
+                                                                            index]
+                                                                        .items[
+                                                                            formIndex]
+                                                                        .odoMeterStart ??
+                                                                    '0') ??
+                                                            0;
+                                                        double end = double.tryParse(
+                                                                claimController
+                                                                        .selectedCategories[
+                                                                            index]
+                                                                        .items[
+                                                                            formIndex]
+                                                                        .odoMeterEnd ??
+                                                                    '0') ??
+                                                            0;
+                                                        if (start == 0 &&
+                                                            end == 0) {
+                                                          return const SizedBox
+                                                              .shrink();
+                                                        }
+                                                        totalKms = end - start;
+                                                        max = totalKms *
+                                                            claimController
+                                                                .selectedCategories[
+                                                                    index]
+                                                                .items[
+                                                                    formIndex]
+                                                                .selectedClass!
+                                                                .policy!
+                                                                .gradeAmount!;
+                                                      }
                                                     }
                                                     if (claimController
                                                             .selectedCategories[
@@ -796,5 +831,14 @@ class ClaimConfirmationPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  int getNumberOfDays(DateTime? fromDate, DateTime? toDate) {
+    if (fromDate == null || toDate == null) {
+      return 0;
+    }
+    int days = toDate.difference(fromDate).inDays;
+    print("the total days befor addition$days");
+    return days == 0 ? 1 : days;
   }
 }
