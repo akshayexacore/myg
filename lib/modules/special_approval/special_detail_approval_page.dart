@@ -134,7 +134,16 @@ class SpecialDetailApprovalPage extends StatelessWidget {
                         children: [
                           tssb("${cats[index].name}:", Colors.black, FontWeight.w400),
                           gapHC(5),
-                          ts(e.approverRemarks.isNotEmpty ? e.approverRemarks : 'NA', Colors.black.withOpacity(0.6))
+                          Container(
+                                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 15,),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border:Border.all(color:  Color(0xffFF2424)),
+                            color: Color(0xffFFEDED)
+                          ),
+                            child: ts(e.approverRemarks.isNotEmpty ? e.approverRemarks : 'NA', Colors.black.withOpacity(0.6)))
                         ],
                       );
                     },).toList(),

@@ -228,10 +228,18 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                 ),
               ),
               gapHC(10),
+            
               _controller.claim.value!.status != ClaimStatus.pending
-                  ? Padding(
+                  ? Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.symmetric(  horizontal: 15,),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
+                          horizontal: 15, vertical: 10,),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border:Border.all(color:  Color(0xffFF2424)),
+                            color: Color(0xffFFEDED)
+                          ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -277,11 +285,23 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                gapHC(7),
                                 tssb("${cats[index].name}:", Colors.black,
                                     FontWeight.w400),
                                 gapHC(5),
-                                ts('${e.approverRemarks}',
-                                    Colors.black.withOpacity(0.6))
+                                    Container(
+                                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 15,),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border:Border.all(color:  Color(0xffFF2424)),
+                            color: Color(0xffFFEDED)
+                          ),
+                                            child:
+                             ts('${e.approverRemarks}',
+                                      Colors.black.withOpacity(0.6)),
+                                )
                               ],
                             );
                           },

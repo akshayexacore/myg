@@ -144,10 +144,13 @@ class HistoryDetailPage extends StatelessWidget {
                                               .claim.value!.tripApprovedDate
                                           : _controller.claim.value!.status ==
                                                   ClaimStatus.rejected
-                                              ?_controller
-                                                  .claim.value?.tripRejectedDate!="NA"? _controller
-                                                  .claim.value?.tripRejectedDate: _controller
-                                                  .claim.value!.tripApprovedDate
+                                              ? _controller.claim.value
+                                                          ?.tripRejectedDate !=
+                                                      "NA"
+                                                  ? _controller.claim.value
+                                                      ?.tripRejectedDate
+                                                  : _controller.claim.value!
+                                                      .tripApprovedDate
                                               : _controller.claim.value!
                                                   .financeApprovedDate,
                                       Colors.black,
@@ -173,9 +176,12 @@ class HistoryDetailPage extends StatelessWidget {
                                                   ClaimStatus.rejected ||
                                               _controller.claim.value!.status ==
                                                   ClaimStatus.approved
-                                          ? _controller.claim.value!.approverStatus ==
-                                                  ClaimStatus.rejected? "${_controller.claim.value!.approverDetails?.name} (${_controller.claim.value!.approverDetails?.employeeId})":
-                                      "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})"    : "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})",
+                                          ? _controller.claim.value!
+                                                      .approverStatus ==
+                                                  ClaimStatus.rejected
+                                              ? "${_controller.claim.value!.approverDetails?.name} (${_controller.claim.value!.approverDetails?.employeeId})"
+                                              : "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})"
+                                          : "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})",
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
                                           fontFamily: 'Roboto',
@@ -239,12 +245,32 @@ class HistoryDetailPage extends StatelessWidget {
                             gapHC(5),
                           // if (_controller
                           //     .claim.value!.tripApproverRemarks.isNotEmpty)
-                      _controller.claim.value!.status ==
+                          _controller.claim.value!.status ==
+                                  ClaimStatus.rejected
+                              ? _controller.claim.value!.approverStatus ==
                                       ClaimStatus.rejected
-                                  ? _controller.claim.value!.approverStatus  ==
-                                      ClaimStatus.rejected?    ts(_controller.claim.value?.tripApproverRemarks.isEmpty==true?"Na":_controller.claim.value?.tripApproverRemarks??"",
-                                Colors.black.withOpacity(0.6)): ts(_controller.claim.value?.finanaceRemarks?.isEmpty==true?"Na":_controller.claim.value?.finanaceRemarks??"",
-                                Colors.black.withOpacity(0.6)):Container()
+                                  ? ts(
+                                      _controller
+                                                  .claim
+                                                  .value
+                                                  ?.tripApproverRemarks
+                                                  .isEmpty ==
+                                              true
+                                          ? "Na"
+                                          : _controller.claim.value
+                                                  ?.tripApproverRemarks ??
+                                              "",
+                                      Colors.black.withOpacity(0.6))
+                                  : ts(
+                                      _controller.claim.value?.finanaceRemarks
+                                                  ?.isEmpty ==
+                                              true
+                                          ? "Na"
+                                          : _controller.claim.value
+                                                  ?.finanaceRemarks ??
+                                              "",
+                                      Colors.black.withOpacity(0.6))
+                              : Container()
                         ],
                       ),
                     )
@@ -418,22 +444,25 @@ class HistoryDetailPage extends StatelessWidget {
                                                               .withOpacity(
                                                                   0.8)),
                                                       Text(
-                                                      _controller
-                                                                  .claim
-                                                                  .value!
-                                                                  .categories![
-                                                                      index]
-                                                                  .items[
-                                                                      formIndex]
-                                                                  .fromDate!=null?    AppFormatter.formatDDMMMYYYY(
-                                                              _controller
-                                                                  .claim
-                                                                  .value!
-                                                                  .categories![
-                                                                      index]
-                                                                  .items[
-                                                                      formIndex]
-                                                                  .fromDate!):"",
+                                                          _controller
+                                                                      .claim
+                                                                      .value!
+                                                                      .categories![
+                                                                          index]
+                                                                      .items[
+                                                                          formIndex]
+                                                                      .fromDate !=
+                                                                  null
+                                                              ? AppFormatter.formatDDMMMYYYY(
+                                                                  _controller
+                                                                      .claim
+                                                                      .value!
+                                                                      .categories![
+                                                                          index]
+                                                                      .items[
+                                                                          formIndex]
+                                                                      .fromDate!)
+                                                              : "",
                                                           style: const TextStyle(
                                                               fontFamily:
                                                                   'Roboto',
@@ -456,15 +485,16 @@ class HistoryDetailPage extends StatelessWidget {
                                                         Color(0xff333333)
                                                             .withOpacity(0.8)),
                                                     Text(
-                                                    _controller
+                                                        _controller
                                                                     .claim
                                                                     .value!
                                                                     .categories![
                                                                         index]
                                                                     .items[
                                                                         formIndex]
-                                                                    .toDate!=null?    AppFormatter
-                                                            .formatDDMMMYYYY(
+                                                                    .toDate !=
+                                                                null
+                                                            ? AppFormatter.formatDDMMMYYYY(
                                                                 _controller
                                                                     .claim
                                                                     .value!
@@ -472,7 +502,8 @@ class HistoryDetailPage extends StatelessWidget {
                                                                         index]
                                                                     .items[
                                                                         formIndex]
-                                                                    .toDate!):"",
+                                                                    .toDate!)
+                                                            : "",
                                                         textAlign:
                                                             TextAlign.left,
                                                         overflow:
@@ -523,12 +554,7 @@ class HistoryDetailPage extends StatelessWidget {
                                               Expanded(
                                                 flex: 5,
                                                 child: Text(
-                                                  " ${ _controller
-                                                            .claim
-                                                            .value!
-                                                            .categories![index]
-                                                            .items[formIndex]
-                                                            .odoMeterEnd} KM" ??
+                                                    " ${_controller.claim.value!.categories![index].items[formIndex].odoMeterEnd} KM" ??
                                                         'NA',
                                                     textAlign: TextAlign.left,
                                                     overflow: TextOverflow.fade,
@@ -549,18 +575,23 @@ class HistoryDetailPage extends StatelessWidget {
                                             .categories![index].hasToDate)
                                           headTitle(
                                               "Document date",
-                                          _controller
-                                                      .claim
-                                                      .value!
-                                                      .categories![index]
-                                                      .items[formIndex]
-                                                      .fromDate!=null?     AppFormatter.formatDDMMMYYYY(
-                                                  _controller
-                                                      .claim
-                                                      .value!
-                                                      .categories![index]
-                                                      .items[formIndex]
-                                                      .fromDate!):""),
+                                              _controller
+                                                          .claim
+                                                          .value!
+                                                          .categories![index]
+                                                          .items[formIndex]
+                                                          .fromDate !=
+                                                      null
+                                                  ? AppFormatter
+                                                      .formatDDMMMYYYY(
+                                                          _controller
+                                                              .claim
+                                                              .value!
+                                                              .categories![
+                                                                  index]
+                                                              .items[formIndex]
+                                                              .fromDate!)
+                                                  : ""),
                                         if (!_controller.claim.value!
                                             .categories![index].hasToDate)
                                           gapHC(10),
@@ -668,24 +699,38 @@ class HistoryDetailPage extends StatelessWidget {
                                                     .items[formIndex]
                                                     .remarks),
                                         if (_controller.claim.value?.status !=
-                                            ClaimStatus.pending ||_controller.claim.value?.financeStatus !=
-                                            ClaimStatus.pending)
-                                          headTitle(
-                                              "Approver remark",
-                                              _controller
-                                                      .claim
-                                                      .value!
-                                                      .categories![index]
-                                                      .items[formIndex]
-                                                      .approverRemarks
-                                                      .isEmpty
-                                                  ? 'Nil'
-                                                  : _controller
-                                                      .claim
-                                                      .value!
-                                                      .categories![index]
-                                                      .items[formIndex]
-                                                      .approverRemarks,colors:   _controller.claim.value!.approverStatus.color ),
+                                                ClaimStatus.pending ||
+                                            _controller.claim.value
+                                                    ?.financeStatus !=
+                                                ClaimStatus.pending) ...[
+                                          gapHC(10),
+                                          Container(
+                                           
+                                            decoration: BoxDecoration(
+                                               color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(6)),
+                                            padding: EdgeInsets.all(5),
+                                            child: headTitle(
+                                                "Approver remark",
+                                                _controller
+                                                        .claim
+                                                        .value!
+                                                        .categories![index]
+                                                        .items[formIndex]
+                                                        .approverRemarks
+                                                        .isEmpty
+                                                    ? 'Nil'
+                                                    : _controller
+                                                        .claim
+                                                        .value!
+                                                        .categories![index]
+                                                        .items[formIndex]
+                                                        .approverRemarks,
+                                                colors: _controller.claim.value!
+                                                    .approverStatus.color),
+                                          )
+                                        ],
                                         gapHC(10),
                                         Row(
                                           mainAxisAlignment:
@@ -855,33 +900,37 @@ class HistoryDetailPage extends StatelessWidget {
                                                   .status
                                                   .color),
                                         if (_controller
-                                                .claim
-                                                .value!
-                                                .categories![index]
-                                                .items[formIndex]
-                                                .status ==
-                                            ClaimStatus.rejected &&_controller
-                                                .claim
-                                                .value!
-                                                .categories![index]
-                                                .items[formIndex]
-                                                .rejectionCount<2)
+                                                    .claim
+                                                    .value!
+                                                    .categories![index]
+                                                    .items[formIndex]
+                                                    .status ==
+                                                ClaimStatus.rejected &&
+                                            _controller
+                                                    .claim
+                                                    .value!
+                                                    .categories![index]
+                                                    .items[formIndex]
+                                                    .rejectionCount <
+                                                2)
                                           gapHC(20),
                                         if (_controller
-                                                .claim
-                                                .value!
-                                                .categories![index]
-                                                .items[formIndex]
-                                                .status ==
-                                            ClaimStatus.rejected &&_controller
-                                                .claim
-                                                .value!
-                                                .categories![index]
-                                                .items[formIndex]
-                                                .rejectionCount<2 )
+                                                    .claim
+                                                    .value!
+                                                    .categories![index]
+                                                    .items[formIndex]
+                                                    .status ==
+                                                ClaimStatus.rejected &&
+                                            _controller
+                                                    .claim
+                                                    .value!
+                                                    .categories![index]
+                                                    .items[formIndex]
+                                                    .rejectionCount <
+                                                2)
                                           Row(
                                             children: [
-                                        Expanded(
+                                              Expanded(
                                                 child: Obx(() {
                                                   if (_controller
                                                       .isUpdateBusy.isTrue) {
@@ -974,15 +1023,13 @@ class HistoryDetailPage extends StatelessWidget {
         .expand((category) => category.items)
         .toList()
         .where(
-          (e) => e.rejectionCount < 2 && e.status!=ClaimStatus.approved,
+          (e) => e.rejectionCount < 2 && e.status != ClaimStatus.approved,
         )
         .toList()
         .isNotEmpty;
-        print("ssssssssssssssssssssssssssssssssssssssssssdd$canResubmit");
-        print("${(_controller.claim.value!.tripHistoryStatus ==
-                ClaimStatus.rejected ||
-            _controller.claim.value!.status == ClaimStatus.rejected) &&
-        canResubmit}");
+    print("ssssssssssssssssssssssssssssssssssssssssssdd$canResubmit");
+    print(
+        "${(_controller.claim.value!.tripHistoryStatus == ClaimStatus.rejected || _controller.claim.value!.status == ClaimStatus.rejected) && canResubmit}");
     return (_controller.claim.value!.tripHistoryStatus ==
                 ClaimStatus.rejected ||
             _controller.claim.value!.status == ClaimStatus.rejected) &&

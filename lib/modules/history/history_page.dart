@@ -27,7 +27,7 @@ class HistoryPage extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
-            appBar: customAppBar("History"),
+            appBar: customAppBar("Historys"),
             body: Obx(
               () => Column(
                 children: [
