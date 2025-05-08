@@ -1,5 +1,5 @@
 class AppConfig {
-  // static const String baseUrl = 'https://13.232.65.165';
+  // static const String baseUrl = 'https://13.232.65.165'; //
   // static const String imageBaseUrl = 'https://13.232.65.165/storage/app/';
   static const String baseUrl = 'http://43.205.38.30';
   static const String imageBaseUrl = 'http://43.205.38.30/storage/app/';

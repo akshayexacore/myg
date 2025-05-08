@@ -119,6 +119,14 @@ class MygRepository {
     return ClaimDetailResponse.fromJson(response);
   }
 
+  Future<List<DuplicateEmployee>> postCheckDuplicateClaim({required List<int> userId,required String fromDate,required String categoryId}) async {
+      List<DuplicateEmployee> dataLIst = [];
+    final response = await _api.post(ApiConstants.checkDuplicateClaims,headers: {},body: {"user_ids":userId,"from_date":fromDate,"category_id":categoryId});
+     for (var element in (response["data"] as List)) {
+        dataLIst.add(DuplicateEmployee.fromJson(element));
+      }
+    return dataLIst;
+  }
   Future<ClaimDetailResponse> getClaimDetailForSpecialApproval(String id) async {
     final response = await _api.post(ApiConstants.viewClaimSpecialApprover,headers: {},body: {"trip_claim_id":id});
     return ClaimDetailResponse.fromJson(response);

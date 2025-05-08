@@ -162,3 +162,31 @@ class ClaimHistory {
   }
 }
 
+class DuplicateEmployee {
+  final int? userId;
+  final String? empId;
+  final String? empName;
+  final String? tripClaimId;
+  final String? tripClaimDetailId;
+  final bool? isDuplication;
+
+  DuplicateEmployee({
+    this.userId,
+    this.empId,
+    this.empName,
+    this.tripClaimId,
+    this.tripClaimDetailId,
+    this.isDuplication,
+  });
+
+  factory DuplicateEmployee.fromJson(Map<String, dynamic> json) {
+    return DuplicateEmployee(
+      userId: json['user_id'],
+      empId: json['emp_id'],
+      empName: json['emp_name'],
+      tripClaimId: json['trip_claim_id'],
+      tripClaimDetailId: json['trip_claim_detail_id'],
+      isDuplication: json['is_duplication'],
+    );
+  }
+}

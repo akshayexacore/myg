@@ -28,4 +28,5 @@ class ApiConstants {
   static String advanceRequest = '/api/advanceRequest';
   static String advanceList = '/api/advanceList';
   static String classCalculation = '/api/classCalculation';
+  static String checkDuplicateClaims = '/api/checkDuplicateClaims';
 }

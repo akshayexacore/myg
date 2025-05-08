@@ -6,10 +6,13 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_form.dart';
+import 'package:travel_claim/models/claim_history.dart';
 import 'package:travel_claim/models/employee.dart';
 import 'package:travel_claim/modules/claim_approval/controllers/claim_detail_approval_controller.dart';
+import 'package:travel_claim/modules/claim_approval/widgets/popup_card.dart';
 import 'package:travel_claim/modules/history/widgets/attached_file_widget.dart';
 import 'package:travel_claim/modules/landing/controllers/profile_controller.dart';
+import 'package:travel_claim/resources/myg_repository.dart';
 import 'package:travel_claim/utils/app_enums.dart';
 import 'package:travel_claim/utils/app_formatter.dart';
 import 'package:travel_claim/views/components/alertDialog.dart';
@@ -53,7 +56,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
             children: [
               Container(
                 margin:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: boxDecoration(primaryColor, 10),
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -352,7 +355,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 20),
+                                          horizontal: 10, vertical: 20),
                                       decoration:
                                           boxBaseDecoration(greyLight, 0),
                                       child: Column(
@@ -566,18 +569,24 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                               .categories![index].hasToDate)
                                             headTitle(
                                                 "Document date",
-                                             _controller
-                                                        .claim
-                                                        .value!
-                                                        .categories![index]
-                                                        .items[formIndex]
-                                                        .fromDate!=null?       AppFormatter.formatDDMMMYYYY(
-                                                    _controller
-                                                        .claim
-                                                        .value!
-                                                        .categories![index]
-                                                        .items[formIndex]
-                                                        .fromDate!):"Nill"),
+                                                _controller
+                                                            .claim
+                                                            .value!
+                                                            .categories![index]
+                                                            .items[formIndex]
+                                                            .fromDate !=
+                                                        null
+                                                    ? AppFormatter
+                                                        .formatDDMMMYYYY(
+                                                            _controller
+                                                                .claim
+                                                                .value!
+                                                                .categories![
+                                                                    index]
+                                                                .items[
+                                                                    formIndex]
+                                                                .fromDate!)
+                                                    : "Nill"),
                                           if (!_controller.claim.value!
                                               .categories![index].hasToDate)
                                             gapHC(10),
@@ -620,27 +629,69 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                         .employees
                                                         .map(
                                                       (e) {
-                                                        return Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical: 5,
-                                                                  horizontal:
-                                                                      6),
-                                                          margin:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  bottom: 2),
-                                                          decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          14),
-                                                              color:
-                                                                  primaryColor),
-                                                          child: ts(
-                                                              '${e.name}(${e.employeeId})',
-                                                              Colors.white),
+                                                        return Column(
+                                                          children: [
+                                                            Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          5,
+                                                                      horizontal:
+                                                                          6),
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      bottom:
+                                                                          2),
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              14),
+                                                                  color:
+                                                                      primaryColor),
+                                                              child: ts(
+                                                                  '${e.name}(${e.employeeId})',
+                                                                  Colors.white),
+                                                            ),
+                                                            if (e.isDuplication ==
+                                                                true)
+                                                              DuplicationText(
+                                                                id: e
+                                                                    .duplicationId
+                                                                    .toString(),
+                                                                remark: _controller
+                                                                        .claim
+                                                                        .value!
+                                                                        .categories![
+                                                                            index]
+                                                                        .items[
+                                                                            formIndex]
+                                                                        .remarks
+                                                                        .isEmpty
+                                                                    ? 'Nil'
+                                                                    : _controller
+                                                                        .claim
+                                                                        .value!
+                                                                        .categories![
+                                                                            index]
+                                                                        .items[
+                                                                            formIndex]
+                                                                        .remarks,
+                                                                perosns: _controller
+                                                                    .claim
+                                                                    .value!
+                                                                    .categories![
+                                                                        index]
+                                                                    .items[
+                                                                        formIndex]
+                                                                    .employees
+                                                                    .map((e) =>
+                                                                        e.name)
+                                                                    .join(","),
+                                                              )
+                                                          ],
                                                         );
                                                       },
                                                     ).toList(),
@@ -1494,5 +1545,86 @@ class ClaimDetailApprovalPage extends StatelessWidget {
         .isNotEmpty;
 
     return canResubmit; //_controller.claim.value!.tripHistoryStatus != ClaimStatus.approved && _controller.claim.value!.tripHistoryStatus != ClaimStatus.settled;
+  }
+}
+
+class DuplicationText extends StatelessWidget {
+  final String id;
+  final String remark;
+  final String perosns;
+  const DuplicationText({
+    super.key,
+    required this.id,
+    required this.remark,
+    required this.perosns,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.error,
+              color: pinkreject,
+              size: 15,
+            ),
+            SizedBox(width: 5),
+            Expanded(
+              child: Text(
+                "Claim Duplication .",
+                style: const TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                  color: pinkreject,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 4),
+        GestureDetector(
+          onTap: () async {
+            Get.dialog(
+              Center(child: CircularProgressIndicator()),
+              barrierDismissible: false,
+            );
+            try {
+              var response = await MygRepository().getClaimDetail(id);
+              ClaimHistory? datas = response.claim;
+              // Simulated API call
+              await Future.delayed(Duration(seconds: 2));
+              final data = {
+                'submittedDate': datas?.date,
+                'branchName': datas?.visitBranchDetail?.name,
+                'tripId': datas?.tripClaimId,
+                'amount': datas?.totalAmount.toString(),
+                'otherEmployees': 'Alex, Meera',
+                'remarks': 'Stay for conference'
+              };
+
+              Get.back(); // Close loading
+              expense_popup(data); // Open dialog with data
+            } catch (e) {
+              Get.back(); // Close loading
+              Get.snackbar("Error", "Failed to fetch data");
+            }
+          },
+          child: Text(
+            'Details',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

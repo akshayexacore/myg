@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_form.dart';
 import 'package:travel_claim/models/employee.dart';
+import 'package:travel_claim/modules/claim_approval/claim_detail_approval_page.dart';
 import 'package:travel_claim/modules/claim_approval/controllers/claim_detail_approval_controller.dart';
 import 'package:travel_claim/modules/history/widgets/attached_file_widget.dart';
 import 'package:travel_claim/modules/special_approval/controllers/special_detail_approval_controller.dart';
@@ -399,23 +400,65 @@ class SpecialDetailApprovalPage extends StatelessWidget {
                                                    .employees
                                                    .map(
                                                      (e) {
-                                                   return Container(
-                                                     padding: const EdgeInsets
-                                                         .symmetric(
-                                                         vertical: 5,
-                                                         horizontal: 6),
-                                                     margin:
-                                                     const EdgeInsets.only(
-                                                         bottom: 2),
-                                                     decoration: BoxDecoration(
-                                                         borderRadius:
-                                                         BorderRadius
-                                                             .circular(14),
-                                                         color: primaryColor),
-                                                     child: ts(
-                                                         '${e.name}(${e.employeeId})',
-                                                         Colors.white),
+                                                   return Column(
+                                                     children: [
+                                                       Container(
+                                                         padding: const EdgeInsets
+                                                             .symmetric(
+                                                             vertical: 5,
+                                                             horizontal: 6),
+                                                         margin:
+                                                         const EdgeInsets.only(
+                                                             bottom: 2),
+                                                         decoration: BoxDecoration(
+                                                             borderRadius:
+                                                             BorderRadius
+                                                                 .circular(14),
+                                                             color: primaryColor),
+                                                         child: ts(
+                                                             '${e.name}(${e.employeeId})',
+                                                             Colors.white),
+                                                             
+                                                       ),
+                                                        if (e.isDuplication ==
+                                                                true)
+                                                              DuplicationText(
+                                                                id: e
+                                                                    .duplicationId
+                                                                    .toString(),
+                                                                remark: _controller
+                                                                        .claim
+                                                                        .value!
+                                                                        .categories![
+                                                                            index]
+                                                                        .items[
+                                                                            formIndex]
+                                                                        .remarks
+                                                                        .isEmpty
+                                                                    ? 'Nil'
+                                                                    : _controller
+                                                                        .claim
+                                                                        .value!
+                                                                        .categories![
+                                                                            index]
+                                                                        .items[
+                                                                            formIndex]
+                                                                        .remarks,
+                                                                perosns: _controller
+                                                                    .claim
+                                                                    .value!
+                                                                    .categories![
+                                                                        index]
+                                                                    .items[
+                                                                        formIndex]
+                                                                    .employees
+                                                                    .map((e) =>
+                                                                        e.name)
+                                                                    .join(","),
+                                                              )
+                                                     ],
                                                    );
+                                                   
                                                  },
                                                ).toList(),
                                              ),

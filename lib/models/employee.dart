@@ -31,8 +31,10 @@ class Employee {
   late String employeeId;
   late String empBranch;
   late String empBaseLocation;
+    bool? isDuplication;
+    String? duplicationId;
 
-  Employee({this.id = 0,this.grade = 0,this.name = '',this.employeeId = '',this.empBranch = '',this.empBaseLocation = ''});
+  Employee( {this.id = 0,this.grade = 0,this.name = '',this.employeeId = '',this.empBranch = '',this.empBaseLocation = '',this.isDuplication,this.duplicationId});
 
   Employee.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -41,6 +43,9 @@ class Employee {
     grade = json['grade'] ?? (json['emp_grade'] ?? 0);
     empBranch = json['emp_branch'] ?? '';
     empBaseLocation = json['emp_baselocation'] ?? '';
+    isDuplication=json['is_duplication']??false;
+    duplicationId=json['duplication_claim_id'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +56,9 @@ class Employee {
     data['grade'] = this.grade;
     data['emp_branch'] = this.empBranch;
     data['emp_baselocation'] = this.empBaseLocation;
+    data['is_duplication'] = this.isDuplication;
+    data['duplication_claim_id'] = this.duplicationId;
+
     return data;
   }
 }

@@ -267,3 +267,85 @@ class ClaimFormData {
     return data;
   }
 }
+
+
+
+class ClaimResponse {
+  final String? message;
+  final int? statusCode;
+  final ClaimData? data;
+  final String? success;
+
+  ClaimResponse({
+    this.message,
+    this.statusCode,
+    this.data,
+    this.success,
+  });
+
+  factory ClaimResponse.fromJson(Map<String, dynamic> json) {
+    return ClaimResponse(
+      message: json['message'] as String?,
+      statusCode: json['statusCode'] as int?,
+      data: json['data'] != null ? ClaimData.fromJson(json['data']) : null,
+      success: json['success'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'message': message,
+      'statusCode': statusCode,
+      'data': data?.toJson(),
+      'success': success,
+    };
+  }
+
+  ClaimResponse copyWith({
+    String? message,
+    int? statusCode,
+    ClaimData? data,
+    String? success,
+  }) {
+    return ClaimResponse(
+      message: message ?? this.message,
+      statusCode: statusCode ?? this.statusCode,
+      data: data ?? this.data,
+      success: success ?? this.success,
+    );
+  }
+}
+
+class ClaimData {
+  final String? tripClaimId;
+  final String? tripClaimDetailId;
+
+  ClaimData({
+    this.tripClaimId,
+    this.tripClaimDetailId,
+  });
+
+  factory ClaimData.fromJson(Map<String, dynamic> json) {
+    return ClaimData(
+      tripClaimId: json['trip_claim_id'] as String?,
+      tripClaimDetailId: json['trip_claim_detail_id'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'trip_claim_id': tripClaimId,
+      'trip_claim_detail_id': tripClaimDetailId,
+    };
+  }
+
+  ClaimData copyWith({
+    String? tripClaimId,
+    String? tripClaimDetailId,
+  }) {
+    return ClaimData(
+      tripClaimId: tripClaimId ?? this.tripClaimId,
+      tripClaimDetailId: tripClaimDetailId ?? this.tripClaimDetailId,
+    );
+  }
+}

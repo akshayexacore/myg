@@ -685,7 +685,7 @@ class HistoryDetailPage extends StatelessWidget {
                                                       .value!
                                                       .categories![index]
                                                       .items[formIndex]
-                                                      .approverRemarks),
+                                                      .approverRemarks,colors:   _controller.claim.value!.approverStatus.color ),
                                         gapHC(10),
                                         Row(
                                           mainAxisAlignment:

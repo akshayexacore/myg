@@ -4,11 +4,13 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_form.dart';
+import 'package:travel_claim/models/claim_history.dart';
 import 'package:travel_claim/modules/claim/widgets/count_widget.dart';
 import 'package:travel_claim/modules/claim/widgets/date_picker.dart';
 import 'package:travel_claim/modules/claim/widgets/dropdown_widget.dart';
 import 'package:travel_claim/modules/claim/widgets/employee_selector.dart';
 import 'package:travel_claim/modules/claim/widgets/file_picker.dart';
+import 'package:travel_claim/modules/claim_approval/claim_detail_approval_page.dart';
 import 'package:travel_claim/modules/landing/controllers/profile_controller.dart';
 import 'package:travel_claim/resources/myg_repository.dart';
 import 'package:travel_claim/views/components/common.dart';
@@ -43,6 +45,9 @@ class _FormItemState extends State<FormItem> {
   var eligibleAmount = 0.0.obs;
   var max = 0.0.obs;
   var totalKms = 0.0.obs;
+  var duplicateCheckClaim = Rxn<ClaimResponse>();
+  List<DuplicateEmployee>duplicationResponse=[];
+ 
   int getNumberOfDays(DateTime? fromDate, DateTime? toDate) {
     if (fromDate == null || toDate == null) {
       return 0;
@@ -445,6 +450,7 @@ class _FormItemState extends State<FormItem> {
       );
     }else{
        widget.formData.fromDate = date;
+       checkDuplicateCaim();
                 isUpdated.toggle();
     }
                
@@ -544,6 +550,7 @@ class _FormItemState extends State<FormItem> {
           EmployeeSelector(
             maxSelection: widget.formData.noOfEmployees - 1,
             onChanged: (list) {
+              print("object$list");
               widget.formData.employees = list;
               if (!widget.category.hasStartMeter &&
                   widget.formData.employees.isNotEmpty) {
@@ -559,7 +566,19 @@ class _FormItemState extends State<FormItem> {
             items: widget.formData.employees.isNotEmpty
                 ? widget.formData.employees
                 : [],
-          )
+          ),
+      Column(
+  children: duplicationResponse
+      .where((e) => e.isDuplication == true)
+      .map(
+        (e) => DuplicationText(
+          id: e.tripClaimId.toString(),
+          remark: textEditingControllerRemarks.text,
+          perosns: widget.formData.employees.map((e) => e.name).join(','),
+        ),
+      )
+      .toList(),
+)
       ],
     );
   }
@@ -618,4 +637,29 @@ class _FormItemState extends State<FormItem> {
       print(_.toString());
     }
   }
+  Future< List<DuplicateEmployee>> checkDuplicateCaim() async {
+  List<DuplicateEmployee>? response;
+
+ if(widget.formData.fromDate!=null)
+    try {
+    print("Get.find<ProfileController>().user.value.id,${Get.find<ProfileController>().user.value.id}");
+    var ids = [
+     Get.find<ProfileController>().user.value.id,
+      ...widget.formData.employees
+          .map((e) => e.id)
+          .whereType<int>() // Removes nulls
+    ];
+       response = await MygRepository().postCheckDuplicateClaim(userId:ids,fromDate: widget.formData.fromDate!.toIso8601String().split('T').first,categoryId: widget.category.id.toString() );
+       duplicationResponse=response;
+     
+      
+        isUpdated.toggle();
+      
+     
+    } catch (_) {
+      print(_.toString());
+    }
+   return response??[];
+  }
+    
 }
