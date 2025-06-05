@@ -940,7 +940,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                   .items[formIndex]
                                                   .selectedClass
                                                   ?.policy
-                                                  ?.gradeClass ==
+                                                  ?.gradeType ==
                                               "Class")
                                             Row(
                                               children: [
@@ -1004,6 +1004,11 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                       Row(
                                         children: [
                                           Expanded(child: Obx(() {
+                                            final item = _controller
+                                                .claim
+                                                .value!
+                                                .categories![index]
+                                                .items[formIndex];
                                             if (_controller
                                                 .isUpdateBusy.isTrue) {
                                               return const SpinKitThreeBounce(
@@ -1032,12 +1037,28 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                           gapWC(10),
                                           Expanded(
                                               child: AbsorbPointer(
-                                            absorbing: !_controller
-                                                .claim
-                                                .value!
-                                                .categories![index]
-                                                .items[formIndex]
-                                                .sentForApproval,
+                                            absorbing: _controller
+                                                        .claim
+                                                        .value!
+                                                        .categories![index]
+                                                        .items[formIndex]
+                                                        .selectedClass
+                                                        ?.policy
+                                                        ?.gradeType ==
+                                                    "Class"
+                                                ? !(_controller
+                                                        .claim
+                                                        .value!
+                                                        .categories![index]
+                                                        .items[formIndex]
+                                                        .isEnableSendApproval ??
+                                                    false)
+                                                : !_controller
+                                                    .claim
+                                                    .value!
+                                                    .categories![index]
+                                                    .items[formIndex]
+                                                    .sentForApproval,
                                             child: Custombutton(
                                                 onTap: () {
                                                   print("ontap is doing here");
@@ -1052,7 +1073,20 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                           .items[formIndex]);
                                                 },
                                                 buttonName: "Send Approval",
-                                                buttonColor: _controller
+                                                buttonColor:_controller
+                                                        .claim
+                                                        .value!
+                                                        .categories![index]
+                                                        .items[formIndex]
+                                                        .selectedClass
+                                                        ?.policy
+                                                        ?.gradeType ==
+                                                    "Class"? _controller
+                                                .claim
+                                                .value!
+                                                .categories![index]
+                                                .items[formIndex].isEnableSendApproval==true?primaryColor:primaryColor
+                                                        .withOpacity(0.6): _controller
                                                         .claim
                                                         .value!
                                                         .categories![index]
