@@ -228,18 +228,20 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                 ),
               ),
               gapHC(10),
-            
               _controller.claim.value!.status != ClaimStatus.pending
                   ? Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.symmetric(  horizontal: 15,),
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 15,
+                      ),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 10,),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border:Border.all(color:  Color(0xffFF2424)),
-                            color: Color(0xffFFEDED)
-                          ),
+                        horizontal: 15,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Color(0xffFF2424)),
+                          color: Color(0xffFFEDED)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -289,17 +291,18 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                 tssb("${cats[index].name}:", Colors.black,
                                     FontWeight.w400),
                                 gapHC(5),
-                                    Container(
-                                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 15,),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border:Border.all(color:  Color(0xffFF2424)),
-                            color: Color(0xffFFEDED)
-                          ),
-                                            child:
-                             ts('${e.approverRemarks}',
+                                Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 15,
+                                    vertical: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border:
+                                          Border.all(color: Color(0xffFF2424)),
+                                      color: Color(0xffFFEDED)),
+                                  child: ts('${e.approverRemarks}',
                                       Colors.black.withOpacity(0.6)),
                                 )
                               ],
@@ -930,6 +933,56 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                     .items[formIndex]
                                                     .status
                                                     .color),
+                                          if (_controller
+                                                  .claim
+                                                  .value!
+                                                  .categories![index]
+                                                  .items[formIndex]
+                                                  .selectedClass
+                                                  ?.policy
+                                                  ?.gradeClass ==
+                                              "Class")
+                                            Row(
+                                              children: [
+                                                Obx(() {
+                                                  final item = _controller
+                                                      .claim
+                                                      .value!
+                                                      .categories![index]
+                                                      .items[formIndex];
+
+                                                  return SizedBox(
+                                                    height: 20,
+                                                    width: 20,
+                                                    child: Checkbox(
+                                                      activeColor:
+                                                          Colors.orange,
+                                                      value:
+                                                          item.isEnableSendApproval ??
+                                                              false,
+                                                      onChanged:
+                                                          (bool? newVal) {
+                                                        final newValue = !(item
+                                                                .isEnableSendApproval ??
+                                                            false);
+                                                        _controller
+                                                            .onChangeCheckBox(
+                                                                index,
+                                                                formIndex,
+                                                                newValue);
+                                                      },
+                                                    ),
+                                                  );
+                                                }),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                ts(
+                                                    "Tap the checklist button to \n submit for approval",
+                                                    Color(0xff333333)
+                                                        .withOpacity(0.8)),
+                                              ],
+                                            )
                                         ],
                                       ),
                                     ),
@@ -987,6 +1040,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                 .sentForApproval,
                                             child: Custombutton(
                                                 onTap: () {
+                                                  print("ontap is doing here");
                                                   approvalRequest(
                                                       context,
                                                       _controller.claim.value!

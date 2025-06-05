@@ -52,7 +52,56 @@ class ClaimDetailResponse {
     data['data'] = claim?.toJson();
     return data;
   }
+}extension ClaimHistoryCopyWith on ClaimHistory {
+  ClaimHistory copyWith({
+    String? tripClaimId,
+    TripType? tripTypeDetails,
+    Employee? approverDetails,
+    Employee? userDetails,
+    Employee? financeApproverDetails,
+    String? tripPurpose,
+    Branch? visitBranchDetail,
+    List<Category>? categories,
+    ClaimStatus? status,
+    ClaimStatus? tripHistoryStatus,
+    String? pendingFrom,
+    String? tripApproverRemarks,
+    ClaimStatus? approverStatus,
+    ClaimStatus? financeStatus,
+    String? tmgId,
+    String? date,
+    String? finanaceRemarks,
+    String? tripApprovedDate,
+    String? tripRejectedDate,
+    String? financeApprovedDate,
+    double? totalAmount,
+  }) {
+    return ClaimHistory(
+      tripClaimId: tripClaimId ?? this.tripClaimId,
+      tripTypeDetails: tripTypeDetails ?? this.tripTypeDetails,
+      approverDetails: approverDetails ?? this.approverDetails,
+      userDetails: userDetails ?? this.userDetails,
+      financeApproverDetails: financeApproverDetails ?? this.financeApproverDetails,
+      tripPurpose: tripPurpose ?? this.tripPurpose,
+      visitBranchDetail: visitBranchDetail ?? this.visitBranchDetail,
+      categories: categories ?? this.categories,
+      status: status ?? this.status,
+      tripHistoryStatus: tripHistoryStatus ?? this.tripHistoryStatus,
+      pendingFrom: pendingFrom ?? this.pendingFrom,
+      tripApproverRemarks: tripApproverRemarks ?? this.tripApproverRemarks,
+      approverStatus: approverStatus ?? this.approverStatus,
+      financeStatus: financeStatus ?? this.financeStatus,
+      tmgId: tmgId ?? this.tmgId,
+      date: date ?? this.date,
+      finanaceRemarks: finanaceRemarks ?? this.finanaceRemarks,
+      tripApprovedDate: tripApprovedDate ?? this.tripApprovedDate,
+      tripRejectedDate: tripRejectedDate ?? this.tripRejectedDate,
+      financeApprovedDate: financeApprovedDate ?? this.financeApprovedDate,
+      totalAmount: totalAmount ?? this.totalAmount,
+    );
+  }
 }
+
 
 class ClaimHistory {
   late String tripClaimId;
@@ -161,6 +210,7 @@ class ClaimHistory {
     return data;
   }
 }
+
 
 class DuplicateEmployee {
   final int? userId;

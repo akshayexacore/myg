@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_form.dart';
 import 'package:travel_claim/models/claim_history.dart';
 import 'package:travel_claim/models/employee.dart';
@@ -74,6 +75,36 @@ class ClaimDetailApprovalController extends GetxController with GetSingleTickerP
     }
   }
 
+
+void onChangeCheckBox(int catIndex, int itemIndex, bool val) {
+  final currentClaim = claim.value;
+
+  if (currentClaim != null) {
+    // 1. Copy the target item with updated value
+    final updatedItem = currentClaim
+        .categories![catIndex]
+        .items[itemIndex]
+        .copyWith(isEnableSendApproval: val);
+
+    // 2. Copy the items list and replace the updated item
+    final updatedItems = [...currentClaim.categories![catIndex].items];
+    updatedItems[itemIndex] = updatedItem;
+
+    // 3. Copy the category with updated items
+    final updatedCategory =
+        currentClaim.categories![catIndex].copyWith(items: updatedItems);
+
+    // 4. Copy the categories list and replace the updated category
+    final updatedCategories = [...currentClaim.categories!];
+    updatedCategories[catIndex] = updatedCategory;
+
+    // 5. Copy the full claim object with updated categories
+    final updatedClaim = currentClaim.copyWith(categories: updatedCategories);
+
+    // 6. Reassign to trigger GetX UI update
+    claim.value = updatedClaim;
+  }
+}
 
   rejectSingle(ClaimFormData claim,{bool isSilent = false}) async {
     try {

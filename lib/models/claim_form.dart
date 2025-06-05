@@ -93,6 +93,7 @@ class ClaimFormData {
   late ClaimStatus status;
   String? approverId;
   late bool sentForApproval;
+   bool? isEnableSendApproval;
   late int rejectionCount;
   late GlobalKey<FormState> formKey;
 
@@ -120,6 +121,7 @@ class ClaimFormData {
     this.selectedClass,
     this.status = ClaimStatus.none,
     this.sentForApproval = false,
+    this.isEnableSendApproval = false,
     this.approverId = "",
     this.rejectionCount = 0,
   }) : formKey = GlobalKey<FormState>();
@@ -266,6 +268,65 @@ class ClaimFormData {
     data['policy_details'] = selectedClass?.toJson();
     return data;
   }
+  ClaimFormData copyWith({
+  String? id,
+  int? classId,
+  int? policyId,
+  DateTime? fromDate,
+  DateTime? toDate,
+  String? tripFrom,
+  String? tripTo,
+  String? odoMeterStart,
+  String? odoMeterEnd,
+  bool? isFrmdateEmpty,
+  bool? isToDateIsEmpty,
+  int? noOfEmployees,
+  List<Employee>? employees,
+  String? remarks,
+  String? approverRemarks,
+  double? amount,
+  double? deductedAmount,
+  double? eligibleAmount,
+  List<String>? files,
+  String? fileError,
+  CategoryClass? selectedClass,
+  ClaimStatus? status,
+  String? approverId,
+  bool? sentForApproval,
+  bool? isEnableSendApproval,
+  int? rejectionCount,
+  GlobalKey<FormState>? formKey,
+}) {
+  return ClaimFormData(
+    id: id ?? this.id,
+    classId: classId ?? this.classId,
+    policyId: policyId ?? this.policyId,
+    fromDate: fromDate ?? this.fromDate,
+    toDate: toDate ?? this.toDate,
+    tripFrom: tripFrom ?? this.tripFrom,
+    tripTo: tripTo ?? this.tripTo,
+    odoMeterStart: odoMeterStart ?? this.odoMeterStart,
+    odoMeterEnd: odoMeterEnd ?? this.odoMeterEnd,
+    isFrmdateEmpty: isFrmdateEmpty ?? this.isFrmdateEmpty,
+    isToDateIsEmpty: isToDateIsEmpty ?? this.isToDateIsEmpty,
+    noOfEmployees: noOfEmployees ?? this.noOfEmployees,
+    employees: employees ?? this.employees,
+    remarks: remarks ?? this.remarks,
+    approverRemarks: approverRemarks ?? this.approverRemarks,
+    amount: amount ?? this.amount,
+    deductedAmount: deductedAmount ?? this.deductedAmount,
+    eligibleAmount: eligibleAmount ?? this.eligibleAmount,
+    files: files ?? this.files,
+    fileError: fileError ?? this.fileError,
+    selectedClass: selectedClass ?? this.selectedClass,
+    status: status ?? this.status,
+    approverId: approverId ?? this.approverId,
+    sentForApproval: sentForApproval ?? this.sentForApproval,
+    rejectionCount: rejectionCount ?? this.rejectionCount,
+    isEnableSendApproval:isEnableSendApproval??this.isEnableSendApproval 
+  )..formKey = formKey ?? this.formKey;
+}
+
 }
 
 
