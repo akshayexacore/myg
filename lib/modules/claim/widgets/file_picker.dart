@@ -52,7 +52,7 @@ class _FilePickerState extends State<FilePicker> {
                   onTap: () {
                     showUploadOptions();
                   },
-                  buttonName: "Choose file",
+                  buttonName: "Choose filess",
                   buttonColor: primaryColor,
                   buttonTextColor: Colors.white),
             ),
@@ -133,7 +133,7 @@ class _FilePickerState extends State<FilePicker> {
                               GalleryItem(
                                   id: "id:1",
                                   resource:
-                                      "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}")
+                                      "${widget.selectedFiles[index]}")
                             ],
                             backgroundDecoration: const BoxDecoration(
                               color: Colors.black,
@@ -165,7 +165,7 @@ class _FilePickerState extends State<FilePicker> {
                           //   )
                           CachedNetworkImage(
                               imageUrl:
-                                  "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
+                                  "${widget.selectedFiles[index]}",
                               height: 70,
                             )
                           : Image.asset(

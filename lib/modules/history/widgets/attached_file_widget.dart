@@ -26,7 +26,7 @@ class AttachedFileWidget extends StatelessWidget {
             Get.context!,
             MaterialPageRoute(
               builder: (context) => GalleryPhotoViewWrapper(
-                galleryItems: [GalleryItem(id: "id:1", resource: "${AppConfig.imageBaseUrl}$file")],
+                galleryItems: [GalleryItem(id: "id:1", resource: "$file")],
                 backgroundDecoration: const BoxDecoration(
                   color: Colors.black,
                 ),
@@ -53,7 +53,7 @@ class AttachedFileWidget extends StatelessWidget {
                   .endsWith('png')
               ? CachedNetworkImage(
             imageUrl:
-            "${AppConfig.imageBaseUrl}${file}",
+            "${file}",
             height: 50,
             key: ValueKey('thumb-$file'),
             memCacheHeight: 50 * 2,
