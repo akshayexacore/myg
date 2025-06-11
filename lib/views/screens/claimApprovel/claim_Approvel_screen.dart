@@ -19,7 +19,7 @@ class _ClaimApprovelScreenState extends State<ClaimApprovelScreen> {
     return SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
-            appBar: customAppBar("Claim Approvalss"),
+            appBar: customAppBar("Claim Approvals"),
             body: Padding(
               padding: const EdgeInsets.only(top: 14),
               child: ListView.builder(

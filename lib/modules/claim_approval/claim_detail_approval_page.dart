@@ -38,7 +38,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
-      appBar: customAppBar("Claim approvals"),
+      appBar: customAppBar("Claim approvalss"),
       body: Obx(() {
         if (_controller.isBusy.isTrue) {
           return const Center(
