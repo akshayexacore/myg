@@ -504,6 +504,7 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                               .files
                                                               .isNotEmpty
                                                           ? AttachedFileWidget(
+                                                            isAppendBAse: true,
                                                               file: claimController
                                                                   .selectedCategories[
                                                                       index]
