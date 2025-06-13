@@ -182,7 +182,31 @@ class _FormItemState extends State<FormItem> {
         ),
         const Divider(),
         gapHC(10),
-        if (widget.category.hasTripFrom) ts("From", Colors.black),
+          if (widget.category.hasStartMeter || widget.category.hasEndMeter)...[
+              FromToSector(
+                          controller:textEditingControllerFrom,
+                          title: "From",
+                          maxSelection: 1,
+                          valueClear: () {
+                            // _controller.dealerAssignValueClear();
+                          },
+                          onChanged: (list) {
+                            // _controller.delealerSelection(list[0]);
+                            // _controller.customerSelection(list[0]);
+                            // widget.formData.employees = list;
+                            // if(!widget.category.hasStartMeter && widget.formData.employees.isNotEmpty) {
+                            //   calculateClass();
+                            // }
+                            // if(list.isEmpty){
+                            //   eligibleAmount(widget.formData.selectedClass?.policy?.gradeAmount);
+                            // }
+                            // print(list.length);
+                          },
+                          items: [],
+                        ),
+              odooMeterReading(),
+          ]else...[
+             if (widget.category.hasTripFrom) ts("From", Colors.black),
         if (widget.category.hasTripFrom) gapHC(3),
         if (widget.category.hasTripFrom)
           TextinputfieldContainer(
@@ -233,8 +257,10 @@ class _FormItemState extends State<FormItem> {
               hintText: "To",
               isEnable: true,
               isObscure: false),
-        if (widget.category.hasStartMeter || widget.category.hasEndMeter)
-          odooMeterReading(),
+      
+          ],
+        
+       
         gapHC(10),
         buildDates(context),
         gapHC(10),

@@ -8,6 +8,7 @@ import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_history.dart';
 import 'package:travel_claim/models/employee.dart';
 import 'package:travel_claim/models/employee.dart';
+import 'package:travel_claim/models/fromto.dart';
 import 'package:travel_claim/models/notification.dart';
 import 'package:travel_claim/models/success.dart';
 import 'package:travel_claim/models/trip_type.dart';
@@ -38,6 +39,15 @@ class MygRepository {
     final response = await _api.post(ApiConstants.employees,headers: {},body: {"emp_id":query});
     return EmployeeResponse.fromJson(response);
   }
+    Future<List<LocationModel>> getfromTo({required String query}) async {
+      List<LocationModel> dataList=[];
+    final response = await _api.post("${ApiConstants.fromToApi}$query",headers: {},);
+    for(var data in (response["results"] as List)){
+      dataList.add(LocationModel.fromJson(data));
+    }
+    return dataList;
+  }
+
 
   Future<EmployeeResponse> getApprovers() async {
     final response = await _api.get(ApiConstants.approvers,headers: {});
