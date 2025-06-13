@@ -147,7 +147,12 @@ class FromToSector extends StatefulWidget {
   List<LocationModel> items;
   final TextEditingController? controller;
   final String? title;
+  final bool? isTo;
+  final String? lat;
+  final String? lon;
+  final bool? readOnly;
   final Function? valueClear;
+
   FromToSector(
       {super.key,
       required this.maxSelection,
@@ -155,7 +160,7 @@ class FromToSector extends StatefulWidget {
       this.items = const [],
       this.title,
       this.valueClear,
-      this.controller});
+      this.controller, this.isTo, this.lat, this.lon, this.readOnly});
 
   @override
   State<FromToSector> createState() => _FromToSectorState();
@@ -186,12 +191,12 @@ class _FromToSectorState extends State<FromToSector> {
           
             ],
           ),
-          const SizedBox(height: 8),
+         gapHC(3),
         ],
         FlutterMultiselect<LocationModel>(
             controller: widget.controller,
             autofocus: false,
-            readOnly: selectedItems.isNotEmpty,
+            readOnly:widget.readOnly?? selectedItems.isNotEmpty,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
             enableBorderColor: Colors.grey.shade400,
             focusedBorderColor: Colors.grey.shade400,
@@ -203,7 +208,7 @@ class _FromToSectorState extends State<FromToSector> {
             resetTextOnSubmitted: true,
             inputDecoration: InputDecoration(
               isDense: true,
-              hintText: "Search Dealer Name or Code",
+              hintText: "Search  location",
               suffixIcon: selectedItems.isNotEmpty
                   ? IconButton(
                       icon: const Icon(Icons.clear),
@@ -231,7 +236,7 @@ class _FromToSectorState extends State<FromToSector> {
             minTextFieldWidth: 300,
             validator: (value) {
               if (selectedItems.length < widget.maxSelection) {
-                return "Min ${widget.maxSelection} dealer ${widget.maxSelection == 1 ? '' : 's'} required";
+                return "required";
               }
               return null;
             },
@@ -302,7 +307,7 @@ class _FromToSectorState extends State<FromToSector> {
                 isLoading = true;
               });
 
-              var data = await searchFunctionAsyncdEaler(searchkey);
+              var data = await searchFunctionAsyncdEaler(searchkey,isTo: widget.isTo??false,lat: widget.lat,long: widget.lon);
               setState(() {
                 isLoading = false;
               });
@@ -312,8 +317,8 @@ class _FromToSectorState extends State<FromToSector> {
     );
   }
 
-  Future<List<LocationModel>> searchFunctionAsyncdEaler(searchkey) async {
-    var response = await MygRepository().getfromTo(query: searchkey);
+  Future<List<LocationModel>> searchFunctionAsyncdEaler(searchkey,{bool isTo=false,String? lat,String? long}) async {
+    var response = await MygRepository().getfromTo(query: searchkey,isTo: isTo,lat: lat,long: long);
     print("response$response");
     if (response.isNotEmpty) {
       return response;

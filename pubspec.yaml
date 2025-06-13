@@ -44,6 +44,7 @@ dependencies:
   badges: ^3.1.2
   fluttertoast: ^8.2.6
   file_picker: ^8.0.6
+
   flutter_launcher_icons: any
   http: ^1.2.1
   shared_preferences: ^2.2.3
@@ -72,6 +73,7 @@ dependencies:
   loader_overlay: ^4.0.1
   package_info_plus: ^8.0.2
   dio: ^5.7.0
+  
   #flutter pub run flutter_launcher_icons:main
 dev_dependencies:
   flutter_test:

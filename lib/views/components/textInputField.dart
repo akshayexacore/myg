@@ -22,6 +22,7 @@ class TextinputfieldContainer extends StatefulWidget {
   final TextInputAction? textInputAction;
   final FormFieldValidator? validate;
   final double? boxRadius;
+  final bool isReadOnly;
   final Color? boxRadiusColor;
   final FocusNode? focusNode;
   final EdgeInsetsGeometry? contentPadding;
@@ -38,6 +39,7 @@ class TextinputfieldContainer extends StatefulWidget {
       this.suffixIcon,
       this.suffixIconOnclick,
       this.validate,
+      this.isReadOnly=false,
       required this.isObscure,
       this.maxline,
       this.verticalPadding,
@@ -69,6 +71,7 @@ class _TextinputfieldContainerState extends State<TextinputfieldContainer> {
       enabled: widget.isEnable,
       textInputAction: widget.textInputAction,
       focusNode: widget.focusNode,
+      readOnly: widget.isReadOnly,
 
       style: const TextStyle(color: Colors.black),
       maxLines: widget.maxline,

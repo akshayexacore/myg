@@ -39,9 +39,9 @@ class MygRepository {
     final response = await _api.post(ApiConstants.employees,headers: {},body: {"emp_id":query});
     return EmployeeResponse.fromJson(response);
   }
-    Future<List<LocationModel>> getfromTo({required String query}) async {
+    Future<List<LocationModel>> getfromTo({required String query,bool isTo=false,String? lat,String? long}) async {
       List<LocationModel> dataList=[];
-    final response = await _api.post("${ApiConstants.fromToApi}$query",headers: {},);
+    final response = await _api.post(isTo?"${ApiConstants.toApi}$query&lat=$lat&lon=$long":"${ApiConstants.fromApi}$query",headers: {},);
     for(var data in (response["results"] as List)){
       dataList.add(LocationModel.fromJson(data));
     }
