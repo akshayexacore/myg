@@ -11,7 +11,7 @@ class ClaimForm {
   late int id;
   late String storageId;
   late TripType tripType;
-  Branch? branch;
+ List< Branch>? branch;
   late DateTime createdAt;
   late String purpose;
   late List<Category> categories;
@@ -30,9 +30,15 @@ class ClaimForm {
     id = json['id'];
     storageId = json['storage_id'] ?? '';
     tripType = TripType.fromJson(json['trip_type']);
-    branch = json['branch'] != null ? Branch.fromJson(json['branch']) : null;
+    // branch = json['branch'] != null ? Branch.fromJson(json['branch']) : null;
     createdAt = DateTime.parse(json['created_at']);
     purpose = json['purpose'] ?? '';
+    branch = <Branch>[];
+    if (json['branch'] != null) {
+      json['branch'].forEach((v) {
+        branch!.add(Branch.fromJson(v));
+      });
+    }
     categories = <Category>[];
     if (json['categories'] != null) {
       json['categories'].forEach((v) {
@@ -46,7 +52,7 @@ class ClaimForm {
     data['id'] = id;
     data['storage_id'] = storageId;
     data['trip_type'] = tripType.toJson();
-    data['branch'] = branch?.toJson();
+    data['branch'] =branch?.map((e) => e.toJson()).toList();
     data['created_at'] = createdAt.toString();
     data['purpose'] = purpose;
     data['categories'] = categories.map((v) => v.toJson()).toList();
@@ -57,7 +63,7 @@ class ClaimForm {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = id;
     data['triptype_id'] = tripType.id;
-    data['visit_branch_id'] = branch?.id;
+    data['visit_branch_id'] = branch?.map((e) => e.id).toList();
     data['trip_purpose'] = purpose;
     data['claim_details'] = categories
         .expand((category) => category.items)

@@ -244,7 +244,7 @@ class _FormItemState extends State<FormItem> {
                           isTo: true,
                           readOnly: fromLocationModel==null,
                           lat:fromLocationModel?.lat ,
-                          lon:fromLocationModel?.lat ,
+                          lon:fromLocationModel?.lon ,
                           maxSelection: 1,
                           valueClear: () {
                               toLocationModel=null;

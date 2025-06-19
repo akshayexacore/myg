@@ -214,7 +214,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                         _controller.claim.value!.tripTypeDetails?.name ?? ''),
                     gapHC(7),
                     headTitle("Branch name",
-                        _controller.claim.value!.visitBranchDetail?.name ?? ''),
+                        _controller.claim.value!.visitBranchDetail?.map((e)=>e.name).join(',') ?? ''),
                     gapHC(7),
                     headTitle("Purpose of trip",
                         _controller.claim.value!.tripPurpose),
@@ -978,7 +978,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                   width: 10,
                                                 ),
                                                 ts(
-                                                    "Tap the checklist button to \n submit for approval",
+                                                    "Check to enable special approval",
                                                     Color(0xff333333)
                                                         .withOpacity(0.8)),
                                               ],
@@ -1708,8 +1708,8 @@ class DuplicationText extends StatelessWidget {
               await Future.delayed(Duration(seconds: 2));
               final data = {
                 'submittedDate': datas?.date,
-                'branchName': datas?.visitBranchDetail?.name,
-                'tripId': datas?.tripClaimId,
+                'branchName': datas?.visitBranchDetail?.map((e)=>e.name).join(','),
+                'tripId': datas?.tmgId,
                 'amount': datas?.totalAmount.toString(),
                 'otherEmployees': 'Alex, Meera',
                 'remarks': 'Stay for conference'

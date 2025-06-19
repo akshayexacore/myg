@@ -19,7 +19,8 @@ class ClaimController extends GetxController
   var isFormAddBusy = false.obs;
   var isFormUpdateBusy = false.obs;
   var isCategoryBusy = false.obs;
-  var selectedBranch = Rxn<Branch>();
+ var selectedBranch = <Branch>[].obs;
+
   var selectedTripType = Rxn<TripType>();
   var claimFrom = Rxn<ClaimForm>();
   final _repository = MygRepository();
@@ -134,7 +135,7 @@ class ClaimController extends GetxController
               categories: selectedCategories));
         } else {
           claimFrom.value!.tripType = selectedTripType.value ?? TripType();
-          claimFrom.value!.branch = selectedBranch.value ?? Branch();
+          claimFrom.value!.branch = selectedBranch.value ?? [];
           claimFrom.value!.purpose = textEditingControllerPurpose.text;
           claimFrom.value!.categories = selectedCategories;
           claimFrom(claimFrom.value);

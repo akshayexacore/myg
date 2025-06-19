@@ -14,7 +14,7 @@ expense_popup(Map<String, dynamic> data) {
         contentPadding: EdgeInsets.only(top: 0),
         content: Container(
           width: 300,
-          height: 360,
+          height: 400,
           color: Colors.white,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -111,7 +111,7 @@ Widget rowTextsCommon(
                       fontSize: 12,
                       color: Colors.black,
                       fontWeight: FontWeight.w500),
-              overflow: TextOverflow.ellipsis,
+              // overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.right,
             ),
           ),

@@ -60,7 +60,7 @@ class ClaimDetailResponse {
     Employee? userDetails,
     Employee? financeApproverDetails,
     String? tripPurpose,
-    Branch? visitBranchDetail,
+   List< Branch>? visitBranchDetail,
     List<Category>? categories,
     ClaimStatus? status,
     ClaimStatus? tripHistoryStatus,
@@ -110,7 +110,7 @@ class ClaimHistory {
   Employee? userDetails;
   Employee? financeApproverDetails;
   late String tripPurpose;
-  Branch? visitBranchDetail;
+  List<Branch>? visitBranchDetail;
   List<Category>? categories;
   late ClaimStatus status;
   late ClaimStatus tripHistoryStatus;
@@ -179,9 +179,10 @@ class ClaimHistory {
         ? new Employee.fromJson(json['finance_approver_details'])
         : null;
     tripPurpose = json['trip_purpose'] ?? '';
-    visitBranchDetail = json['visit_branch_detail'] != null
-        ? new Branch.fromJson(json['visit_branch_detail'])
-        : null;
+    visitBranchDetail =json['visit_branch_detail'] != null
+          ? List<Branch>.from(
+              json['visit_branch_detail'].map((x) => Branch.fromJson(x)))
+          : null;
     categories = <Category>[];
     if (json['categories'] != null) {
       categories = <Category>[];
@@ -202,7 +203,7 @@ class ClaimHistory {
     }
     data['trip_purpose'] = this.tripPurpose;
     if (this.visitBranchDetail != null) {
-      data['visit_branch_detail'] = this.visitBranchDetail!.toJson();
+      data['visit_branch_detail'] = this.visitBranchDetail!.map((x) => x.toJson()).toList();
     }
     if (this.categories != null) {
       data['categories'] = this.categories!.map((v) => v.toJson()).toList();

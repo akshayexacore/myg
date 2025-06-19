@@ -69,7 +69,7 @@ class ClaimConfirmationPage extends StatelessWidget {
                                         .selectedTripType.value?.name),
                                 gapHC(10),
                                 headTitle("Branch name",
-                                    claimController.selectedBranch.value?.name),
+                                    claimController.selectedBranch.map((e) => e.name).join(', ')),
                                 gapHC(10),
                                 headTitle(
                                     "Purpose of trip",

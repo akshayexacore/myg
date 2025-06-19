@@ -105,7 +105,7 @@ class SpecialDetailApprovalPage extends StatelessWidget {
                   children: [
                     headTitle("Type of trip", _controller.claim.value!.tripTypeDetails?.name ?? ''),
                     gapHC(7),
-                    headTitle("Branch name", _controller.claim.value!.visitBranchDetail?.name ?? ''),
+                    headTitle("Branch name", _controller.claim.value!.visitBranchDetail?.map((e)=>e.name).join(',') ?? ''),
                     gapHC(7),
                     headTitle("Purpose of trip", _controller.claim.value!.tripPurpose),
                     gapHC(7),

@@ -88,7 +88,7 @@ class HistoryDetailPage extends StatelessWidget {
                     gapHC(3),
                     headTitle(
                         "Branch name",
-                        _controller.claim.value!.visitBranchDetail?.name ??
+                        _controller.claim.value!.visitBranchDetail?.map((e)=>e.name).join(',') ??
                             'NA'),
                     gapHC(3),
                     headTitle("Purpose of trip",
@@ -168,7 +168,7 @@ class HistoryDetailPage extends StatelessWidget {
                                           : _controller.claim.value!.status ==
                                                   ClaimStatus.approved
                                               ? "Approved Reporting person"
-                                              : "Approved Finance person",
+                                              : "",
                                       Colors.black),
                                   Expanded(
                                     child: Text(
@@ -180,8 +180,28 @@ class HistoryDetailPage extends StatelessWidget {
                                                       .approverStatus ==
                                                   ClaimStatus.rejected
                                               ? "${_controller.claim.value!.approverDetails?.name} (${_controller.claim.value!.approverDetails?.employeeId})"
-                                              : "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})"
-                                          : "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})",
+                                              : "${_controller.claim.value!.approverDetails?.name} (${_controller.claim.value!.approverDetails?.employeeId})"
+                                          : "",
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontFamily: 'Roboto',
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  )
+                                ],
+                              ),
+                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ts(
+                                      "Approved Finance person",
+                                      Colors.black),
+                                  Expanded(
+                                    child: Text(
+                                     "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})",
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
                                           fontFamily: 'Roboto',
