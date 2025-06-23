@@ -154,23 +154,29 @@ class FromToSector extends StatefulWidget {
   final Function? valueClear;
 
   FromToSector(
-      {super.key,
+      {
       required this.maxSelection,
       required this.onChanged,
       this.items = const [],
       this.title,
+      Key? key,
       this.valueClear,
-      this.controller, this.isTo, this.lat, this.lon, this.readOnly});
+      this.controller, this.isTo, this.lat, this.lon, this.readOnly}):super(key: key);
 
   @override
-  State<FromToSector> createState() => _FromToSectorState();
+  State<FromToSector> createState() => FromToSectorState();
 }
 
-class _FromToSectorState extends State<FromToSector> {
+class FromToSectorState extends State<FromToSector> {
   bool isLoading = false;
   List<LocationModel> selectedItems = [];
   late FToast fToast;
-
+// clearList(){
+//  selectedItems.clear();
+//  setState(() {
+   
+//  }); 
+// }
   @override
   void initState() {
     fToast = FToast();

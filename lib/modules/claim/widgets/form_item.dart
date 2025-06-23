@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'dart:math';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_form.dart';
 import 'package:travel_claim/models/claim_history.dart';
@@ -50,7 +51,10 @@ class _FormItemState extends State<FormItem> {
   List<DuplicateEmployee>duplicationResponse=[];
   LocationModel? fromLocationModel=LocationModel();
   LocationModel? toLocationModel=LocationModel();
-
+ final GlobalKey<FromToSectorState> fromState =
+      GlobalKey<FromToSectorState>();
+ final GlobalKey<FromToSectorState> toState =
+      GlobalKey<FromToSectorState>();
 
   int getNumberOfDays(DateTime? fromDate, DateTime? toDate) {
     if (fromDate == null || toDate == null) {
@@ -211,6 +215,7 @@ class _FormItemState extends State<FormItem> {
               FromToSector(
                           controller:textEditingControllerFrom,
                           title: "From",
+                          key: fromState,
                           maxSelection: 1,
                           valueClear: () {
                             fromLocationModel=null;
@@ -219,7 +224,9 @@ class _FormItemState extends State<FormItem> {
                             textEditingControllerTo.clear();
                             textEditingControllerOdoMeterTo.clear();
                             toLocationModel=null;
+                            toState.currentState?.selectedItems.clear();
                              isUpdated.toggle();
+                             
                           },
                           onChanged: (list) {
                             fromLocationModel=list[0];
@@ -240,6 +247,7 @@ class _FormItemState extends State<FormItem> {
                           gapHC(10),
                            FromToSector(
                           controller:textEditingControllerTo,
+                          key: toState,
                           title: "To",
                           isTo: true,
                           readOnly: fromLocationModel==null,
