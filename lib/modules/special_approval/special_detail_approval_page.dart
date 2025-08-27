@@ -432,6 +432,9 @@ class SpecialDetailApprovalPage extends StatelessWidget {
                                                         if (e.isDuplication ==
                                                                 true)
                                                               DuplicationText(
+                                                                category: e.category??"",
+                                                                categoryId: e.categoryId??0,
+                                                                documetDate: e.documentDate??"",
                                                                 id: e
                                                                     .duplicationId
                                                                     .toString(),

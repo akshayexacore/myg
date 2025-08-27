@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travel_claim/utils/app_formatter.dart';
 import 'package:travel_claim/views/components/common.dart';
 
 import 'package:travel_claim/views/style/colors.dart';
@@ -39,14 +40,15 @@ expense_popup(Map<String, dynamic> data) {
               CommonCurvedContentContainer(
                 children: [
                   rowTextsCommon("Submitted Date", data['submittedDate'] ?? ""),
-                  rowTextsCommon("Branch name", data['branchName'] ?? ""),
+                  rowTextsCommon("Branch Name", data['branchName'] ?? ""),
                   rowTextsCommon("Trip ID", data['tripId'] ?? ""),
                   rowTextsCommon("Category", data['category'] ?? ""),
                   rowTextsCommon("Amount", data['amount'] ?? ""),
-                  rowTextsCommon(
-                      "Other Employees", data['otherEmployees'] ?? ""),
-                  rowTextsCommon("Remarks", data['remarks'] ?? "",
-                      padding: EdgeInsets.zero),
+                  rowTextsCommon("Document Date",AppFormatter.convertDateFormat( data['document'] ?? "")),
+                  // rowTextsCommon(
+                  //     "Other Employees", data['otherEmployees'] ?? ""),
+                  // rowTextsCommon("Remarks", data['remarks'] ?? "",
+                  //     padding: EdgeInsets.zero),
                 ],
               ),
               SizedBox(height: 10),

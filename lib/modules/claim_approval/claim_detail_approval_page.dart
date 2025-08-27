@@ -681,9 +681,12 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                             if (e.isDuplication ==
                                                                 true)
                                                               DuplicationText(
+                                                                documetDate:e.documentDate??"",
+                                                                categoryId: e.categoryId??0,
                                                                 id: e
                                                                     .duplicationId
                                                                     .toString(),
+                                                                    category:e.category??"",
                                                                 remark: _controller
                                                                         .claim
                                                                         .value!
@@ -942,7 +945,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                   ?.policy
                                                   ?.gradeType ==
                                               "Class")
-                                            Row(
+                                      if (showBottomActions())       Row(
                                               children: [
                                                 Obx(() {
                                                   final item = _controller
@@ -1660,11 +1663,17 @@ class DuplicationText extends StatelessWidget {
   final String id;
   final String remark;
   final String perosns;
+  final String category;
+  final String documetDate;
+  final int  categoryId;
   const DuplicationText({
     super.key,
     required this.id,
     required this.remark,
+    required this.category,
     required this.perosns,
+    required this.documetDate,
+   required this.categoryId,
   });
 
   @override
@@ -1704,6 +1713,9 @@ class DuplicationText extends StatelessWidget {
             try {
               var response = await MygRepository().getClaimDetail(id);
               ClaimHistory? datas = response.claim;
+    //           String? reason = datas.categories
+    // ?.firstWhere((cat) => cat.id == categoryId, orElse: () => Category(id: 0, r: "Not found"))
+    // .reason;
               // Simulated API call
               await Future.delayed(Duration(seconds: 2));
               final data = {
@@ -1711,8 +1723,11 @@ class DuplicationText extends StatelessWidget {
                 'branchName': datas?.visitBranchDetail?.map((e)=>e.name).join(','),
                 'tripId': datas?.tmgId,
                 'amount': datas?.totalAmount.toString(),
-                'otherEmployees': 'Alex, Meera',
-                'remarks': 'Stay for conference'
+                "category":category,
+                "document":documetDate,
+                
+                // 'otherEmployees': 'Alex, Meera',
+                'remarks': datas?.finanaceRemarks??datas?.finanaceRemarks
               };
 
               Get.back(); // Close loading

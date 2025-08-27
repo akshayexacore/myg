@@ -82,6 +82,13 @@ class AppFormatter {
   static String formatDyMMMMd(DateTime date) {
     return DateFormat('dd MMM yyyy').format(date);
   }
+ static String convertDateFormat(String inputDate) {
+  final inputFormat = DateFormat('yyyy-MM-dd');
+  final outputFormat = DateFormat('dd/MM/yyyy');
+
+  DateTime dateTime = inputFormat.parse(inputDate);
+  return outputFormat.format(dateTime);
+}
 
   static String formatToHumanDate(DateTime date) {
     if(date.isSameDate(DateTime.now())){

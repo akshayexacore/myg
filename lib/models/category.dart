@@ -86,6 +86,7 @@ class Category {
     if (json['items'] != null) {
       items = <ClaimFormData>[];
       json['items'].forEach((v) {
+        print("sssssssssssssssss");
         items.add(ClaimFormData.fromJson(v));
       });
     }
@@ -93,6 +94,7 @@ class Category {
     if (json['claim_details'] != null) {
       items = <ClaimFormData>[];
       json['claim_details'].forEach((v) {
+        print("ddddddd");
         items.add(ClaimFormData.fromApiJson(v));
       });
     }

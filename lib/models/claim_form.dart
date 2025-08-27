@@ -82,6 +82,8 @@ class ClaimFormData {
   DateTime? toDate;
   String? tripFrom;
   String? tripTo;
+  String? fromLat;
+  String? fromLong;
   String? odoMeterStart;
   String? odoMeterEnd;
   bool? isFrmdateEmpty;
@@ -118,6 +120,8 @@ class ClaimFormData {
     this.noOfEmployees = 1,
     this.employees = const [],
     this.remarks = '',
+    this.fromLat,
+    this.fromLong,
     this.fileError = '',
     this.approverRemarks = '',
     this.amount = 0,
@@ -134,7 +138,10 @@ class ClaimFormData {
 
   ClaimFormData.fromJson(Map<String, dynamic> json) {
     debugPrint("the deduct amount${json["deduct_amount"]}");
+    debugPrint("the json lat${json['lat']},${json['lon']}");
     id = json['id'];
+  fromLat = json['lat']?.toString();
+fromLong = json['lon']?.toString();
 
     classId = json['class_id'];
     policyId = json['policy_id'];
@@ -174,7 +181,12 @@ class ClaimFormData {
   }
 
   ClaimFormData.fromApiJson(Map<String, dynamic> json) {
+     debugPrint("the lat long${json['lat']?.toString()}");
+    
     id = json['trip_claim_details_id'];
+   fromLat = json['lat']?.toString();
+fromLong = json['lon']?.toString();
+    debugPrint("the json lat$fromLat,$fromLong");
     status = json['status'].toString().toClaimStatus;
     approverId = json["approver_id"].toString();
     classId = json['class_id'];
@@ -237,6 +249,8 @@ class ClaimFormData {
     data['to_date'] = toDate.toString();
     data['trip_from'] = tripFrom;
     data['trip_to'] = tripTo;
+    data['lat']=fromLat;
+    data['lon']=fromLong;
     data['odo_meter_start'] = odoMeterStart;
     data['odo_meter_end'] = odoMeterEnd;
     data['no_of_employees'] = noOfEmployees;
@@ -255,6 +269,8 @@ class ClaimFormData {
     data['trip_claim_details_id'] = id;
     data['class_id'] = classId;
     data['policy_id'] = policyId;
+     data['lat']=fromLat;
+    data['lon']=fromLong;
     data['from_date'] =
         fromDate != null ? AppFormatter.formatYYYYMMDD(fromDate!) : null;
     data['to_date'] =

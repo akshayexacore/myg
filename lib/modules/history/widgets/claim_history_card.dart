@@ -15,7 +15,13 @@ class ClaimHistoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Bounce(
       onTap: (){
-        Get.toNamed(HistoryDetailPage.routeName,arguments: claim);
+        Get.toNamed(
+  HistoryDetailPage.routeName,
+  arguments: {
+    'claim': claim,
+    'id': claim.tripClaimId, // or any other ID you want
+  },
+);
       },
       duration: const Duration(milliseconds: 110),
       child: Container(

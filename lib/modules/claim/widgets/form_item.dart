@@ -67,11 +67,13 @@ class _FormItemState extends State<FormItem> {
 
   @override
   void initState() {
-    print("formadata${widget.category.id.runtimeType}");
+    print("formadatalatlat${widget.formData.tripFrom ?.isEmpty}  ${widget.formData.fromLong }");
 
     //Logger().i(widget.formData.toJson());
     textEditingControllerFrom.text = widget.formData.tripFrom ?? '';
     textEditingControllerTo.text = widget.formData.tripTo ?? '';
+    fromLocationModel=widget.formData.tripFrom?.isEmpty==true || widget.formData?.tripFrom==null?null: LocationModel(name:widget.formData.tripFrom ,lat:widget.formData.fromLat  ,lon:widget.formData.fromLong );
+    toLocationModel=widget.formData.tripTo?.isEmpty==true || widget.formData?.tripTo==null?null:LocationModel(name:widget.formData.tripTo , );
     textEditingControllerOdoMeterFrom.text =
         widget.formData.odoMeterStart ?? '';
     textEditingControllerOdoMeterTo.text = widget.formData.odoMeterEnd ?? '';
@@ -220,6 +222,7 @@ class _FormItemState extends State<FormItem> {
                           valueClear: () {
                             fromLocationModel=null;
                             textEditingControllerFrom.clear();
+                            widget.formData.tripFrom="";
                               toLocationModel=null;
                             textEditingControllerTo.clear();
                             textEditingControllerOdoMeterTo.clear();
@@ -229,7 +232,9 @@ class _FormItemState extends State<FormItem> {
                              
                           },
                           onChanged: (list) {
+                            debugPrint("the list is here$list");
                             fromLocationModel=list[0];
+                              widget.formData.tripFrom = fromLocationModel?.name;
                             textEditingControllerFrom.text=fromLocationModel?.name??"";
                             isUpdated.toggle();
                             // _controller.customerSelection(list[0]);
@@ -242,7 +247,7 @@ class _FormItemState extends State<FormItem> {
                             // }
                             // print(list.length);
                           },
-                          items: [],
+                          items:fromLocationModel==null?[]: [fromLocationModel??LocationModel()],
                         ),
                           gapHC(10),
                            FromToSector(
@@ -257,12 +262,14 @@ class _FormItemState extends State<FormItem> {
                           valueClear: () {
                               toLocationModel=null;
                             textEditingControllerTo.clear();
+                            widget.formData.tripTo = "";
                             textEditingControllerOdoMeterTo.clear();
                             isUpdated.toggle();
                           },
                           onChanged: (list) {
                             toLocationModel=list[0];
                             textEditingControllerTo.text=toLocationModel?.name??"";
+                            widget.formData.tripTo =toLocationModel?.name??"";
                             textEditingControllerOdoMeterTo.text=toLocationModel?.disatnce.toString()??"";
                             widget.formData.odoMeterEnd = toLocationModel?.disatnce.toString()??"";
                       isUpdated.toggle();
@@ -276,7 +283,7 @@ class _FormItemState extends State<FormItem> {
                             // }
                             // print(list.length);
                           },
-                          items: [],
+                         items:toLocationModel==null?[]: [toLocationModel??LocationModel()],
                         ),  gapHC(10),
               odooMeterReading(),
           ]else...[
@@ -674,7 +681,10 @@ class _FormItemState extends State<FormItem> {
       .where((e) => e.isDuplication == true)
       .map(
         (e) => DuplicationText(
-          id: e.tripClaimId.toString(),
+          documetDate: e.documentDate??"",
+          categoryId: e.categoryId??0,
+
+          id: e.tripClaimId.toString(),category: e.category??"",
           remark: textEditingControllerRemarks.text,
           perosns: widget.formData.employees.map((e) => e.name).join(','),
         ),

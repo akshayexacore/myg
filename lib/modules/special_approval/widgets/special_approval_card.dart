@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:travel_claim/models/claim_history.dart';
 import 'package:travel_claim/modules/claim_approval/claim_detail_approval_page.dart';
 import 'package:travel_claim/modules/special_approval/special_detail_approval_page.dart';
+import 'package:travel_claim/utils/app_enums.dart';
 import 'package:travel_claim/views/components/common.dart';
 import 'package:travel_claim/views/screens/claimApprovel/claim_confirmation_screen.dart';
 import 'package:travel_claim/views/style/colors.dart';
@@ -34,7 +35,14 @@ class SpecialApprovalCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
 
                   children: [
-                    ts("Trip ID", Colors.black),
+                    Row(
+                      children: [
+                        ts("Trip ID", Colors.black),
+                        SizedBox(width: 5,),
+                        Container(height: 15,
+                        width: 15,decoration:BoxDecoration(color:claim.status==ClaimStatus.pending?Colors.orange:claim.status==ClaimStatus.settled?Colors.green:claim.status==ClaimStatus.approved?Colors.greenAccent: Colors.red,shape: BoxShape.circle) ,)
+                      ],
+                    ),
                     gapHC(2),
                     tssb("#${claim.tmgId}", Colors.black,FontWeight.w500),
 

@@ -38,7 +38,7 @@ class ClaimApprovalCard extends StatelessWidget {
                       children: [
                         ts("Trip ID", Colors.black),SizedBox(width: 5,),
                         Container(height: 15,
-                        width: 15,decoration:BoxDecoration(color:claim.approverStatus==ClaimStatus.pending?Colors.orange:claim.approverStatus==ClaimStatus.approved?Colors.green: Colors.red,shape: BoxShape.circle) ,)
+                        width: 15,decoration:BoxDecoration(color:claim.status==ClaimStatus.pending?Colors.orange:claim.status==ClaimStatus.settled?Colors.green:claim.status==ClaimStatus.approved?Colors.greenAccent: Colors.red,shape: BoxShape.circle) ,)
                       ],
                     ),
                     gapHC(2),

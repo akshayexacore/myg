@@ -219,7 +219,10 @@ class DuplicateEmployee {
   final String? empName;
   final String? tripClaimId;
   final String? tripClaimDetailId;
+  final String? category;
   final bool? isDuplication;
+  final String? documentDate;
+  final int? categoryId;
 
   DuplicateEmployee({
     this.userId,
@@ -228,6 +231,9 @@ class DuplicateEmployee {
     this.tripClaimId,
     this.tripClaimDetailId,
     this.isDuplication,
+    this.category,
+    this.documentDate,
+    this.categoryId
   });
 
   factory DuplicateEmployee.fromJson(Map<String, dynamic> json) {
@@ -237,7 +243,10 @@ class DuplicateEmployee {
       empName: json['emp_name'],
       tripClaimId: json['trip_claim_id'],
       tripClaimDetailId: json['trip_claim_detail_id'],
+      category: json['category'],
       isDuplication: json['is_duplication'],
+      documentDate: json['document_date'],
+      categoryId: json['category_id']
     );
   }
 }

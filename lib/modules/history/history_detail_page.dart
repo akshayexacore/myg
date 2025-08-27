@@ -166,7 +166,8 @@ class HistoryDetailPage extends StatelessWidget {
                                               ClaimStatus.rejected
                                           ? "Rejected person"
                                           : _controller.claim.value!.status ==
-                                                  ClaimStatus.approved
+                                                  ClaimStatus.approved ||_controller.claim.value!.status ==
+                                                  ClaimStatus.settled
                                               ? "Approved Reporting person"
                                               : "",
                                       Colors.black),
@@ -175,7 +176,8 @@ class HistoryDetailPage extends StatelessWidget {
                                       _controller.claim.value!.status ==
                                                   ClaimStatus.rejected ||
                                               _controller.claim.value!.status ==
-                                                  ClaimStatus.approved
+                                                  ClaimStatus.approved ||_controller.claim.value!.status ==
+                                                  ClaimStatus.settled
                                           ? _controller.claim.value!
                                                       .approverStatus ==
                                                   ClaimStatus.rejected
