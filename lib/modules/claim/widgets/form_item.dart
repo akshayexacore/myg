@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'dart:math';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_form.dart';
 import 'package:travel_claim/models/claim_history.dart';
-import 'package:travel_claim/models/fromto.dart';
 import 'package:travel_claim/modules/claim/widgets/count_widget.dart';
 import 'package:travel_claim/modules/claim/widgets/date_picker.dart';
 import 'package:travel_claim/modules/claim/widgets/dropdown_widget.dart';
@@ -49,13 +47,7 @@ class _FormItemState extends State<FormItem> {
   var totalKms = 0.0.obs;
   var duplicateCheckClaim = Rxn<ClaimResponse>();
   List<DuplicateEmployee>duplicationResponse=[];
-  LocationModel? fromLocationModel=LocationModel();
-  LocationModel? toLocationModel=LocationModel();
- final GlobalKey<FromToSectorState> fromState =
-      GlobalKey<FromToSectorState>();
- final GlobalKey<FromToSectorState> toState =
-      GlobalKey<FromToSectorState>();
-
+ 
   int getNumberOfDays(DateTime? fromDate, DateTime? toDate) {
     if (fromDate == null || toDate == null) {
       return 0;
@@ -67,13 +59,11 @@ class _FormItemState extends State<FormItem> {
 
   @override
   void initState() {
-    print("formadatalatlat${widget.formData.tripFrom ?.isEmpty}  ${widget.formData.fromLong }");
+    print("formadata${widget.category.id.runtimeType}");
 
     //Logger().i(widget.formData.toJson());
     textEditingControllerFrom.text = widget.formData.tripFrom ?? '';
     textEditingControllerTo.text = widget.formData.tripTo ?? '';
-    fromLocationModel=widget.formData.tripFrom?.isEmpty==true || widget.formData?.tripFrom==null?null: LocationModel(name:widget.formData.tripFrom ,lat:widget.formData.fromLat  ,lon:widget.formData.fromLong );
-    toLocationModel=widget.formData.tripTo?.isEmpty==true || widget.formData?.tripTo==null?null:LocationModel(name:widget.formData.tripTo , );
     textEditingControllerOdoMeterFrom.text =
         widget.formData.odoMeterStart ?? '';
     textEditingControllerOdoMeterTo.text = widget.formData.odoMeterEnd ?? '';
@@ -118,44 +108,23 @@ class _FormItemState extends State<FormItem> {
           print('amount: ${eligibleAmount.value}');
           max.value = eligibleAmount.value;
           totalKms.value = 0;
-          // if (widget.category.hasStartMeter) {
-          //   double start =
-          //       double.tryParse(widget.formData.odoMeterStart ?? '0') ?? 0;
-          //   double end =
-          //       double.tryParse(widget.formData.odoMeterEnd ?? '0') ?? 0;
-          //   if (start == 0 && end == 0) {
-          //     return;
-          //   }
-          //   if (start >= 0 && end > 0) {
-          //     totalKms.value = end - start;
-          //     max.value = totalKms.value *
-          //         widget.formData.selectedClass!.policy!.gradeAmount!;
-          //     if (mounted) {
-          //       textEditingControllerAmount.text = max.toStringAsFixed(2);
-          //     }
-          //     widget.formData.amount = max.value;
-          //   }
-          // }
           if (widget.category.hasStartMeter) {
-          if( toLocationModel?.disatnce==null)
-             { if (mounted) {
-                textEditingControllerAmount.clear();
-              }
-              widget.formData.amount = 0;
-              
+            double start =
+                double.tryParse(widget.formData.odoMeterStart ?? '0') ?? 0;
+            double end =
+                double.tryParse(widget.formData.odoMeterEnd ?? '0') ?? 0;
+            if (start == 0 && end == 0) {
               return;
-            }else{
-               
-              totalKms.value = toLocationModel?.disatnce??0;
+            }
+            if (start >= 0 && end > 0) {
+              totalKms.value = end - start;
               max.value = totalKms.value *
                   widget.formData.selectedClass!.policy!.gradeAmount!;
               if (mounted) {
                 textEditingControllerAmount.text = max.toStringAsFixed(2);
               }
               widget.formData.amount = max.value;
-            
             }
-         
           }
           if (widget.category.id == 4) {
             int totaldays = getNumberOfDays(
@@ -213,81 +182,7 @@ class _FormItemState extends State<FormItem> {
         ),
         const Divider(),
         gapHC(10),
-          if (widget.category.hasStartMeter || widget.category.hasEndMeter)...[
-              FromToSector(
-                          controller:textEditingControllerFrom,
-                          title: "From",
-                          key: fromState,
-                          maxSelection: 1,
-                          valueClear: () {
-                            fromLocationModel=null;
-                            textEditingControllerFrom.clear();
-                            widget.formData.tripFrom="";
-                              toLocationModel=null;
-                            textEditingControllerTo.clear();
-                            textEditingControllerOdoMeterTo.clear();
-                            toLocationModel=null;
-                            toState.currentState?.selectedItems.clear();
-                             isUpdated.toggle();
-                             
-                          },
-                          onChanged: (list) {
-                            debugPrint("the list is here$list");
-                            fromLocationModel=list[0];
-                              widget.formData.tripFrom = fromLocationModel?.name;
-                            textEditingControllerFrom.text=fromLocationModel?.name??"";
-                            isUpdated.toggle();
-                            // _controller.customerSelection(list[0]);
-                            // widget.formData.employees = list;
-                            // if(!widget.category.hasStartMeter && widget.formData.employees.isNotEmpty) {
-                            //   calculateClass();
-                            // }
-                            // if(list.isEmpty){
-                            //   eligibleAmount(widget.formData.selectedClass?.policy?.gradeAmount);
-                            // }
-                            // print(list.length);
-                          },
-                          items:fromLocationModel==null?[]: [fromLocationModel??LocationModel()],
-                        ),
-                          gapHC(10),
-                           FromToSector(
-                          controller:textEditingControllerTo,
-                          key: toState,
-                          title: "To",
-                          isTo: true,
-                          readOnly: fromLocationModel==null,
-                          lat:fromLocationModel?.lat ,
-                          lon:fromLocationModel?.lon ,
-                          maxSelection: 1,
-                          valueClear: () {
-                              toLocationModel=null;
-                            textEditingControllerTo.clear();
-                            widget.formData.tripTo = "";
-                            textEditingControllerOdoMeterTo.clear();
-                            isUpdated.toggle();
-                          },
-                          onChanged: (list) {
-                            toLocationModel=list[0];
-                            textEditingControllerTo.text=toLocationModel?.name??"";
-                            widget.formData.tripTo =toLocationModel?.name??"";
-                            textEditingControllerOdoMeterTo.text=toLocationModel?.disatnce.toString()??"";
-                            widget.formData.odoMeterEnd = toLocationModel?.disatnce.toString()??"";
-                      isUpdated.toggle();
-                            // _controller.customerSelection(list[0]);
-                            // widget.formData.employees = list;
-                            // if(!widget.category.hasStartMeter && widget.formData.employees.isNotEmpty) {
-                            //   calculateClass();
-                            // }
-                            // if(list.isEmpty){
-                            //   eligibleAmount(widget.formData.selectedClass?.policy?.gradeAmount);
-                            // }
-                            // print(list.length);
-                          },
-                         items:toLocationModel==null?[]: [toLocationModel??LocationModel()],
-                        ),  gapHC(10),
-              odooMeterReading(),
-          ]else...[
-             if (widget.category.hasTripFrom) ts("From", Colors.black),
+        if (widget.category.hasTripFrom) ts("From", Colors.black),
         if (widget.category.hasTripFrom) gapHC(3),
         if (widget.category.hasTripFrom)
           TextinputfieldContainer(
@@ -338,10 +233,8 @@ class _FormItemState extends State<FormItem> {
               hintText: "To",
               isEnable: true,
               isObscure: false),
-      
-          ],
-        
-       
+        if (widget.category.hasStartMeter || widget.category.hasEndMeter)
+          odooMeterReading(),
         gapHC(10),
         buildDates(context),
         gapHC(10),
@@ -488,7 +381,7 @@ class _FormItemState extends State<FormItem> {
                 gapHC(3),
                 TextinputfieldContainer(
                     showIcon: false,
-                    isReadOnly: true,
+                    // isReadOnly: true,
                     
                     inputFormattor: [
                       FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))
