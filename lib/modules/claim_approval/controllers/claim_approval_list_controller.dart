@@ -38,7 +38,7 @@ class ClaimApprovalListController extends GetxController
       var response = await _repository.getClaimsForApproval();
               allItems(response.claims);
             for (var item in response.claims) {
-        switch (item.status) {
+        switch (item.approverStatus) {
           case ClaimStatus.pending:
             pendingItems.add(item);
             break;

@@ -37,7 +37,7 @@ class SpecialApprovalListController extends GetxController with GetSingleTickerP
       var response = await _repository.getClaimsForSpecialApproval();
         allItems(response.claims);
                for (var item in response.claims) {
-        switch (item.status) {
+        switch (item.approverStatus) {
           case ClaimStatus.pending:
             pendingItems.add(item);
             break;

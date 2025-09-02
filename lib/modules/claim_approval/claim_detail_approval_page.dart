@@ -179,12 +179,12 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                           width: 90,
                           //  padding: EdgeInsets.symmetric(vertical: 2,horizontal: 30),
                           decoration: boxBaseDecoration(
-                              _controller.claim.value!.tripHistoryStatus.color,
+                              _controller.claim.value!.approverStatus.color,
                               20),
                           child: Center(
                               child: tssb(
                                   _controller
-                                      .claim.value!.tripHistoryStatus.title,
+                                      .claim.value!.approverStatus.title,
                                   Colors.white,
                                   FontWeight.w500)),
                         ),
