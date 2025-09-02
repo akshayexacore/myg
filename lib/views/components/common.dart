@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
 import '../style/colors.dart';
 
@@ -778,9 +778,9 @@ extension StateExt on State {
 //================================================== OPEN URL
 Future<void> _launchUrl(url) async {
   final Uri _url = Uri.parse(url);
-  if (!await launchUrl(_url)) {
-    throw 'Could not launch $_url';
-  }
+  // if (!await launchUrl(_url)) {
+  //   throw 'Could not launch $_url';
+  // }
 }
 
 //================================================== OPEN URL
