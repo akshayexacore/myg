@@ -86,6 +86,7 @@ class Category {
     if (json['items'] != null) {
       items = <ClaimFormData>[];
       json['items'].forEach((v) {
+        print("sssssssssssssssss");
         items.add(ClaimFormData.fromJson(v));
       });
     }
@@ -93,6 +94,7 @@ class Category {
     if (json['claim_details'] != null) {
       items = <ClaimFormData>[];
       json['claim_details'].forEach((v) {
+        print("ddddddd");
         items.add(ClaimFormData.fromApiJson(v));
       });
     }
@@ -129,7 +131,42 @@ class Category {
 
   @override
   int get hashCode => id.hashCode;
+}extension CategoryCopyWith on Category {
+  Category copyWith({
+    int? id,
+    String? name,
+    bool? hasTripFrom,
+    bool? hasTripTo,
+    bool? hasFromDate,
+    bool? hasToDate,
+    bool? hasDocumentDate,
+    bool? hasStartMeter,
+    bool? hasEndMeter,
+    bool? hasClass,
+    int? noOfDays,
+    String? imageUrl,
+    List<CategoryClass>? classes,
+    List<ClaimFormData>? items,
+  }) {
+    return Category(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      hasTripFrom: hasTripFrom ?? this.hasTripFrom,
+      hasTripTo: hasTripTo ?? this.hasTripTo,
+      hasFromDate: hasFromDate ?? this.hasFromDate,
+      hasToDate: hasToDate ?? this.hasToDate,
+      hasDocumentDate: hasDocumentDate ?? this.hasDocumentDate,
+      hasStartMeter: hasStartMeter ?? this.hasStartMeter,
+      hasEndMeter: hasEndMeter ?? this.hasEndMeter,
+      hasClass: hasClass ?? this.hasClass,
+      noOfDays: noOfDays ?? this.noOfDays,
+      imageUrl: imageUrl ?? this.imageUrl,
+      classes: classes ?? this.classes,
+      items: items ?? this.items,
+    );
+  }
 }
+
 
 class CategoryClass {
   late int id;

@@ -6,9 +6,13 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_form.dart';
+import 'package:travel_claim/models/claim_history.dart';
 import 'package:travel_claim/models/employee.dart';
 import 'package:travel_claim/modules/claim_approval/controllers/claim_detail_approval_controller.dart';
+import 'package:travel_claim/modules/claim_approval/widgets/popup_card.dart';
 import 'package:travel_claim/modules/history/widgets/attached_file_widget.dart';
+import 'package:travel_claim/modules/landing/controllers/profile_controller.dart';
+import 'package:travel_claim/resources/myg_repository.dart';
 import 'package:travel_claim/utils/app_enums.dart';
 import 'package:travel_claim/utils/app_formatter.dart';
 import 'package:travel_claim/views/components/alertDialog.dart';
@@ -27,13 +31,14 @@ class ClaimDetailApprovalPage extends StatelessWidget {
   static const routeName = '/claim_detail_approval';
 
   final _controller = Get.find<ClaimDetailApprovalController>();
+  final _profileController = Get.find<ProfileController>();
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
-      appBar: customAppBar("Claim approval"),
+      appBar: customAppBar("Claim approvals"),
       body: Obx(() {
         if (_controller.isBusy.isTrue) {
           return const Center(
@@ -51,7 +56,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
             children: [
               Container(
                 margin:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: boxDecoration(primaryColor, 10),
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -174,12 +179,12 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                           width: 90,
                           //  padding: EdgeInsets.symmetric(vertical: 2,horizontal: 30),
                           decoration: boxBaseDecoration(
-                              _controller.claim.value!.tripHistoryStatus.color,
+                              _controller.claim.value!.approverStatus.color,
                               20),
                           child: Center(
                               child: tssb(
                                   _controller
-                                      .claim.value!.tripHistoryStatus.title,
+                                      .claim.value!.approverStatus.title,
                                   Colors.white,
                                   FontWeight.w500)),
                         ),
@@ -209,7 +214,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                         _controller.claim.value!.tripTypeDetails?.name ?? ''),
                     gapHC(7),
                     headTitle("Branch name",
-                        _controller.claim.value!.visitBranchDetail?.name ?? ''),
+                        _controller.claim.value!.visitBranchDetail?.map((e)=>e.name).join(',') ?? ''),
                     gapHC(7),
                     headTitle("Purpose of trip",
                         _controller.claim.value!.tripPurpose),
@@ -224,9 +229,19 @@ class ClaimDetailApprovalPage extends StatelessWidget {
               ),
               gapHC(10),
               _controller.claim.value!.status != ClaimStatus.pending
-                  ? Padding(
+                  ? Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 15,
+                      ),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
+                        horizontal: 15,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Color(0xffFF2424)),
+                          color: Color(0xffFFEDED)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -272,11 +287,24 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                gapHC(7),
                                 tssb("${cats[index].name}:", Colors.black,
                                     FontWeight.w400),
                                 gapHC(5),
-                                ts('${e.approverRemarks}',
-                                    Colors.black.withOpacity(0.6))
+                                Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 15,
+                                    vertical: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border:
+                                          Border.all(color: Color(0xffFF2424)),
+                                      color: Color(0xffFFEDED)),
+                                  child: ts('${e.approverRemarks}',
+                                      Colors.black.withOpacity(0.6)),
+                                )
                               ],
                             );
                           },
@@ -350,7 +378,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 20),
+                                          horizontal: 10, vertical: 20),
                                       decoration:
                                           boxBaseDecoration(greyLight, 0),
                                       child: Column(
@@ -406,15 +434,24 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                                 .withOpacity(
                                                                     0.8)),
                                                         Text(
-                                                            AppFormatter.formatDDMMMYYYY(
-                                                                _controller
+                                                            _controller
+                                                                        .claim
+                                                                        .value!
+                                                                        .categories![
+                                                                            index]
+                                                                        .items[
+                                                                            formIndex]
+                                                                        .fromDate !=
+                                                                    null
+                                                                ? AppFormatter.formatDDMMMYYYY(_controller
                                                                     .claim
                                                                     .value!
                                                                     .categories![
                                                                         index]
                                                                     .items[
                                                                         formIndex]
-                                                                    .fromDate!),
+                                                                    .fromDate!)
+                                                                : "nill",
                                                             style: const TextStyle(
                                                                 fontFamily:
                                                                     'Roboto',
@@ -440,15 +477,25 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                               .withOpacity(
                                                                   0.8)),
                                                       Text(
-                                                          AppFormatter.formatDDMMMYYYY(
-                                                              _controller
-                                                                  .claim
-                                                                  .value!
-                                                                  .categories![
-                                                                      index]
-                                                                  .items[
-                                                                      formIndex]
-                                                                  .toDate!),
+                                                          _controller
+                                                                      .claim
+                                                                      .value!
+                                                                      .categories![
+                                                                          index]
+                                                                      .items[
+                                                                          formIndex]
+                                                                      .toDate !=
+                                                                  null
+                                                              ? AppFormatter.formatDDMMMYYYY(
+                                                                  _controller
+                                                                      .claim
+                                                                      .value!
+                                                                      .categories![
+                                                                          index]
+                                                                      .items[
+                                                                          formIndex]
+                                                                      .toDate!)
+                                                              : "",
                                                           textAlign:
                                                               TextAlign.left,
                                                           overflow:
@@ -517,36 +564,24 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                   flex: 5,
                                                   child: ts(
                                                       "Odometer reading after",
-                                                      const Color(
-                                                              0xff333333)
-                                                          .withOpacity(
-                                                              0.8)),
+                                                      const Color(0xff333333)
+                                                          .withOpacity(0.8)),
                                                 ),
                                                 Expanded(
                                                   flex: 5,
-                                                  child:  Text(
-                                                         "${ _controller
-                                                                  .claim
-                                                                  .value!
-                                                                  .categories![
-                                                                      index]
-                                                                  .items[
-                                                                      formIndex]
-                                                                  .odoMeterEnd} KM" ??
-                                                              'NA',
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          overflow:
-                                                              TextOverflow.fade,
-                                                          style: const TextStyle(
-                                                              fontFamily:
-                                                                  'Roboto',
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: Color(
-                                                                  0xff333333))),
+                                                  child: Text(
+                                                      "${_controller.claim.value!.categories![index].items[formIndex].odoMeterEnd} KM" ??
+                                                          'NA',
+                                                      textAlign: TextAlign.left,
+                                                      overflow:
+                                                          TextOverflow.fade,
+                                                      style: const TextStyle(
+                                                          fontFamily: 'Roboto',
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color(
+                                                              0xff333333))),
                                                 ),
                                               ],
                                             ),
@@ -557,13 +592,24 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                               .categories![index].hasToDate)
                                             headTitle(
                                                 "Document date",
-                                                AppFormatter.formatDDMMMYYYY(
-                                                    _controller
-                                                        .claim
-                                                        .value!
-                                                        .categories![index]
-                                                        .items[formIndex]
-                                                        .fromDate!)),
+                                                _controller
+                                                            .claim
+                                                            .value!
+                                                            .categories![index]
+                                                            .items[formIndex]
+                                                            .fromDate !=
+                                                        null
+                                                    ? AppFormatter
+                                                        .formatDDMMMYYYY(
+                                                            _controller
+                                                                .claim
+                                                                .value!
+                                                                .categories![
+                                                                    index]
+                                                                .items[
+                                                                    formIndex]
+                                                                .fromDate!)
+                                                    : "Nill"),
                                           if (!_controller.claim.value!
                                               .categories![index].hasToDate)
                                             gapHC(10),
@@ -606,27 +652,72 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                         .employees
                                                         .map(
                                                       (e) {
-                                                        return Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical: 5,
-                                                                  horizontal:
-                                                                      6),
-                                                          margin:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  bottom: 2),
-                                                          decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          14),
-                                                              color:
-                                                                  primaryColor),
-                                                          child: ts(
-                                                              '${e.name}(${e.employeeId})',
-                                                              Colors.white),
+                                                        return Column(
+                                                          children: [
+                                                            Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          5,
+                                                                      horizontal:
+                                                                          6),
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      bottom:
+                                                                          2),
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              14),
+                                                                  color:
+                                                                      primaryColor),
+                                                              child: ts(
+                                                                  '${e.name}(${e.employeeId})',
+                                                                  Colors.white),
+                                                            ),
+                                                            if (e.isDuplication ==
+                                                                true)
+                                                              DuplicationText(
+                                                                documetDate:e.documentDate??"",
+                                                                categoryId: e.categoryId??0,
+                                                                id: e
+                                                                    .duplicationId
+                                                                    .toString(),
+                                                                    category:e.category??"",
+                                                                remark: _controller
+                                                                        .claim
+                                                                        .value!
+                                                                        .categories![
+                                                                            index]
+                                                                        .items[
+                                                                            formIndex]
+                                                                        .remarks
+                                                                        .isEmpty
+                                                                    ? 'Nil'
+                                                                    : _controller
+                                                                        .claim
+                                                                        .value!
+                                                                        .categories![
+                                                                            index]
+                                                                        .items[
+                                                                            formIndex]
+                                                                        .remarks,
+                                                                perosns: _controller
+                                                                    .claim
+                                                                    .value!
+                                                                    .categories![
+                                                                        index]
+                                                                    .items[
+                                                                        formIndex]
+                                                                    .employees
+                                                                    .map((e) =>
+                                                                        e.name)
+                                                                    .join(","),
+                                                              )
+                                                          ],
                                                         );
                                                       },
                                                     ).toList(),
@@ -819,7 +910,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                           top: 5),
                                                   child: headTitle(
                                                     "",
-                                                    "(Eligible amount ${max.toStringAsFixed(2)} INR ${_controller.claim.value!.categories![index].hasStartMeter ? 'for $totalKms Kms @ ${_controller.claim.value!.categories![index].items[formIndex].selectedClass!.policy!.gradeAmount!} INR/Km' : ''})",
+                                                    "(Eligible amount ${max.toStringAsFixed(2)} INR ${_controller.claim.value!.categories![index].hasStartMeter ? 'for $totalKms Kms @ ${_controller.claim.value!.categories![index].items[formIndex].selectedClass!.policy!.gradeAmount} INR/Km' : ''})",
                                                     colors: Colors.red,
                                                   ),
                                                 );
@@ -845,6 +936,56 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                     .items[formIndex]
                                                     .status
                                                     .color),
+                                          if (_controller
+                                                  .claim
+                                                  .value!
+                                                  .categories![index]
+                                                  .items[formIndex]
+                                                  .selectedClass
+                                                  ?.policy
+                                                  ?.gradeType ==
+                                              "Class")
+                                      if (showBottomActions())       Row(
+                                              children: [
+                                                Obx(() {
+                                                  final item = _controller
+                                                      .claim
+                                                      .value!
+                                                      .categories![index]
+                                                      .items[formIndex];
+
+                                                  return SizedBox(
+                                                    height: 20,
+                                                    width: 20,
+                                                    child: Checkbox(
+                                                      activeColor:
+                                                          Colors.orange,
+                                                      value:
+                                                          item.isEnableSendApproval ??
+                                                              false,
+                                                      onChanged:
+                                                          (bool? newVal) {
+                                                        final newValue = !(item
+                                                                .isEnableSendApproval ??
+                                                            false);
+                                                        _controller
+                                                            .onChangeCheckBox(
+                                                                index,
+                                                                formIndex,
+                                                                newValue);
+                                                      },
+                                                    ),
+                                                  );
+                                                }),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                ts(
+                                                    "Check to enable special approval",
+                                                    Color(0xff333333)
+                                                        .withOpacity(0.8)),
+                                              ],
+                                            )
                                         ],
                                       ),
                                     ),
@@ -866,6 +1007,11 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                       Row(
                                         children: [
                                           Expanded(child: Obx(() {
+                                            final item = _controller
+                                                .claim
+                                                .value!
+                                                .categories![index]
+                                                .items[formIndex];
                                             if (_controller
                                                 .isUpdateBusy.isTrue) {
                                               return const SpinKitThreeBounce(
@@ -894,14 +1040,31 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                           gapWC(10),
                                           Expanded(
                                               child: AbsorbPointer(
-                                            absorbing: !_controller
-                                                .claim
-                                                .value!
-                                                .categories![index]
-                                                .items[formIndex]
-                                                .sentForApproval,
+                                            absorbing: _controller
+                                                        .claim
+                                                        .value!
+                                                        .categories![index]
+                                                        .items[formIndex]
+                                                        .selectedClass
+                                                        ?.policy
+                                                        ?.gradeType ==
+                                                    "Class"
+                                                ? !(_controller
+                                                        .claim
+                                                        .value!
+                                                        .categories![index]
+                                                        .items[formIndex]
+                                                        .isEnableSendApproval ??
+                                                    false)
+                                                : !_controller
+                                                    .claim
+                                                    .value!
+                                                    .categories![index]
+                                                    .items[formIndex]
+                                                    .sentForApproval,
                                             child: Custombutton(
                                                 onTap: () {
+                                                  print("ontap is doing here");
                                                   approvalRequest(
                                                       context,
                                                       _controller.claim.value!
@@ -913,7 +1076,20 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                           .items[formIndex]);
                                                 },
                                                 buttonName: "Send Approval",
-                                                buttonColor: _controller
+                                                buttonColor:_controller
+                                                        .claim
+                                                        .value!
+                                                        .categories![index]
+                                                        .items[formIndex]
+                                                        .selectedClass
+                                                        ?.policy
+                                                        ?.gradeType ==
+                                                    "Class"? _controller
+                                                .claim
+                                                .value!
+                                                .categories![index]
+                                                .items[formIndex].isEnableSendApproval==true?primaryColor:primaryColor
+                                                        .withOpacity(0.6): _controller
                                                         .claim
                                                         .value!
                                                         .categories![index]
@@ -1354,7 +1530,7 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                             gapHC(20),
                             tcCustomhead(
                                 "Are you sure you want to \n"
-                                    "${buttonText.toLowerCase()} the claim?",
+                                "${buttonText.toLowerCase()} the claim?",
                                 Colors.black87,
                                 size: 21.0,
                                 align: TextAlign.center,
@@ -1362,10 +1538,10 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                             gapHC(30),
                             if (status == "approve_all")
                               Obx(
-                                    () {
+                                () {
                                   var widgets = [];
-                                  for (var element in _controller
-                                      .claim.value!.categories!) {
+                                  for (var element
+                                      in _controller.claim.value!.categories!) {
                                     for (var item in element.items) {
                                       if (item.sentForApproval == true &&
                                           item.amount! >
@@ -1384,16 +1560,15 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                       style: const TextStyle(
                                                           fontSize: 14,
                                                           fontWeight:
-                                                          FontWeight.w500,
-                                                          color:
-                                                          primaryColor)),
+                                                              FontWeight.w500,
+                                                          color: primaryColor)),
                                                   TextSpan(
                                                       text:
-                                                      ' amount is ₹${item.amount!.toStringAsFixed(2)}, but only ₹${item.eligibleAmount!.toStringAsFixed(2)} is eligible as per policy. It will be adjusted to ₹${item.eligibleAmount!.toStringAsFixed(2)}',
+                                                          ' amount is ₹${item.amount!.toStringAsFixed(2)}, but only ₹${item.eligibleAmount!.toStringAsFixed(2)} is eligible as per policy. It will be adjusted to ₹${item.eligibleAmount!.toStringAsFixed(2)}',
                                                       style: const TextStyle(
                                                           fontSize: 14,
                                                           fontWeight:
-                                                          FontWeight.w500,
+                                                              FontWeight.w500,
                                                           color: textColor))
                                                 ])));
                                       }
@@ -1402,13 +1577,14 @@ class ClaimDetailApprovalPage extends StatelessWidget {
 
                                   return ListView.separated(
                                       shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       itemBuilder: (context, index) =>
-                                      widgets[index],
+                                          widgets[index],
                                       separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
                                       itemCount: widgets.length);
                                 },
                               ),
@@ -1472,10 +1648,106 @@ class ClaimDetailApprovalPage extends StatelessWidget {
     bool canResubmit = _controller.claim.value!.categories!
         .expand((category) => category.items)
         .toList()
-        .where((e) => e.status == ClaimStatus.pending)
+        .where((e) {
+          return e.status == ClaimStatus.pending &&
+              e.approverId == _profileController.user.value.employeeId;
+        })
         .toList()
         .isNotEmpty;
 
     return canResubmit; //_controller.claim.value!.tripHistoryStatus != ClaimStatus.approved && _controller.claim.value!.tripHistoryStatus != ClaimStatus.settled;
+  }
+}
+
+class DuplicationText extends StatelessWidget {
+  final String id;
+  final String remark;
+  final String perosns;
+  final String category;
+  final String documetDate;
+  final int  categoryId;
+  const DuplicationText({
+    super.key,
+    required this.id,
+    required this.remark,
+    required this.category,
+    required this.perosns,
+    required this.documetDate,
+   required this.categoryId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.error,
+              color: pinkreject,
+              size: 15,
+            ),
+            SizedBox(width: 5),
+            Expanded(
+              child: Text(
+                "Claim Duplication .",
+                style: const TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                  color: pinkreject,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 4),
+        GestureDetector(
+          onTap: () async {
+            Get.dialog(
+              Center(child: CircularProgressIndicator()),
+              barrierDismissible: false,
+            );
+            try {
+              var response = await MygRepository().getClaimDetail(id);
+              ClaimHistory? datas = response.claim;
+    //           String? reason = datas.categories
+    // ?.firstWhere((cat) => cat.id == categoryId, orElse: () => Category(id: 0, r: "Not found"))
+    // .reason;
+              // Simulated API call
+              await Future.delayed(Duration(seconds: 2));
+              final data = {
+                'submittedDate': datas?.date,
+                'branchName': datas?.visitBranchDetail?.map((e)=>e.name).join(','),
+                'tripId': datas?.tmgId,
+                'amount': datas?.totalAmount.toString(),
+                "category":category,
+                "document":documetDate,
+                
+                // 'otherEmployees': 'Alex, Meera',
+                'remarks': datas?.finanaceRemarks??datas?.finanaceRemarks
+              };
+
+              Get.back(); // Close loading
+              expense_popup(data); // Open dialog with data
+            } catch (e) {
+              Get.back(); // Close loading
+              Get.snackbar("Error", "Failed to fetch data");
+            }
+          },
+          child: Text(
+            'Details',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

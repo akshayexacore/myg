@@ -11,22 +11,30 @@ import 'package:path/path.dart';
 
 class AttachedFileWidget extends StatelessWidget {
   final String file;
-  const AttachedFileWidget({super.key, required this.file});
+  final bool isAppendBAse;
+  const AttachedFileWidget(
+      {super.key, required this.file, this.isAppendBAse = false});
 
   @override
   Widget build(BuildContext context) {
     print(file);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: (){
-        if(extension(file).toLowerCase().endsWith('pdf')){
-          Get.to(()=>PdfViewer(file: "${AppConfig.imageBaseUrl}$file"));
-        }else{
+      onTap: () {
+        if (extension(file).toLowerCase().endsWith('pdf')) {
+          Get.to(() => PdfViewer(file: "${AppConfig.imageBaseUrl}$file"));
+        } else {
           Navigator.push(
             Get.context!,
             MaterialPageRoute(
               builder: (context) => GalleryPhotoViewWrapper(
-                galleryItems: [GalleryItem(id: "id:1", resource: "${AppConfig.imageBaseUrl}$file")],
+                galleryItems: [
+                  GalleryItem(
+                      id: "id:1",
+                      resource: isAppendBAse
+                          ? "${AppConfig.imageLiveBaseUrl}$file"
+                          : file)
+                ],
                 backgroundDecoration: const BoxDecoration(
                   color: Colors.black,
                 ),
@@ -41,28 +49,35 @@ class AttachedFileWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          file
-              .split("/")
-              .last
-              .toLowerCase()
-              .endsWith('jpg') ||
-              file
-                  .split("/")
-                  .last
-                  .toLowerCase()
-                  .endsWith('png')
+          file.split("/").last.toLowerCase().endsWith('jpg') ||
+                  file.split("/").last.toLowerCase().endsWith('png')
               ? CachedNetworkImage(
-            imageUrl:
-            "${AppConfig.imageBaseUrl}${file}",
-            height: 50,
-            key: ValueKey('thumb-$file'),
-            memCacheHeight: 50 * 2,
-            maxHeightDiskCache: 50 * 2,
-          )
+                  imageUrl: isAppendBAse
+                      ? "${AppConfig.imageLiveBaseUrl}$file"
+                      : "${file}",
+                  height: 50,
+                  key: ValueKey('thumb-$file'),
+                  memCacheHeight: 50 * 2,
+                  maxHeightDiskCache: 50 * 2,
+                  placeholder: (context, url) => const SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: Center(
+                        child: CircularProgressIndicator(strokeWidth: 2)),
+                  ),
+
+                  // Fallback widget if image fails to load
+                  errorWidget: (context, url, error) => const SizedBox(
+                    height: 30,
+                    width: 30,
+                    child:
+                        Icon(Icons.broken_image, size: 24, color: Colors.grey),
+                  ),
+                )
               : Image.asset(
-            AppAssets.file,
-            height: 30,
-          ),
+                  AppAssets.file,
+                  height: 30,
+                ),
           gapWC(7),
           /*Expanded(
             child: Text(basename(file),textAlign: TextAlign.left,overflow: TextOverflow.fade,style: const TextStyle(

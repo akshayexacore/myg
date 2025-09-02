@@ -23,7 +23,6 @@ import 'package:travel_claim/views/components/customButton.dart';
 import 'package:travel_claim/views/components/image_dispalya.ssl.dart';
 import 'package:travel_claim/views/components/textInputField.dart';
 import 'package:travel_claim/views/style/colors.dart';
-
 import 'package:travel_claim/views/widgets.dart';
 
 class ClaimPage extends StatelessWidget {
@@ -50,7 +49,7 @@ class ClaimPage extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: Scaffold(
           backgroundColor: Colors.white,
-          appBar: customAppBar("Add Expense"),
+          appBar: customAppBar("Add Expenses"),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -221,17 +220,35 @@ class ClaimPage extends StatelessWidget {
                         hint: 'Select Category',
                         options: branchMap,
                         selectedOptions:
-                            claimController.selectedBranch.value != null
-                                ? [claimController.selectedBranch.value!.id]
+                            claimController.selectedBranch.isNotEmpty
+                                ? claimController.selectedBranch
+                                    .map((e) => e.id)
+                                    .toList()
                                 : null,
-                        multiple: false,
+                        multiple: true,
                         onChanged: (selectedIds) {
+                          debugPrint("ssssssssssss");
                           if (selectedIds != null && selectedIds.isNotEmpty) {
-                            claimController.selectedBranch(
-                                landingController.branches.firstWhereOrNull(
-                              (element) => element.id == selectedIds!.first,
-                            ));
+                            final matchedBranches =
+                                landingController.branches.where(
+                              (branch) => selectedIds!.contains(branch.id),
+                            );
+
+                            claimController.selectedBranch.addAll(
+                              matchedBranches.where(
+                                (branch) => !claimController.selectedBranch
+                                    .any((b) => b.id == branch.id),
+                              ),
+                            );
                           }
+                          // if (selectedIds != null && selectedIds.isNotEmpty) {
+                          //   claimController.selectedBranch(selectedIds);
+
+                          //   // claimController.selectedBranch(
+                          //   //     landingController.branches.firstWhereOrNull(
+                          //   //   (element) => element.id == selectedIds!.first,
+                          //   // ));
+                          // }
                         },
                         validator: (value) {
                           if (claimController.selectedTripType.value?.name
@@ -245,7 +262,7 @@ class ClaimPage extends StatelessWidget {
                       );
 
                       //debugPrint(_controller.selectedCategory.value?.name);
-                      return SmartSelect<Branch?>.single(
+                      return SmartSelect<Branch>.multiple(
                         title: 'Select branch',
                         selectedValue: claimController.selectedBranch.value,
                         modalFilter: true,
@@ -307,8 +324,8 @@ class ClaimPage extends StatelessWidget {
                                         Align(
                                             alignment: Alignment.centerLeft,
                                             child: Text(
-                                              claimController
-                                                  .selectedBranch.value!.name,
+                                              claimController.selectedBranch
+                                                  .value[0]!.name,
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.w500),
@@ -443,10 +460,15 @@ class ClaimPage extends StatelessWidget {
                                                 ),
                                               ),
                                               gapWC(4),
-                                              CustomSslImageDispaly(url: claimController
-                                                        .categories[index]
-                                                        .imageUrl),
-                                            
+                                              CachedNetworkImage(
+                                                imageUrl: claimController
+                                                    .categories[index].imageUrl,
+                                                height: 18,
+                                                width: 18,
+                                              ),
+                                              // CustomSslImageDispaly(url: claimController
+                                              //           .categories[index]
+                                              //           .imageUrl),
                                               gapWC(4),
                                               Expanded(
                                                   child: tchcus(
@@ -512,9 +534,15 @@ class ClaimPage extends StatelessWidget {
                                 claimController.selectedCategories[index].name,
                                 Colors.black,
                                 15.0),
-                            leading: CustomSslImageDispaly(url: claimController
-                                  .selectedCategories[index].imageUrl),
-                             
+                            leading: Image.network(
+                              claimController
+                                  .selectedCategories[index].imageUrl,
+                              height: 25,
+                              width: 25,
+                            ),
+                            //  CustomSslImageDispaly(url: claimController
+                            //       .selectedCategories[index].imageUrl),
+
                             trailing: Icon(
                               Icons.keyboard_arrow_down,
                               color: primaryColor.withOpacity(0.8),

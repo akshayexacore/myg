@@ -8,6 +8,7 @@ import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_history.dart';
 import 'package:travel_claim/models/employee.dart';
 import 'package:travel_claim/models/employee.dart';
+import 'package:travel_claim/models/fromto.dart';
 import 'package:travel_claim/models/notification.dart';
 import 'package:travel_claim/models/success.dart';
 import 'package:travel_claim/models/trip_type.dart';
@@ -38,6 +39,15 @@ class MygRepository {
     final response = await _api.post(ApiConstants.employees,headers: {},body: {"emp_id":query});
     return EmployeeResponse.fromJson(response);
   }
+    Future<List<LocationModel>> getfromTo({required String query,bool isTo=false,String? lat,String? long}) async {
+      List<LocationModel> dataList=[];
+    final response = await _api.post(isTo?"${ApiConstants.toApi}$query&lat=$lat&lon=$long":"${ApiConstants.fromApi}$query",headers: {},);
+    for(var data in (response["results"] as List)){
+      dataList.add(LocationModel.fromJson(data));
+    }
+    return dataList;
+  }
+
 
   Future<EmployeeResponse> getApprovers() async {
     final response = await _api.get(ApiConstants.approvers,headers: {});
@@ -114,10 +124,19 @@ class MygRepository {
   }
 
   Future<ClaimDetailResponse> getClaimDetail(String id) async {
+    
     final response = await _api.post(ApiConstants.viewClaim,headers: {},body: {"trip_claim_id":id});
     return ClaimDetailResponse.fromJson(response);
   }
 
+  Future<List<DuplicateEmployee>> postCheckDuplicateClaim({required List<int> userId,required String fromDate,required String categoryId}) async {
+      List<DuplicateEmployee> dataLIst = [];
+    final response = await _api.post(ApiConstants.checkDuplicateClaims,headers: {},body: {"user_ids":userId,"from_date":fromDate,"category_id":categoryId});
+     for (var element in (response["data"] as List)) {
+        dataLIst.add(DuplicateEmployee.fromJson(element));
+      }
+    return dataLIst;
+  }
   Future<ClaimDetailResponse> getClaimDetailForSpecialApproval(String id) async {
     final response = await _api.post(ApiConstants.viewClaimSpecialApprover,headers: {},body: {"trip_claim_id":id});
     return ClaimDetailResponse.fromJson(response);

@@ -8,7 +8,7 @@ import 'package:travel_claim/views/style/colors.dart';
 import 'package:travel_claim/views/widgets.dart';
 
 class AppDialog {
-  static   showDialog({
+  static showDialog({
     String? title,
     String? content,
     String? positiveText,
@@ -17,7 +17,7 @@ class AppDialog {
     VoidCallback? negativeOnPressed,
     bool dismissible = false,
   }) {
-  return  Get.dialog(
+    return Get.dialog(
         Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -69,11 +69,13 @@ class AppDialog {
                                 onTap: negativeOnPressed,
                                 child: Container(
                                   width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
-
-                                  decoration: boxBaseDecoration(Colors.grey, 10),
-                                  child: Center(child: tc(negativeText, Colors.white,14)),
-
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
+                                  decoration:
+                                      boxBaseDecoration(Colors.grey, 10),
+                                  child: Center(
+                                      child:
+                                          tc(negativeText, Colors.white, 14)),
                                 ),
                               ),
                             ),
@@ -89,11 +91,13 @@ class AppDialog {
                                 child: Container(
                                   height: 46,
                                   width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
-
-                                  decoration: boxBaseDecoration(primaryColor, 10),
-                                  child: Center(child: tc(positiveText, Colors.white,16)),
-
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
+                                  decoration:
+                                      boxBaseDecoration(primaryColor, 10),
+                                  child: Center(
+                                      child:
+                                          tc(positiveText, Colors.white, 16)),
                                 ),
                               ),
                             ),
@@ -121,28 +125,28 @@ class AppDialog {
     );
   }
 
-  static showToast(String message,{bool isError = false}) {
+  static showToast(String message, {bool isError = false}) {
     late FToast fToast;
     fToast = FToast();
     fToast.init(navigatorKey.currentContext!);
-    fToast.showToast(
-      positionedToastBuilder: (context, child) {
-        return Positioned(
-          child: child,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-        );
-      },
-      child: showToastMessage(msg: message,
-          iconColor: isError ? Color(0xffFF1212) : Colors.green,icon: isError ? Icons.error_rounded : Icons.check_circle_rounded,bgColor: isError ? Color(0xffFF1212) : primaryColor,width: MediaQuery.sizeOf(navigatorKey.currentContext!).width),
-    );
-    /*Fluttertoast.showToast(
+    // fToast.showToast(
+    //   positionedToastBuilder: (context, child) {
+    //     return
+    //     Positioned(
+    //       child: child,
+    //       bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+    //     );
+    //   },
+    //   child: showToastMessage(msg: message,
+    //       iconColor: isError ? Color(0xffFF1212) : Colors.green,icon: isError ? Icons.error_rounded : Icons.check_circle_rounded,bgColor: isError ? Color(0xffFF1212) : primaryColor,width: MediaQuery.sizeOf(navigatorKey.currentContext!).width),
+    // );
+    Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: primaryColor,
         textColor: Colors.white,
-        fontSize: 14.0
-    );*/
+        fontSize: 14.0);
   }
 }

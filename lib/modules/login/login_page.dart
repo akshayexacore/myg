@@ -139,7 +139,7 @@ class LoginPage extends StatelessWidget {
                   if(MediaQuery.of(context).viewInsets.bottom==0)
                   gapHC(10),
                    if(MediaQuery.of(context).viewInsets.bottom==0)
-                   tss("copyright@2024myGourney", Colors.black, 13.0),
+                   tss("copyright@2024myClaim", Colors.black, 13.0),
                   if(MediaQuery.of(context).viewInsets.bottom==0)
                   gapHC(10),
                 ],

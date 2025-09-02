@@ -76,7 +76,7 @@ class ClaimResubmitPage extends StatelessWidget {
                     children: [
                       headTitle("Type of trip", _controller.claim.value!.tripTypeDetails?.name ?? ''),
                       gapHC(3),
-                      headTitle("Branch name", _controller.claim.value!.visitBranchDetail?.name ?? ''),
+                      headTitle("Branch name", _controller.claim.value!.visitBranchDetail?.map((e)=>e.name).join(',') ?? ''),
                       gapHC(3),
                       headTitle("Purpose of trip", _controller.claim.value!.tripPurpose),
                     ],
@@ -249,6 +249,7 @@ class ClaimResubmitPage extends StatelessWidget {
                       content: Column(
                         children: [
                           Obx(() {
+                            debugPrint(_controller.isFormAddBusy.isTrue.toString());
                             if (_controller.isFormAddBusy.isTrue) {
                               // do nothing
                             }

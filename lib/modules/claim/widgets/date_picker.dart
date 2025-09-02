@@ -50,7 +50,7 @@ class _DatePickerState extends State<DatePicker> {
                   widget.selectedDate!=null?    setDate(
                           6,
                           widget.selectedDate!
-                          ):"",
+                          ):"dd/mm/yyyy",
                       Colors.black),
                   const Icon(
                     Icons.calendar_month,
