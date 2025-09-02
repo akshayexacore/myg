@@ -78,36 +78,6 @@ class _FilePickerState extends State<FilePicker> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-<<<<<<< HEAD
-                return GestureDetector(
-                  onTap: () {
-                    if (extension(widget.selectedFiles[index])
-                        .toLowerCase()
-                        .endsWith('pdf')) {
-                      Get.to(() => PdfViewer(
-                          file:
-                              "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}"));
-                    } else {
-                      print("object");
-showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return Dialog(
-                  backgroundColor: Colors.transparent,
-                  insetPadding: EdgeInsets.all(0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    color: Colors.black,
-                    child: Stack(
-                      children: [
-                        // Full-screen content
-                        CustomSslImageDispaly(
-                              url:
-                                  "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
-                              height: MediaQuery.of(context).size.height/1.1,
-                              width:  MediaQuery.of(context).size.width/1.5,
-=======
                 return Column(
                   children: [
                    
@@ -174,7 +144,6 @@ showDialog(
                                 initialIndex: 0,
                                 scrollDirection: Axis.horizontal,
                               ),
->>>>>>> 50d7c8c1a850db5aca5da420f4707ef74e8dbeb0
                             ),
                           );
                         }
