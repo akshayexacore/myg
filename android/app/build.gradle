@@ -33,9 +33,9 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.myg.travel_claim"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
-    buildToolsVersion "34.0.0"
+    buildToolsVersion "35.0.0"
 
     compileOptions {
     sourceCompatibility JavaVersion.VERSION_17
@@ -48,8 +48,8 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = 21
-        targetSdk = 34
-        versionCode = 23
+        targetSdk = 35
+        versionCode = 26
         versionName = "1.0.1"
     }
     signingConfigs {
