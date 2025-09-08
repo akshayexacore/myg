@@ -265,87 +265,97 @@ class ClaimConfirmationPage extends StatelessWidget {
                                                 if (claimController
                                                     .selectedCategories[index]
                                                     .hasStartMeter)
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Flexible(
-                                                          flex: 5,
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              ts(
-                                                                  "Odometer reading before",
-                                                                  Color(0xff333333)
-                                                                      .withOpacity(
-                                                                          0.8)),
-                                                              Text(
-                                                                  claimController
-                                                                          .selectedCategories[
-                                                                              index]
-                                                                          .items[
-                                                                              formIndex]
-                                                                          .odoMeterStart ??
-                                                                      'NA',
-                                                                  style: const TextStyle(
-                                                                      fontFamily:
-                                                                          'Roboto',
-                                                                      fontSize:
-                                                                          14,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700,
-                                                                      color: Color(
-                                                                          0xff333333)))
-                                                            ],
-                                                          )),
-                                                      Expanded(
-                                                        flex: 5,
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            ts(
-                                                                "Odometer reading after",
-                                                                Color(0xff333333)
-                                                                    .withOpacity(
-                                                                        0.8)),
-                                                            Text(
-                                                                claimController
+                                                      headTitle(
+                                                      "Total odometer reading",
+                                                       claimController
                                                                         .selectedCategories[
                                                                             index]
                                                                         .items[
                                                                             formIndex]
                                                                         .odoMeterEnd ??
-                                                                    'NA',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .fade,
-                                                                style: const TextStyle(
-                                                                    fontFamily:
-                                                                        'Roboto',
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Color(
-                                                                        0xff333333))),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                                    'NA'),
+                                                
+                                                  // Row(
+                                                  //   mainAxisAlignment:
+                                                  //       MainAxisAlignment
+                                                  //           .spaceBetween,
+                                                  //   crossAxisAlignment:
+                                                  //       CrossAxisAlignment
+                                                  //           .start,
+                                                  //   children: [
+                                                  //     Flexible(
+                                                  //         flex: 5,
+                                                  //         child: Column(
+                                                  //           crossAxisAlignment:
+                                                  //               CrossAxisAlignment
+                                                  //                   .start,
+                                                  //           children: [
+                                                  //             ts(
+                                                  //                 "Odometer reading before",
+                                                  //                 Color(0xff333333)
+                                                  //                     .withOpacity(
+                                                  //                         0.8)),
+                                                  //             Text(
+                                                  //                 claimController
+                                                  //                         .selectedCategories[
+                                                  //                             index]
+                                                  //                         .items[
+                                                  //                             formIndex]
+                                                  //                         .odoMeterStart ??
+                                                  //                     'NA',
+                                                  //                 style: const TextStyle(
+                                                  //                     fontFamily:
+                                                  //                         'Roboto',
+                                                  //                     fontSize:
+                                                  //                         14,
+                                                  //                     fontWeight:
+                                                  //                         FontWeight
+                                                  //                             .w700,
+                                                  //                     color: Color(
+                                                  //                         0xff333333)))
+                                                  //           ],
+                                                  //         )),
+                                                  //     Expanded(
+                                                  //       flex: 5,
+                                                  //       child: Column(
+                                                  //         crossAxisAlignment:
+                                                  //             CrossAxisAlignment
+                                                  //                 .start,
+                                                  //         children: [
+                                                  //           ts(
+                                                  //               "Odometer reading after",
+                                                  //               Color(0xff333333)
+                                                  //                   .withOpacity(
+                                                  //                       0.8)),
+                                                  //           Text(
+                                                  //               claimController
+                                                  //                       .selectedCategories[
+                                                  //                           index]
+                                                  //                       .items[
+                                                  //                           formIndex]
+                                                  //                       .odoMeterEnd ??
+                                                  //                   'NA',
+                                                  //               textAlign:
+                                                  //                   TextAlign
+                                                  //                       .left,
+                                                  //               overflow:
+                                                  //                   TextOverflow
+                                                  //                       .fade,
+                                                  //               style: const TextStyle(
+                                                  //                   fontFamily:
+                                                  //                       'Roboto',
+                                                  //                   fontSize:
+                                                  //                       14,
+                                                  //                   fontWeight:
+                                                  //                       FontWeight
+                                                  //                           .bold,
+                                                  //                   color: Color(
+                                                  //                       0xff333333))),
+                                                  //         ],
+                                                  //       ),
+                                                  //     ),
+                                                  //   ],
+                                                  // ),
                                                 if (claimController
                                                     .selectedCategories[index]
                                                     .hasStartMeter)

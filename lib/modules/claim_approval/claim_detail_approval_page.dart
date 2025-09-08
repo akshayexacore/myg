@@ -519,72 +519,77 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                             gapHC(10),
                                           if (_controller.claim.value!
                                               .categories![index].hasStartMeter)
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                // Flexible(
-                                                //     flex: 5,
-                                                //     child: Column(
-                                                //       crossAxisAlignment:
-                                                //           CrossAxisAlignment
-                                                //               .start,
-                                                //       children: [
-                                                //         ts(
-                                                //             "Odometer reading before",
-                                                //             const Color(
-                                                //                     0xff333333)
-                                                //                 .withOpacity(
-                                                //                     0.8)),
-                                                //         Text(
-                                                //             _controller
-                                                //                     .claim
-                                                //                     .value!
-                                                //                     .categories![
-                                                //                         index]
-                                                //                     .items[
-                                                //                         formIndex]
-                                                //                     .odoMeterStart ??
-                                                //                 'NA',
-                                                //             style: const TextStyle(
-                                                //                 fontFamily:
-                                                //                     'Roboto',
-                                                //                 fontSize: 14,
-                                                //                 fontWeight:
-                                                //                     FontWeight
-                                                //                         .w700,
-                                                //                 color: Color(
-                                                //                     0xff333333)))
-                                                //       ],
-                                                //     )),
-                                                Expanded(
-                                                  flex: 5,
-                                                  child: ts(
-                                                      "Odometer reading after",
-                                                      const Color(0xff333333)
-                                                          .withOpacity(0.8)),
-                                                ),
-                                                Expanded(
-                                                  flex: 5,
-                                                  child: Text(
-                                                      "${_controller.claim.value!.categories![index].items[formIndex].odoMeterEnd} KM" ??
-                                                          'NA',
-                                                      textAlign: TextAlign.left,
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      style: const TextStyle(
-                                                          fontFamily: 'Roboto',
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Color(
-                                                              0xff333333))),
-                                                ),
-                                              ],
-                                            ),
+                                                       headTitle(
+                                                      "Total odometer reading",
+                                                       "${_controller.claim.value!.categories![index].items[formIndex].odoMeterEnd} KM" ??
+                                                          'NA'),
+                                                
+                                            // Row(
+                                            //   mainAxisAlignment:
+                                            //       MainAxisAlignment
+                                            //           .spaceBetween,
+                                            //   crossAxisAlignment:
+                                            //       CrossAxisAlignment.start,
+                                            //   children: [
+                                            //     // Flexible(
+                                            //     //     flex: 5,
+                                            //     //     child: Column(
+                                            //     //       crossAxisAlignment:
+                                            //     //           CrossAxisAlignment
+                                            //     //               .start,
+                                            //     //       children: [
+                                            //     //         ts(
+                                            //     //             "Odometer reading before",
+                                            //     //             const Color(
+                                            //     //                     0xff333333)
+                                            //     //                 .withOpacity(
+                                            //     //                     0.8)),
+                                            //     //         Text(
+                                            //     //             _controller
+                                            //     //                     .claim
+                                            //     //                     .value!
+                                            //     //                     .categories![
+                                            //     //                         index]
+                                            //     //                     .items[
+                                            //     //                         formIndex]
+                                            //     //                     .odoMeterStart ??
+                                            //     //                 'NA',
+                                            //     //             style: const TextStyle(
+                                            //     //                 fontFamily:
+                                            //     //                     'Roboto',
+                                            //     //                 fontSize: 14,
+                                            //     //                 fontWeight:
+                                            //     //                     FontWeight
+                                            //     //                         .w700,
+                                            //     //                 color: Color(
+                                            //     //                     0xff333333)))
+                                            //     //       ],
+                                            //     //     )),
+                                            //     Expanded(
+                                            //       flex: 5,
+                                            //       child: ts(
+                                            //           "Odometer reading after",
+                                            //           const Color(0xff333333)
+                                            //               .withOpacity(0.8)),
+                                            //     ),
+                                            //     Expanded(
+                                            //       flex: 5,
+                                            //       child: Text(
+                                            //           "${_controller.claim.value!.categories![index].items[formIndex].odoMeterEnd} KM" ??
+                                            //               'NA',
+                                            //           textAlign: TextAlign.left,
+                                            //           overflow:
+                                            //               TextOverflow.fade,
+                                            //           style: const TextStyle(
+                                            //               fontFamily: 'Roboto',
+                                            //               fontSize: 14,
+                                            //               fontWeight:
+                                            //                   FontWeight.bold,
+                                            //               color: Color(
+                                            //                   0xff333333))),
+                                            //     ),
+                                            //   ],
+                                            // ),
                                           if (_controller.claim.value!
                                               .categories![index].hasStartMeter)
                                             gapHC(10),
@@ -1237,47 +1242,51 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                         ),
                       if (category.hasToDate) gapHC(10),
                       if (category.hasStartMeter)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Flexible(
-                                flex: 5,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ts(
-                                        "Odometer reading before",
-                                        const Color(0xff333333)
-                                            .withOpacity(0.8)),
-                                    Text(form.odoMeterStart ?? 'NA',
-                                        style: const TextStyle(
-                                            fontFamily: 'Roboto',
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w700,
-                                            color: Color(0xff333333)))
-                                  ],
-                                )),
-                            Expanded(
-                              flex: 5,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ts("Odometer reading after",
-                                      const Color(0xff333333).withOpacity(0.8)),
-                                  Text(form.odoMeterEnd ?? 'NA',
-                                      textAlign: TextAlign.left,
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                          fontFamily: 'Roboto',
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xff333333))),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                               headTitle(
+                                                      "Total odometer reading",
+                                                       form.odoMeterEnd ?? 'NA'),
+                                                
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: [
+                        //     Flexible(
+                        //         flex: 5,
+                        //         child: Column(
+                        //           crossAxisAlignment: CrossAxisAlignment.start,
+                        //           children: [
+                        //             ts(
+                        //                 "Odometer reading before",
+                        //                 const Color(0xff333333)
+                        //                     .withOpacity(0.8)),
+                        //             Text(form.odoMeterStart ?? 'NA',
+                        //                 style: const TextStyle(
+                        //                     fontFamily: 'Roboto',
+                        //                     fontSize: 14,
+                        //                     fontWeight: FontWeight.w700,
+                        //                     color: Color(0xff333333)))
+                        //           ],
+                        //         )),
+                        //     Expanded(
+                        //       flex: 5,
+                        //       child: Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: [
+                        //           ts("Odometer reading after",
+                        //               const Color(0xff333333).withOpacity(0.8)),
+                        //           Text(form.odoMeterEnd ?? 'NA',
+                        //               textAlign: TextAlign.left,
+                        //               overflow: TextOverflow.fade,
+                        //               style: const TextStyle(
+                        //                   fontFamily: 'Roboto',
+                        //                   fontSize: 14,
+                        //                   fontWeight: FontWeight.bold,
+                        //                   color: Color(0xff333333))),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       if (category.hasStartMeter) gapHC(10),
                       if (!category.hasToDate)
                         headTitle("Document date",
