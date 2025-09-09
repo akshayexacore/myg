@@ -151,6 +151,7 @@ class ClaimController extends GetxController
         }
       }
     } catch (_) {
+       AppDialog.showToast(_.toString(), isError: true);
       print('draft saving error: ${_.toString()}');
     } finally {
       isDraftBusy(false);
@@ -178,7 +179,7 @@ class ClaimController extends GetxController
     bool isFormValid = formKey.currentState!.validate();
     bool areFilesValid = _validateFiles();
     bool isDateEmpty = _validateDates();
-    print("isDateEmpty$isDateEmpty");
+
 
     if (isFormValid && areFilesValid) {
       if (selectedCategories.isEmpty) {
