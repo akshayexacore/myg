@@ -21,6 +21,7 @@ class LocalStorageDataProvider {
     try {
       final db = Localstore.instance;
       final items = await db.collection(claims).get();
+      print('Stored Claims: $items');
      // Logger().i(items);
       List<ClaimForm> forms = [];
       items?.entries.forEach((element) {
@@ -52,6 +53,8 @@ class LocalStorageDataProvider {
       final id = db.collection(claims).doc().id;
       data.storageId = id;
       await db.collection(claims).doc(id).set(data.toJson());
+      await Future.delayed(const Duration(milliseconds: 200)); 
+      
       return true;
     }catch(_){
       print('local storage save error: ${_.toString()}');
@@ -64,6 +67,7 @@ class LocalStorageDataProvider {
      Logger().i(data.toJson());
       final db = Localstore.instance;
       await db.collection(claims).doc(data.storageId).set(data.toJson());
+      await Future.delayed(const Duration(milliseconds: 200)); 
       return true;
     }catch(_){
       print('local storage update error: ${_.toString()}');

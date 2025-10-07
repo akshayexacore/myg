@@ -91,9 +91,10 @@ class SpecialApprovalCard extends StatelessWidget {
                   ),
                 ),
                 gapWC(5),
-                tcustom("\u{20B9}${claim.categories!
-                    .expand((category) => category.items)
-                    .toList().map((v) => v).toList().map((e) => e.amount,).toList().fold(0.0, (sum, item) => sum + item!.toDouble()).toStringAsFixed(2)}", primaryColor, 18.0, FontWeight.w500),
+                  tcustom("\u{20B9}${claim.totalAmount.toStringAsFixed(0)}", primaryColor, 18.0, FontWeight.w500),
+                // tcustom("\u{20B9}${claim.categories!
+                //     .expand((category) => category.items)
+                //     .toList().map((v) => v).toList().map((e) => e.amount,).toList().fold(0.0, (sum, item) => sum + item!.toDouble()).toStringAsFixed(2)}", primaryColor, 18.0, FontWeight.w500),
               ],
             ),
           ],

@@ -44,7 +44,14 @@ expense_popup(Map<String, dynamic> data) {
                   rowTextsCommon("Trip ID", data['tripId'] ?? ""),
                   rowTextsCommon("Category", data['category'] ?? ""),
                   rowTextsCommon("Amount", data['amount'] ?? ""),
-                  rowTextsCommon("Document Date",AppFormatter.convertDateFormat( data['document'] ?? "")),
+                  rowTextsCommon(
+                    "Document Date",
+                    (data['document'] != null &&
+                            data['document'].toString().trim().isNotEmpty)
+                        ? AppFormatter.convertDateFormat(
+                            data['document'].toString())
+                        : "-",
+                  ),
                   // rowTextsCommon(
                   //     "Other Employees", data['otherEmployees'] ?? ""),
                   // rowTextsCommon("Remarks", data['remarks'] ?? "",

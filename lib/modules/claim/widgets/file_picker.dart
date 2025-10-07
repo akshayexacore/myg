@@ -328,6 +328,8 @@ class _FilePickerState extends State<FilePicker> {
       }
       selectedImageFile = file;
       String newFile = await uploadFile(file.path, context);
+      String filePath = newFile.split('/uploads/').last;
+      newFile = 'uploads/$filePath';
       if (newFile.isNotEmpty) {
         setState(() {
           if (widget.multiple) {
@@ -361,6 +363,7 @@ class _FilePickerState extends State<FilePicker> {
 
       String newFile = await uploadFile(photo.path, context);
       String filePath = newFile.split('/uploads/').last;
+      
 
 // Prepend "uploads/" to get final path
 newFile = 'uploads/$filePath';

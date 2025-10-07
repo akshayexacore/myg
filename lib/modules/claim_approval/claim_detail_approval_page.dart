@@ -686,12 +686,22 @@ class ClaimDetailApprovalPage extends StatelessWidget {
                                                             if (e.isDuplication ==
                                                                 true)
                                                               DuplicationText(
-                                                                documetDate:e.documentDate??"",
-                                                                categoryId: e.categoryId??0,
+                                                                documetDate:_controller
+                                                  .claim
+                                                  .value!
+                                                  .categories![index]
+                                                  .items[formIndex].fromDate.toString()??"",
+                                                                categoryId: _controller
+                                                  .claim
+                                                  .value!
+                                                  .categories![index].id,
                                                                 id: e
                                                                     .duplicationId
                                                                     .toString(),
-                                                                    category:e.category??"",
+                                                                    category:_controller
+                                                  .claim
+                                                  .value!
+                                                  .categories![index].name??"",
                                                                 remark: _controller
                                                                         .claim
                                                                         .value!
@@ -1722,6 +1732,7 @@ class DuplicationText extends StatelessWidget {
             try {
               var response = await MygRepository().getClaimDetail(id);
               ClaimHistory? datas = response.claim;
+              debugPrint("the datas is here$datas");
     //           String? reason = datas.categories
     // ?.firstWhere((cat) => cat.id == categoryId, orElse: () => Category(id: 0, r: "Not found"))
     // .reason;

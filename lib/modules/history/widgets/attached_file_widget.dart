@@ -22,7 +22,7 @@ class AttachedFileWidget extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: () {
         if (extension(file).toLowerCase().endsWith('pdf')) {
-          Get.to(() => PdfViewer(file: "${AppConfig.imageBaseUrl}$file"));
+          Get.to(() => PdfViewer(file: "$file"));
         } else {
           Navigator.push(
             Get.context!,
