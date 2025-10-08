@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:travel_claim/models/branch.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_form.dart';
+import 'package:travel_claim/models/claim_history.dart';
+import 'package:travel_claim/models/draft_list_model.dart';
 import 'package:travel_claim/models/trip_type.dart';
 import 'package:travel_claim/modules/claim/claim_confirmation_page.dart';
 import 'package:travel_claim/modules/landing/landing_page.dart';
@@ -23,6 +25,7 @@ class ClaimController extends GetxController
 
   var selectedTripType = Rxn<TripType>();
   var claimFrom = Rxn<ClaimForm>();
+  var claimFromDraft = Rxn<DraftListModel>();
   final _repository = MygRepository();
   final _localRepository = LocalStorageDataProvider();
   TextEditingController textEditingControllerPurpose = TextEditingController();
@@ -30,27 +33,44 @@ class ClaimController extends GetxController
   var selectedCategories = <Category>[].obs;
   final formKey = GlobalKey<FormState>();
   var openedSections = [0].obs;
-  
+  var claim = Rxn<ClaimHistory>();
   @override
   void onInit() {
-    claimFrom(Get.arguments);
-    if (claimFrom.value != null) {
+    claimFromDraft(Get.arguments);
+    if (claimFromDraft.value != null) {
       initializeForEdit();
     }
     getCategories();
     super.onInit();
   }
 
-  void initializeForEdit() {
-    selectedTripType(claimFrom.value!.tripType);
-    selectedBranch(claimFrom.value!.branch);
-    textEditingControllerPurpose.text = claimFrom.value!.purpose;
-    selectedCategories(claimFrom.value!.categories);
-    if (claimFrom.value!.storageId.isNotEmpty) {
+  void initializeForEdit() async{
+    await getDetails();
+    selectedTripType(claim.value!.tripTypeDetails);
+    selectedBranch(claim.value!.visitBranchDetail);
+    textEditingControllerPurpose.text = claim.value!.tripPurpose;
+    selectedCategories(claim.value!.categories);
+    if (claim.value!.tripClaimId.isNotEmpty) {
       openedSections([]);
     }
   }
-
+  getDetails({bool isSilent = false}) async {
+    try {
+      if(!isSilent) {
+        isBusy(true);
+      }
+      var response = await _repository.getDraftDetail(claimFromDraft.value?.tripClaimId??"");
+      
+        claim(response.claim);
+        // debugPrint(claim.value)
+    } catch (_) {
+      print('detail claims get error: ${_.toString()}');
+    } finally {
+      if(!isSilent) {
+        isBusy(false);
+      }
+    }
+  }
   getCategories({bool isSilent = false}) async {
     try {
       if (!isSilent) {
@@ -141,9 +161,9 @@ class ClaimController extends GetxController
           claimFrom(claimFrom.value);
         }
 
-        bool response = await _localRepository.saveOrUpdate(claimFrom.value!);
+       var response = claim.value?.tripClaimId!=null? await _repository.updateDraft(body: claimFrom.value!.toApiJson(),id:claim.value?.tripClaimId??"" ): await _repository.saveDraft(body: claimFrom.value!.toApiJson());
         print("is response${response}");
-        if (response) {
+        if (response.success) {
           Get.until((route) => Get.currentRoute == LandingPage.routeName);
           AppDialog.showToast("Saved to drafts");
         } else {

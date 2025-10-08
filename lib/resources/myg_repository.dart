@@ -1,4 +1,5 @@
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:travel_claim/configs/api_constants.dart';
@@ -6,6 +7,7 @@ import 'package:travel_claim/models/advance.dart';
 import 'package:travel_claim/models/branch.dart';
 import 'package:travel_claim/models/category.dart';
 import 'package:travel_claim/models/claim_history.dart';
+import 'package:travel_claim/models/draft_list_model.dart';
 import 'package:travel_claim/models/employee.dart';
 import 'package:travel_claim/models/employee.dart';
 import 'package:travel_claim/models/fromto.dart';
@@ -60,8 +62,20 @@ class MygRepository {
   }
 
   Future<PostResponse> saveClaim({required Map<String,dynamic> body}) async {
+     debugPrint("Save Draft");
     Logger().i(body);
     final response = await _api.post(ApiConstants.tripClaim,headers: {},body: body);
+    return PostResponse.fromJson(response);
+  }
+    Future<PostResponse> saveDraft({required Map<String,dynamic> body}) async {
+    Logger().i(body);
+    final response = await _api.post(ApiConstants.saveDraft,headers: {},body: body);
+    return PostResponse.fromJson(response);
+  }
+      Future<PostResponse> updateDraft({required Map<String,dynamic> body,required String id}) async {
+        debugPrint("Update Draft");
+    Logger().i(body);
+    final response = await _api.post("${ApiConstants.updateDraft}/$id",headers: {},body: body);
     return PostResponse.fromJson(response);
   }
 
@@ -70,11 +84,20 @@ class MygRepository {
     final response = await _api.post(ApiConstants.resubmitClaim,headers: {},body: body);
     return PostResponse.fromJson(response);
   }
+  Future<PostResponse> deleteDraft({required Map<String,dynamic> body}) async {
+    Logger().i(body);
+    final response = await _api.post(ApiConstants.deleteDraft,headers: {},body: body);
+    return PostResponse.fromJson(response);
+  }
 
 
   Future<ClaimHistoryResponse> getClaimHistory() async {
     final response = await _api.get(ApiConstants.history,headers: {});
     return ClaimHistoryResponse.fromJson(response);
+  }
+  Future<DraftListResponse> getClaimDraftHistory() async {
+    final response = await _api.post(ApiConstants.draftList,headers: {});
+    return DraftListResponse.fromJson(response);
   }
 
   Future<ClaimHistoryResponse> getClaimsForApproval() async {
@@ -126,6 +149,11 @@ class MygRepository {
   Future<ClaimDetailResponse> getClaimDetail(String id) async {
     
     final response = await _api.post(ApiConstants.viewClaim,headers: {},body: {"trip_claim_id":id});
+    return ClaimDetailResponse.fromJson(response);
+  }
+  Future<ClaimDetailResponse> getDraftDetail(String id) async {
+    
+    final response = await _api.post(ApiConstants.draftViewCiam,headers: {},body: {"trip_claim_id":id});
     return ClaimDetailResponse.fromJson(response);
   }
 

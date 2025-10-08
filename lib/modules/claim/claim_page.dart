@@ -94,7 +94,8 @@ class ClaimPage extends StatelessWidget {
                                     weight: FontWeight.w400),
                                 gapHC(3),
                                 tssb(
-                                  profileController.user.value.baseLocation?.name,
+                                  profileController
+                                      .user.value.baseLocation?.name,
                                   Colors.white,
                                   FontWeight.w600,
                                 ),
@@ -109,6 +110,15 @@ class ClaimPage extends StatelessWidget {
                       const Divider(),
                       gapHC(5),
                       ts("Type of trip", Colors.black),
+                      // ts(claimController.selectedTripType.value?.name, Colors.black),
+                      // ts(
+                      //   landingController.tripTypes.isNotEmpty
+                      //       ? landingController.tripTypes
+                      //           .map((e) => e.id)
+                      //           .join(', ')
+                      //       : 'NA',
+                      //   Colors.black,
+                      // ),
                       gapHC(3),
                       Obx(() => DropdownButtonFormField2<TripType>(
                             //focusColor: Colors.white,
@@ -151,7 +161,10 @@ class ClaimPage extends StatelessWidget {
                                   color: Colors.white),
                             ),
                             // Initial Value
-                            value: claimController.selectedTripType.value,
+                            value: landingController.tripTypes.contains(
+                                    claimController.selectedTripType.value)
+                                ? claimController.selectedTripType.value
+                                : null,
                             isExpanded: false,
                             // Down Arrow Icon
                             iconStyleData: IconStyleData(
@@ -175,6 +188,7 @@ class ClaimPage extends StatelessWidget {
                               );
                             }).toList(),
                             onChanged: (TripType? value) {
+                              debugPrint(value?.id.toString()??"");
                               claimController.selectedTripType(value);
                             },
                           )),
@@ -206,7 +220,8 @@ class ClaimPage extends StatelessWidget {
                             hintStyle: hintTextStyle(),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(color: Colors.grey.shade400),
+                              borderSide:
+                                  BorderSide(color: Colors.grey.shade400),
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -234,7 +249,7 @@ class ClaimPage extends StatelessWidget {
                                   landingController.branches.where(
                                 (branch) => selectedIds!.contains(branch.id),
                               );
-        
+
                               claimController.selectedBranch.addAll(
                                 matchedBranches.where(
                                   (branch) => !claimController.selectedBranch
@@ -244,7 +259,7 @@ class ClaimPage extends StatelessWidget {
                             }
                             // if (selectedIds != null && selectedIds.isNotEmpty) {
                             //   claimController.selectedBranch(selectedIds);
-        
+
                             //   // claimController.selectedBranch(
                             //   //     landingController.branches.firstWhereOrNull(
                             //   //   (element) => element.id == selectedIds!.first,
@@ -261,7 +276,7 @@ class ClaimPage extends StatelessWidget {
                             return null;
                           },
                         );
-        
+
                         //debugPrint(_controller.selectedCategory.value?.name);
                         return SmartSelect<Branch>.multiple(
                           title: 'Select branch',
@@ -329,7 +344,8 @@ class ClaimPage extends StatelessWidget {
                                                     .value[0]!.name,
                                                 style: const TextStyle(
                                                     color: Colors.black,
-                                                    fontWeight: FontWeight.w500),
+                                                    fontWeight:
+                                                        FontWeight.w500),
                                               )),
                                         Icon(
                                           Icons.arrow_forward_ios_outlined,
@@ -421,7 +437,8 @@ class ClaimPage extends StatelessWidget {
                                     ),
                                     shrinkWrap: true,
                                     physics: const ScrollPhysics(),
-                                    itemCount: claimController.categories.length,
+                                    itemCount:
+                                        claimController.categories.length,
                                     itemBuilder: (context, index) {
                                       return Obx(() {
                                         return GestureDetector(
@@ -463,7 +480,8 @@ class ClaimPage extends StatelessWidget {
                                                 gapWC(4),
                                                 CachedNetworkImage(
                                                   imageUrl: claimController
-                                                      .categories[index].imageUrl,
+                                                      .categories[index]
+                                                      .imageUrl,
                                                   height: 18,
                                                   width: 18,
                                                 ),
@@ -532,7 +550,8 @@ class ClaimPage extends StatelessWidget {
                               ),
                               controller: con,
                               title: tss(
-                                  claimController.selectedCategories[index].name,
+                                  claimController
+                                      .selectedCategories[index].name,
                                   Colors.black,
                                   15.0),
                               leading: Image.network(
@@ -543,7 +562,7 @@ class ClaimPage extends StatelessWidget {
                               ),
                               //  CustomSslImageDispaly(url: claimController
                               //       .selectedCategories[index].imageUrl),
-        
+
                               trailing: Icon(
                                 Icons.keyboard_arrow_down,
                                 color: primaryColor.withOpacity(0.8),
@@ -572,7 +591,8 @@ class ClaimPage extends StatelessWidget {
                                             onDelete: formIndex > 0
                                                 ? () {
                                                     claimController
-                                                        .selectedCategories[index]
+                                                        .selectedCategories[
+                                                            index]
                                                         .items
                                                         .removeAt(formIndex);
                                                     claimController
@@ -642,8 +662,9 @@ class ClaimPage extends StatelessWidget {
                       }),
                       Obx(() {
                         return SizedBox(
-                          height:
-                              claimController.selectedCategories.isEmpty ? 0 : 20,
+                          height: claimController.selectedCategories.isEmpty
+                              ? 0
+                              : 20,
                         );
                       })
                     ],
@@ -664,7 +685,8 @@ class ClaimPage extends StatelessWidget {
                         color: Colors.grey.withOpacity(0.3),
                         spreadRadius: 6,
                         blurRadius: 6,
-                        offset: const Offset(5, 3), // changes position of shadow
+                        offset:
+                            const Offset(5, 3), // changes position of shadow
                       ),
                     ],
                   ),
