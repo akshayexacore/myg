@@ -1,19 +1,18 @@
-import 'package:appspector/appspector.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'dart:io';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
-import 'package:loader_overlay/loader_overlay.dart';
-import 'package:travel_claim/firebase_options.dart';
-import 'package:travel_claim/modules/notification/controllers/firebase_notification_controller.dart';
-import 'package:travel_claim/modules/splash/splash_page.dart';
+import 'package:appspector/appspector.dart';
 import 'package:travel_claim/routes/routes.dart';
-import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:travel_claim/views/style/colors.dart';
-import 'dart:io';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:travel_claim/firebase_options.dart';
+import 'package:travel_claim/modules/splash/splash_page.dart';
+import 'package:keyboard_dismisser/keyboard_dismisser.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:travel_claim/modules/notification/controllers/firebase_notification_controller.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
