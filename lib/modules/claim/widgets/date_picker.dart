@@ -6,8 +6,9 @@ class DatePicker extends StatefulWidget {
   final String title;
   DateTime? selectedDate;
   DateTime lastDate;
+  bool isResubmit;
   final ValueChanged<DateTime> onChanged;
-  DatePicker({super.key, required this.title, required this.onChanged,this.selectedDate,required this.lastDate});
+  DatePicker({super.key, required this.title, required this.onChanged,this.selectedDate,required this.lastDate,this.isResubmit=false});
 
   @override
   State<DatePicker> createState() => _DatePickerState();
@@ -82,7 +83,7 @@ class _DatePickerState extends State<DatePicker> {
             child: child!,
           );
         },
-        firstDate: widget.lastDate,
+        firstDate:widget.isResubmit? DateTime(0001) :widget.lastDate,
         lastDate: DateTime.now(),
         initialDate: DateTime.now());
     if (pickedDate != null && pickedDate != widget.selectedDate) {

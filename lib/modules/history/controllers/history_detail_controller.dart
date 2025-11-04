@@ -177,7 +177,7 @@ claimId.value= args['id'] as String;
 
   void gotoResubmit(){
     List<Category> cats = claim.value!.categories!.where((element) {
-      return element.items.where((e) => e.status == ClaimStatus.rejected && e.rejectionCount < 2,).isNotEmpty;
+      return (element.items?.where((e) => e.status == ClaimStatus.rejected && e.rejectionCount < 2,).isNotEmpty)??false;
     },).toList();
 
     if(cats.isEmpty){
@@ -229,9 +229,9 @@ claimId.value= args['id'] as String;
     bool valid = true;
     reSubmittedCategories.forEach((element) {
       print('here 1');
-      element.items.forEach((form) {
+      element.items?.forEach((form) {
         print('here 2');
-        if(form.files.isEmpty  && element.name.toLowerCase()!='food' && element.name.toLowerCase()!='cab' && element.name.toLowerCase()!='two-wheeler'  && element.name.toLowerCase()!='four-wheeler'){
+        if(form.files?.isEmpty ==true && element.name?.toLowerCase()!='food' && element.name?.toLowerCase()!='cab' && element.name?.toLowerCase()!='two-wheeler'  && element.name?.toLowerCase()!='four-wheeler'){
           form.fileError = "This is a mandatory field";
           print('here');
           emitFormUpdate();
@@ -258,7 +258,7 @@ claimId.value= args['id'] as String;
 
         var body = {
           "claim_details": reSubmittedCategories
-            .expand((category) => category.items)
+            .expand((category) => category.items??[])
             .toList().map((v) => v.toApiJson()).toList()
         };
 

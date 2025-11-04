@@ -68,12 +68,13 @@ class MygRepository {
     return PostResponse.fromJson(response);
   }
     Future<PostResponse> saveDraft({required Map<String,dynamic> body}) async {
+      debugPrint("Update Draft${body}");
     Logger().i(body);
     final response = await _api.post(ApiConstants.saveDraft,headers: {},body: body);
     return PostResponse.fromJson(response);
   }
       Future<PostResponse> updateDraft({required Map<String,dynamic> body,required String id}) async {
-        debugPrint("Update Draft");
+        debugPrint("Update Draft${body}");
     Logger().i(body);
     final response = await _api.post("${ApiConstants.updateDraft}/$id",headers: {},body: body);
     return PostResponse.fromJson(response);

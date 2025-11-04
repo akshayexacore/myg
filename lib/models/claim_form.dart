@@ -8,22 +8,22 @@ import 'package:travel_claim/utils/app_enums.dart';
 import 'package:travel_claim/utils/app_formatter.dart';
 
 class ClaimForm {
-  late int id;
-  late String storageId;
-  late TripType tripType;
+   int? id;
+   String? storageId;
+   TripType? tripType;
  List< Branch>? branch;
-  late DateTime createdAt;
-  late String purpose;
-  late List<Category> categories;
+   DateTime? createdAt;
+   String? purpose;
+   List<Category>? categories;
 
   ClaimForm({
     this.id = 0,
     this.storageId = '',
-    required this.tripType,
+     this.tripType,
     this.branch,
-    required this.createdAt,
-    required this.purpose,
-    required this.categories,
+     this.createdAt,
+     this.purpose,
+     this.categories,
   });
 
   ClaimForm.fromJson(Map<String, dynamic> json) {
@@ -42,7 +42,7 @@ class ClaimForm {
     categories = <Category>[];
     if (json['categories'] != null) {
       json['categories'].forEach((v) {
-        categories.add(Category.fromJson(v));
+        categories?.add(Category.fromJson(v));
       });
     }
   }
@@ -51,31 +51,37 @@ class ClaimForm {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = id;
     data['storage_id'] = storageId;
-    data['trip_type'] = tripType.toJson();
+    data['trip_type'] = tripType?.toJson();
     data['branch'] =branch?.map((e) => e.toJson()).toList();
     data['created_at'] = createdAt.toString();
     data['purpose'] = purpose;
-    data['categories'] = categories.map((v) => v.toJson()).toList();
+    data['categories'] = categories?.map((v) => v.toJson()).toList();
     return data;
   }
 
   Map<String, dynamic> toApiJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = id;
-    data['triptype_id'] = tripType.id;
+    data['triptype_id'] = tripType?.id;
     data['visit_branch_id'] = branch?.map((e) => e.id).toList();
     data['trip_purpose'] = purpose;
-    data['claim_details'] = categories
-        .expand((category) => category.items)
-        .toList()
-        .map((v) => v.toApiJson())
-        .toList();
-    return data;
+   data['claim_details'] = categories?.expand((category) {
+  final categoryId = category.id;
+  return category.items?.map((item) {
+    item.categorId = categoryId; // ✅ inject category_id
+    return item.toApiJson();
+  }) ?? [];
+}).toList() ?? [];
+
+      
+  return data;
   }
+  
 }
 
 class ClaimFormData {
   String? id;
+  int? categorId;
   int? classId;
   int? policyId;
   DateTime? fromDate;
@@ -90,13 +96,13 @@ class ClaimFormData {
   bool? isToDateIsEmpty;
   late int noOfEmployees;
   late List<Employee> employees;
-  late String remarks;
-  late String approverRemarks;
+   String? remarks;
+   String? approverRemarks;
   double? amount;
   double? totalAmount;
   double? deductedAmount;
   double? eligibleAmount;
-  late List<String> files;
+   List<String>? files;
   late String fileError;
   CategoryClass? selectedClass;
   late ClaimStatus status;
@@ -142,6 +148,7 @@ class ClaimFormData {
     debugPrint("the deduct amount${json["deduct_amount"]}");
     debugPrint("the json lat${json['lat']},${json['lon']}");
     id = json['id'];
+    categorId = json['category_id'];
   fromLat = json['lat']?.toString();
 fromLong = json['lon']?.toString();
 
@@ -151,7 +158,7 @@ fromLong = json['lon']?.toString();
         json['from_date'] != null ? DateTime.tryParse(json['from_date']) : null;
     toDate =
         json['to_date'] != null ? DateTime.tryParse(json['to_date']) : null;
-    tripFrom = json['trip_from'];
+    tripFrom = json['trip_from']?.toString() ?? '';
     tripTo = json['trip_to'];
     odoMeterStart = json['odo_meter_start'];
     odoMeterEnd = json['odo_meter_end'];
@@ -171,7 +178,7 @@ fromLong = json['lon']?.toString();
     files = <String>[];
     if (json['files'] != null) {
       json['files'].forEach((v) {
-        files.add(v);
+        files?.add(v);
       });
     }
     if (json['selected_class'] != null) {
@@ -186,6 +193,7 @@ fromLong = json['lon']?.toString();
      debugPrint("the lat long${json['lat']?.toString()}");
     
     id = json['trip_claim_details_id'];
+    categorId=json['category_id'];
    fromLat = json['lat']?.toString();
 fromLong = json['lon']?.toString();
     debugPrint("the json lat$fromLat,$fromLong");
@@ -200,7 +208,7 @@ fromLong = json['lon']?.toString();
     fromDate = json['document_date'] != null
         ? DateTime.tryParse(json['document_date'])
         : null;
-    tripFrom = json['trip_from'];
+    tripFrom = json['trip_from']?.toString() ?? '';
     tripTo = json['trip_to'];
     odoMeterStart =
         json['start_meter'] != null ? json['start_meter'].toString() : null;
@@ -243,6 +251,7 @@ fromLong = json['lon']?.toString();
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = id;
+    data['category_id'] = categorId;
     data['trip_claim_details_id'] = id;
     data['class_id'] = classId;
     data["approver_id"] = approverId;
@@ -266,9 +275,12 @@ fromLong = json['lon']?.toString();
   }
 
   Map<String, dynamic> toApiJson() {
+    debugPrint("dddddddddddddd");
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = id;
     data['trip_claim_details_id'] = id;
+    data["category_id"]=categorId;
+    
     data['class_id'] = classId;
     data['policy_id'] = policyId;
      data['lat']=fromLat;
@@ -288,7 +300,7 @@ fromLong = json['lon']?.toString();
     data['person_details'] = employees.map((v) => v.toJson()).toList();
     data['remarks'] = remarks;
     data['unit_amount'] = amount;
-    data['file_url'] = files.isNotEmpty ? files.first : null;
+    data['file_url'] = files?.isNotEmpty==true ? files?.first : null;
     data['policy_details'] = selectedClass?.toJson();
     return data;
   }

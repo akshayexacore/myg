@@ -2,8 +2,10 @@
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:travel_claim/configs/app_config.dart';
 
 
 class Global {
@@ -127,4 +129,23 @@ validCheck(String s) {
     default:
       throw FormatException("Invalid boolean string: $booleanString");
   }
+}
+String getFullImageUrl(String imagePath) {
+  debugPrint("the image url is here $imagePath");
+  // If it's already a full URL, return as is
+  if (imagePath.startsWith('http') || imagePath.startsWith('https')) {
+    return imagePath;
+  }
+  // Otherwise, append your base URL
+  return "${AppConfig.imageLiveBaseUrl}$imagePath";
+}
+List<String> normalizeFiles(List<String>? files) {
+  if (files == null) return [];
+  return files.map((file) {
+      if (file.contains('/uploads/')) {
+    final filePath = file.split('/uploads/').last;
+      return 'uploads/$filePath';
+    }
+    return file;
+  }).toList();
 }

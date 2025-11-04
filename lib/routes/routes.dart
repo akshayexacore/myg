@@ -78,6 +78,7 @@ class Routes {
         page: () => ClaimPage(),
         binding: BindingsBuilder(() {
           Get.lazyPut(() => ClaimController());
+          Get.lazyPut(() => DraftController());
         })),
     GetPage(
         name: ClaimConfirmationPage.routeName,

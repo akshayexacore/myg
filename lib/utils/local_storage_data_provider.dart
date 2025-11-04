@@ -38,7 +38,7 @@ class LocalStorageDataProvider {
   }
 
   Future<bool> saveOrUpdate(ClaimForm data) async {
-    if(data.storageId.isEmpty){
+    if(data.storageId?.isEmpty==true){
       // create new draft
       return await save(data);
     }else{

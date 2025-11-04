@@ -22,11 +22,13 @@ class FormItem extends StatefulWidget {
   final int index;
   ClaimFormData formData;
   final VoidCallback? onDelete;
+  final bool isResubmit;
   FormItem(
       {super.key,
       required this.category,
       required this.formData,
       required this.index,
+      this.isResubmit=false,
       this.onDelete});
   @override
   State<FormItem> createState() => _FormItemState();
@@ -74,12 +76,12 @@ class _FormItemState extends State<FormItem> {
                 : widget.formData.amount!.toStringAsFixed(2))
             .toString();
     widget.formData.fromDate ??= null;
-    if (widget.formData.toDate == null && widget.category.hasToDate) {
+    if (widget.formData.toDate == null && (widget.category.hasToDate??false)) {
       widget.formData.toDate = null;
     }
     if (widget.category.classes != null &&
         widget.category.classes!.length == 1 &&
-        !widget.category.hasClass &&
+        !(widget.category.hasClass??false) &&
         widget.formData.selectedClass == null) {
       widget.formData.selectedClass = widget.category.classes!.first;
       widget.formData.classId = widget.category.classes!.first.id;
@@ -108,7 +110,7 @@ class _FormItemState extends State<FormItem> {
           print('amount: ${eligibleAmount.value}');
           max.value = eligibleAmount.value;
           totalKms.value = 0;
-          if (widget.category.hasStartMeter) {
+          if (widget.category.hasStartMeter??false) {
             double start =
                 double.tryParse(widget.formData.odoMeterStart ?? '0') ?? 0;
             double end =
@@ -182,9 +184,9 @@ class _FormItemState extends State<FormItem> {
         ),
         const Divider(),
         gapHC(10),
-        if (widget.category.hasTripFrom) ts("From", Colors.black),
-        if (widget.category.hasTripFrom) gapHC(3),
-        if (widget.category.hasTripFrom)
+        if (widget.category.hasTripFrom??false) ts("From", Colors.black),
+        if (widget.category.hasTripFrom??false) gapHC(3),
+        if (widget.category.hasTripFrom??false)
           TextinputfieldContainer(
               showIcon: false,
               verticalPadding: 6,
@@ -207,10 +209,10 @@ class _FormItemState extends State<FormItem> {
               },
               isEnable: true,
               isObscure: false),
-        if (widget.category.hasTripTo) gapHC(10),
-        if (widget.category.hasTripTo) ts("To", Colors.black),
-        if (widget.category.hasTripTo) gapHC(3),
-        if (widget.category.hasTripTo)
+        if (widget.category.hasTripTo??false) gapHC(10),
+        if (widget.category.hasTripTo??false) ts("To", Colors.black),
+        if (widget.category.hasTripTo??false) gapHC(3),
+        if (widget.category.hasTripTo??false)
           TextinputfieldContainer(
               showIcon: false,
               verticalPadding: 6,
@@ -233,7 +235,7 @@ class _FormItemState extends State<FormItem> {
               hintText: "To",
               isEnable: true,
               isObscure: false),
-        if (widget.category.hasStartMeter || widget.category.hasEndMeter)
+       if ((widget.category.hasStartMeter ?? false) || (widget.category.hasEndMeter ?? false))
           odooMeterReading(),
         gapHC(10),
         buildDates(context),
@@ -294,19 +296,19 @@ class _FormItemState extends State<FormItem> {
               widget.formData.amount = double.tryParse(val) ?? 0;
               isUpdated.toggle();
             },
-            isEnable: widget.category.hasStartMeter ? false : true,
+            isEnable: widget.category.hasStartMeter==true ? false : true,
             isObscure: false),
         Obx(() {
           debugPrint(isUpdated.value.toString()); // do not remove
           if (widget.formData.selectedClass != null &&
               widget.formData.selectedClass?.policy?.gradeAmount != null &&
               widget.formData.amount != null &&
-              !widget.category.hasStartMeter) {
+              !(widget.category.hasStartMeter??false)) {
             if (widget.formData.amount! > max.value) {
               return Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                  "(Eligible amount ${max.value.toStringAsFixed(2)} INR ${widget.category.hasStartMeter ? 'for ${totalKms.value} Kms @ ${widget.formData.selectedClass!.policy!.gradeAmount!} INR/Km' : ''})",
+                  "(Eligible amount ${max.value.toStringAsFixed(2)} INR ${widget.category.hasStartMeter??false ? 'for ${totalKms.value} Kms @ ${widget.formData.selectedClass!.policy!.gradeAmount!} INR/Km' : ''})",
                   style: const TextStyle(color: Colors.red),
                 ),
               );
@@ -321,8 +323,8 @@ class _FormItemState extends State<FormItem> {
             widget.formData.files = list;
             widget.formData.fileError = '';
           },
-          selectedFiles:
-              widget.formData.files.isEmpty ? [] : widget.formData.files,
+       selectedFiles: widget.formData.files?.isEmpty == true ? [] : widget.formData.files ?? [],
+
           errorMsg: widget.formData.fileError,
         )
       ],
@@ -371,7 +373,7 @@ class _FormItemState extends State<FormItem> {
         //     ),
         //   ),
         // if (widget.category.hasEndMeter) gapWC(20),
-        if (widget.category.hasEndMeter)
+        if (widget.category.hasEndMeter??false)
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -428,10 +430,11 @@ class _FormItemState extends State<FormItem> {
         Column(
           children: [
             DatePicker(
-              title: widget.category.hasFromDate ? "Check-in date" : "Date",
+              isResubmit: widget.isResubmit,
+              title: widget.category.hasFromDate==true ? "Check-in date" : "Date",
               selectedDate: widget.formData.fromDate,
               lastDate: DateTime.now()
-                  .subtract(Duration(days: widget.category.noOfDays)),
+                  .subtract(Duration(days: widget.category.noOfDays??0)),
               onChanged: (date) {
                     if (widget.category.id == 4 &&
         widget.formData.toDate != null &&
@@ -471,15 +474,15 @@ class _FormItemState extends State<FormItem> {
               ),
           ],
         ),
-        if (widget.category.hasToDate)
+        if (widget.category.hasToDate??false)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DatePicker(
-                title: widget.category.hasFromDate ? "Check-out date" : "Date",
+                title: widget.category.hasFromDate==true ? "Check-out date" : "Date",
                 selectedDate: widget.formData.toDate,
                 lastDate: DateTime.now()
-                    .subtract(Duration(days: widget.category.noOfDays)),
+                    .subtract(Duration(days: widget.category.noOfDays??0)),
                 onChanged: (date) {
                     if (widget.category.id == 4 &&
         widget.formData.fromDate != null &&
@@ -554,7 +557,7 @@ class _FormItemState extends State<FormItem> {
             onChanged: (list) {
               print("object$list");
               widget.formData.employees = list;
-              if (!widget.category.hasStartMeter &&
+              if (!(widget.category.hasStartMeter??false) &&
                   widget.formData.employees.isNotEmpty) {
                 calculateClass();
               }
@@ -589,19 +592,19 @@ class _FormItemState extends State<FormItem> {
   }
 
   Widget buildClass() {
-    return widget.category.hasClass
+    return widget.category.hasClass==true
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ts(
-                  widget.category.name.toLowerCase().contains('train')
+                 ( widget.category.name?.toLowerCase().contains('train')??false)
                       ? "Class"
                       : "Type",
                   Colors.black),
               gapHC(3),
               DropDownWidget(
                 selectedClass: widget.formData.selectedClass,
-                hint: widget.category.name.toLowerCase().contains('train')
+                hint:( widget.category.name?.toLowerCase().contains('train')??false)
                     ? "Select class"
                     : 'Select Type',
                 items: widget.category.classes!,

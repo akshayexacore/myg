@@ -42,9 +42,12 @@ class DraftListModel {
   String? approverStatus;
   String? financeStatus;
   String? financeStatusChangeDate;
+  String? remainderMessage;
+  String? expiryDate;
   TripTypeDetails? tripTypeDetails;
   List<VisitBranchDetail>? visitBranchDetail;
   int? lastDate;
+  bool? isRemider;
 
   DraftListModel({
     this.tripClaimId,
@@ -64,6 +67,9 @@ class DraftListModel {
     this.tripTypeDetails,
     this.visitBranchDetail,
     this.lastDate,
+    this.isRemider,
+    this.remainderMessage,
+    this.expiryDate,
   });
 
   factory DraftListModel.fromJson(Map<String, dynamic> json) {
@@ -78,6 +84,9 @@ class DraftListModel {
       financeRemarks: json['finance_remarks'],
       totalAmount: json['total_amount'],
       tripApprovedDate: json['trip_approved_date'],
+      isRemider: json['reminder'],
+      expiryDate: json['expiry_date'],
+      remainderMessage: json["remainder_message"],
       tripRejectedDate: json['trip_rejected_date'],
       approverStatus: json['approver_status'],
       financeStatus: json['finance_status'],

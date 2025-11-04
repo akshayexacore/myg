@@ -30,39 +30,43 @@ class CategoryResponse {
 }
 
 class Category {
-  late int id;
-  late String name;
-  late bool hasTripFrom;
-  late bool hasTripTo;
-  late bool hasFromDate;
-  late bool hasToDate;
-  late bool hasDocumentDate;
-  late bool hasStartMeter;
-  late bool hasEndMeter;
-  late bool hasClass;
-  late int noOfDays;
-  late String imageUrl;
-  late List<CategoryClass>? classes;
-  late List<ClaimFormData> items;
+  int? id;
+  String? name;
+  int? categoryId;
+  bool? hasTripFrom;
+  bool? hasTripTo;
+  bool? hasFromDate;
+  bool? hasToDate;
+  bool? hasDocumentDate;
+  bool? hasStartMeter;
+  bool? hasEndMeter;
+  bool? hasClass;
+  int? noOfDays;
+  String? imageUrl;
+  List<CategoryClass>? classes;
+  List<ClaimFormData>? items;
 
-  Category({this.id = 0,
-    this.name = '',
-    this.hasTripFrom = false,
-    this.hasTripTo = false,
-    this.hasFromDate = false,
-    this.hasToDate = false,
-    this.hasDocumentDate = false,
-    this.hasStartMeter = false,
-    this.hasEndMeter = false,
-    this.hasClass = false,
-    this.noOfDays = 0,
-    this.imageUrl = '',
-    this.classes,
-    this.items = const []
-  });
+  Category(
+      {this.id = 0,
+      this.name = '',
+      this.hasTripFrom = false,
+      this.hasTripTo = false,
+      this.hasFromDate = false,
+      this.hasToDate = false,
+      this.hasDocumentDate = false,
+      this.hasStartMeter = false,
+      this.hasEndMeter = false,
+      this.hasClass = false,
+      this.noOfDays = 0,
+      this.imageUrl = '',
+      this.classes,
+      this.items = const []});
 
   Category.fromJson(Map<String, dynamic> json) {
+
+
     id = json['category_id'];
+    categoryId=json['category_id'];
     name = json['category_name'];
     hasTripFrom = json['trip_from_flag'];
     hasTripTo = json['trip_to_flag'];
@@ -76,7 +80,6 @@ class Category {
     noOfDays = json['no_of_days'];
     classes = <CategoryClass>[];
     if (json['subcategorydetails'] != null) {
-
       json['subcategorydetails'].forEach((v) {
         classes!.add(CategoryClass.fromJson(v));
       });
@@ -87,7 +90,7 @@ class Category {
       items = <ClaimFormData>[];
       json['items'].forEach((v) {
         print("sssssssssssssssss");
-        items.add(ClaimFormData.fromJson(v));
+        items?.add(ClaimFormData.fromJson(v));
       });
     }
 
@@ -95,12 +98,34 @@ class Category {
       items = <ClaimFormData>[];
       json['claim_details'].forEach((v) {
         print("ddddddd");
-        items.add(ClaimFormData.fromApiJson(v));
+        items?.add(ClaimFormData.fromApiJson(v));
       });
     }
   }
+  @override
+  String toString() {
+    return '''
+Category(
+  id: $id,
+  name: $name,
+  hasTripFrom: $hasTripFrom,
+  hasTripTo: $hasTripTo,
+  hasFromDate: $hasFromDate,
+  hasToDate: $hasToDate,
+  hasDocumentDate: $hasDocumentDate,
+  hasStartMeter: $hasStartMeter,
+  hasEndMeter: $hasEndMeter,
+  hasClass: $hasClass,
+  noOfDays: $noOfDays,
+  imageUrl: $imageUrl,
+  classes: $classes,
+  items: $items
+)
+''';
+  }
 
   Map<String, dynamic> toJson() {
+    print("calling to json");
     final Map<String, dynamic> data = <String, dynamic>{};
     data['category_id'] = id;
     data['category_name'] = name;
@@ -114,10 +139,9 @@ class Category {
     data['class_flg'] = hasClass;
     data['image_url'] = imageUrl;
     data['no_of_days'] = noOfDays;
-    data['subcategorydetails'] =
-        classes?.map((v) => v.toJson()).toList();
-    data['items'] = items.map((v) => v.toJson()).toList();
-    data['claim_details'] = items.map((v) => v.toApiJson()).toList();
+    data['subcategorydetails'] = classes?.map((v) => v.toJson()).toList();
+    data['items'] = items?.map((v) => v.toJson()).toList();
+    data['claim_details'] = items?.map((v) => v.toApiJson()).toList();
     return data;
   }
 
@@ -125,13 +149,14 @@ class Category {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Category &&
-        other.id == id;
+    return other is Category && other.id == id;
   }
 
   @override
   int get hashCode => id.hashCode;
-}extension CategoryCopyWith on Category {
+}
+
+extension CategoryCopyWith on Category {
   Category copyWith({
     int? id,
     String? name,
@@ -167,7 +192,6 @@ class Category {
   }
 }
 
-
 class CategoryClass {
   late int id;
   late String name;
@@ -182,7 +206,9 @@ class CategoryClass {
     status = json['status'] ?? '';
     policy = json['policies'] != null
         ? Policy.fromJson(json['policies'])
-        : json['grade_type']!=null ? Policy.fromJson(json) : null;
+        : json['grade_type'] != null
+            ? Policy.fromJson(json)
+            : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -196,13 +222,11 @@ class CategoryClass {
     return data;
   }
 
-
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is CategoryClass &&
-        other.id == id;
+    return other is CategoryClass && other.id == id;
   }
 
   @override
@@ -210,41 +234,46 @@ class CategoryClass {
 }
 
 class Policy {
-  late int id;
-  late int gradeId;
-  late String gradeType;
-  late String gradeClass;
+  int? id;
+  int? gradeId;
+  String? gradeType;
+  String? gradeClass;
   double? gradeAmount;
-  late String approver;
-  late String status;
+  String? approver;
+  String? status;
 
-  Policy({this.id = 0,
-    this.gradeId = 0,
-    this.gradeType = '',
-    this.gradeClass = '',
+  Policy({
+    this.id,
+    this.gradeId,
+    this.gradeType,
+    this.gradeClass,
     this.gradeAmount,
-    this.approver = '',
-    this.status = ''});
+    this.approver,
+    this.status,
+  });
 
   Policy.fromJson(Map<String, dynamic> json) {
-    id = json['policy_id'] ?? 0;
-    gradeId = json['grade_id'] ?? 0;
-    gradeType = json['grade_type'] ?? '';
-    gradeClass = json['grade_class'] ?? '';
-    gradeAmount = json['grade_amount']!=null ? double.tryParse(json['grade_amount'].toString()) : null;
-    approver = json['approver'] ?? '';
-    status = json['status'] ?? '';
+    id = json['policy_id'];
+    gradeId = json['grade_id'];
+    gradeType = json['grade_type'];
+    gradeClass = json['grade_class'];
+    gradeAmount = json['grade_amount'] != null
+        ? double.tryParse(json['grade_amount'].toString())
+        : null;
+    approver = json['approver'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['policy_id'] = id;
-    data['grade_id'] = gradeId;
-    data['grade_type'] = gradeType;
-    data['grade_class'] = gradeClass;
-    data['grade_amount'] = gradeAmount;
-    data['approver'] = approver;
-    data['status'] = status;
-    return data;
+    return {
+      'policy_id': id,
+      'grade_id': gradeId,
+      'grade_type': gradeType,
+      'grade_class': gradeClass,
+      'grade_amount': gradeAmount,
+      'approver': approver,
+      'status': status,
+    };
   }
 }
+

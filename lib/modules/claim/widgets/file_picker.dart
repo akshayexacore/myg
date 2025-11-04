@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:travel_claim/configs/app_config.dart';
+import 'package:travel_claim/global/globalValues.dart';
 import 'package:travel_claim/modules/gallery/gallery_page.dart';
 import 'package:travel_claim/modules/gallery/pdf_viewer.dart';
 import 'package:travel_claim/modules/gallery/widgets/gallery_item.dart';
@@ -20,7 +21,9 @@ import 'package:travel_claim/views/components/image_dispalya.ssl.dart';
 import 'package:travel_claim/views/const/appassets.dart';
 import 'package:travel_claim/views/style/colors.dart';
 import 'package:path/path.dart';
-  var selectedImageFile;
+
+var selectedImageFile;
+
 class FilePicker extends StatefulWidget {
   List<String> selectedFiles;
   final ValueChanged<List<String>> onChanged;
@@ -80,7 +83,6 @@ class _FilePickerState extends State<FilePicker> {
               itemBuilder: (context, index) {
                 return Column(
                   children: [
-                   
                     GestureDetector(
                       onTap: () {
                         if (extension(widget.selectedFiles[index])
@@ -91,43 +93,43 @@ class _FilePickerState extends State<FilePicker> {
                                   "${AppConfig.imageLiveBaseUrl}${widget.selectedFiles[index]}"));
                         } else {
                           print("object");
-                    // showDialog(
-                    //               context: context,
-                    //               builder: (BuildContext context) {
-                    //                 return Dialog(
-                    //                   backgroundColor: Colors.transparent,
-                    //                   insetPadding: EdgeInsets.all(0),
-                    //                   child: Container(
-                    //                     width: MediaQuery.of(context).size.width,
-                    //                     height: MediaQuery.of(context).size.height,
-                    //                     color: Colors.black,
-                    //                     child: Stack(
-                    //                       children: [
-                    //                         // Full-screen content
-                    //                         CustomSslImageDispaly(
-                    //                               url:
-                    //                                   "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
-                    //                               height: MediaQuery.of(context).size.height-200,
-                    //                               width:  MediaQuery.of(context).size.width,
-                    //                             ),
-                    //                         // Close button at the top right corner
-                    //                         Positioned(
-                    //                           top: 30,
-                    //                           right: 20,
-                    //                           child: IconButton(
-                    //                             icon: Icon(Icons.close,color: Colors.white,),
-                    //                             onPressed: () {
-                    //                               Navigator.of(context).pop();
-                    //                             },
-                    //                           ),
-                    //                         ),
-                    //                       ],
-                    //                     ),
-                    //                   ),
-                    //                 );
-                    //               },
-                    //             );
-                          
+                          // showDialog(
+                          //               context: context,
+                          //               builder: (BuildContext context) {
+                          //                 return Dialog(
+                          //                   backgroundColor: Colors.transparent,
+                          //                   insetPadding: EdgeInsets.all(0),
+                          //                   child: Container(
+                          //                     width: MediaQuery.of(context).size.width,
+                          //                     height: MediaQuery.of(context).size.height,
+                          //                     color: Colors.black,
+                          //                     child: Stack(
+                          //                       children: [
+                          //                         // Full-screen content
+                          //                         CustomSslImageDispaly(
+                          //                               url:
+                          //                                   "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
+                          //                               height: MediaQuery.of(context).size.height-200,
+                          //                               width:  MediaQuery.of(context).size.width,
+                          //                             ),
+                          //                         // Close button at the top right corner
+                          //                         Positioned(
+                          //                           top: 30,
+                          //                           right: 20,
+                          //                           child: IconButton(
+                          //                             icon: Icon(Icons.close,color: Colors.white,),
+                          //                             onPressed: () {
+                          //                               Navigator.of(context).pop();
+                          //                             },
+                          //                           ),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                   ),
+                          //                 );
+                          //               },
+                          //             );
+
                           Navigator.push(
                             Get.context!,
                             MaterialPageRoute(
@@ -168,13 +170,20 @@ class _FilePickerState extends State<FilePicker> {
                               //   )
                               CachedNetworkImage(
                                   imageUrl:
-                                      "${AppConfig.imageLiveBaseUrl}${widget.selectedFiles[index]}",
+                                     getFullImageUrl( widget.selectedFiles[index]),
                                   height: 70,
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 2),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                 )
                               : Image.asset(
                                   AppAssets.file,
                                   height: 70,
                                 ),
+                               
                           gapWC(10),
                           Expanded(
                               child: ts(
@@ -307,7 +316,6 @@ class _FilePickerState extends State<FilePicker> {
         backgroundColor: Colors.white);
   }
 
-
   pickFromFiles(BuildContext context) async {
     Get.back();
     picker.FilePickerResult? result = await picker.FilePicker.platform
@@ -363,10 +371,9 @@ class _FilePickerState extends State<FilePicker> {
 
       String newFile = await uploadFile(photo.path, context);
       String filePath = newFile.split('/uploads/').last;
-      
 
 // Prepend "uploads/" to get final path
-newFile = 'uploads/$filePath';
+      newFile = 'uploads/$filePath';
       if (newFile.isNotEmpty) {
         setState(() {
           if (widget.multiple) {
@@ -397,10 +404,10 @@ newFile = 'uploads/$filePath';
       }
 
       String newFile = await uploadFile(photo.path, context);
-           String filePath = newFile.split('/uploads/').last;
+      String filePath = newFile.split('/uploads/').last;
 
 // Prepend "uploads/" to get final path
-newFile = 'uploads/$filePath';
+      newFile = 'uploads/$filePath';
       if (newFile.isNotEmpty) {
         setState(() {
           if (widget.multiple) {

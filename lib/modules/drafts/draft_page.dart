@@ -52,6 +52,7 @@ class DraftPage extends StatelessWidget {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
+                                  _controller.items[index].isRemider==true?headTitle("Submit before",_controller.items[index].expiryDate.toString()??"",colors:Colors.red):SizedBox.shrink(),
                                   headTitle("Date",_controller.items[index].date??""),
                                   headTitle("Type of trip", _controller.items[index].tripTypeDetails?.triptypeName??""),
                                   headTitle("Branch name", _controller.items[index].visitBranchDetail?.map((e)=>e.branchName).join(',') ?? 'NA'),

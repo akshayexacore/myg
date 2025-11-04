@@ -4,6 +4,7 @@ import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:travel_claim/models/category.dart';
+import 'package:travel_claim/models/claim_form.dart';
 import 'package:travel_claim/modules/history/claim_resubmit_page.dart';
 import 'package:travel_claim/modules/history/controllers/history_detail_controller.dart';
 import 'package:travel_claim/modules/history/widgets/attached_file_widget.dart';
@@ -88,7 +89,9 @@ class HistoryDetailPage extends StatelessWidget {
                     gapHC(3),
                     headTitle(
                         "Branch name",
-                        _controller.claim.value!.visitBranchDetail?.map((e)=>e.name).join(',') ??
+                        _controller.claim.value!.visitBranchDetail
+                                ?.map((e) => e.name)
+                                .join(',') ??
                             'NA'),
                     gapHC(3),
                     headTitle("Purpose of trip",
@@ -166,8 +169,10 @@ class HistoryDetailPage extends StatelessWidget {
                                               ClaimStatus.rejected
                                           ? "Rejected person"
                                           : _controller.claim.value!.status ==
-                                                  ClaimStatus.approved ||_controller.claim.value!.status ==
-                                                  ClaimStatus.settled
+                                                      ClaimStatus.approved ||
+                                                  _controller.claim.value!
+                                                          .status ==
+                                                      ClaimStatus.settled
                                               ? "Approved Reporting person"
                                               : "",
                                       Colors.black),
@@ -176,7 +181,8 @@ class HistoryDetailPage extends StatelessWidget {
                                       _controller.claim.value!.status ==
                                                   ClaimStatus.rejected ||
                                               _controller.claim.value!.status ==
-                                                  ClaimStatus.approved ||_controller.claim.value!.status ==
+                                                  ClaimStatus.approved ||
+                                              _controller.claim.value!.status ==
                                                   ClaimStatus.settled
                                           ? _controller.claim.value!
                                                       .approverStatus ==
@@ -194,16 +200,14 @@ class HistoryDetailPage extends StatelessWidget {
                                   )
                                 ],
                               ),
-                               Row(
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  ts(
-                                      "Approved Finance person",
-                                      Colors.black),
+                                  ts("Approved Finance person", Colors.black),
                                   Expanded(
                                     child: Text(
-                                     "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})",
+                                      "${_controller.claim.value!.financeApproverDetails?.name} (${_controller.claim.value!.financeApproverDetails?.employeeId})",
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
                                           fontFamily: 'Roboto',
@@ -303,8 +307,9 @@ class HistoryDetailPage extends StatelessWidget {
                       _controller.claim.value!.categories!.where(
                     (element) {
                       return element.items
-                          .where((e) => e.status == ClaimStatus.rejected)
-                          .isNotEmpty;
+                              ?.where((e) => e.status == ClaimStatus.rejected)
+                              .isNotEmpty ??
+                          false;
                     },
                   ).toList();
                   if (_controller.claim.value!.status == ClaimStatus.pending) {
@@ -318,20 +323,21 @@ class HistoryDetailPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: cats[index].items.map(
-                          (e) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                tssb("${cats[index].name}:", Colors.black,
-                                    FontWeight.w400),
-                                gapHC(5),
-                                ts('${e.approverRemarks}',
-                                    Colors.black.withOpacity(0.6))
-                              ],
-                            );
-                          },
-                        ).toList(),
+                        children: cats[index].items?.map(
+                              (e) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    tssb("${cats[index].name}:", Colors.black,
+                                        FontWeight.w400),
+                                    gapHC(5),
+                                    ts('${e.approverRemarks}',
+                                        Colors.black.withOpacity(0.6))
+                                  ],
+                                );
+                              },
+                            ).toList() ??
+                            [],
                       );
                     },
                     itemCount: cats.length,
@@ -365,13 +371,12 @@ class HistoryDetailPage extends StatelessWidget {
                   ),
                   initiallyOpenedControllersIndexes: [0],
                   itemBuilder: (context, index, con) {
-                    bool hasRejected =
-                        _controller.claim.value!.categories![index].items
-                            .where(
-                              (e) => e.status == ClaimStatus.rejected,
-                            )
-                            .toList()
-                            .isNotEmpty;
+                    bool hasRejected = (_controller
+                            .claim.value!.categories![index].items
+                            ?.where((e) => e.status == ClaimStatus.rejected)
+                            .isNotEmpty) ??
+                        false;
+
                     return ExpandedTile(
                       theme: ExpandedTileThemeData(
                         headerColor: greyLight,
@@ -393,7 +398,8 @@ class HistoryDetailPage extends StatelessWidget {
                           15.0),
                       leading: CachedNetworkImage(
                         imageUrl: _controller
-                            .claim.value!.categories![index].imageUrl,
+                                .claim.value!.categories![index].imageUrl ??
+                            "",
                         height: 25,
                         width: 25,
                       ),
@@ -417,36 +423,47 @@ class HistoryDetailPage extends StatelessWidget {
                                     decoration: boxBaseDecoration(greyLight, 0),
                                     child: Column(
                                       children: [
-                                        if (_controller.claim.value!
-                                            .categories![index].hasTripFrom)
+                                        if (_controller
+                                                .claim
+                                                .value!
+                                                .categories![index]
+                                                .hasTripFrom ??
+                                            false)
                                           headTitle(
                                               "From",
                                               _controller
                                                       .claim
                                                       .value!
                                                       .categories![index]
-                                                      .items[formIndex]
+                                                      .items?[formIndex]
                                                       .tripFrom ??
                                                   ''),
-                                        if (_controller.claim.value!
-                                            .categories![index].hasTripFrom)
+                                        if (_controller
+                                                .claim
+                                                .value!
+                                                .categories![index]
+                                                .hasTripFrom ==
+                                            false)
                                           gapHC(10),
                                         if (_controller.claim.value!
-                                            .categories![index].hasTripTo)
+                                                .categories![index].hasTripTo ??
+                                            false)
                                           headTitle(
                                               "To",
                                               _controller
                                                       .claim
                                                       .value!
                                                       .categories![index]
-                                                      .items[formIndex]
+                                                      .items?[formIndex]
                                                       .tripTo ??
                                                   ''),
                                         if (_controller.claim.value!
-                                            .categories![index].hasTripTo)
+                                                .categories?[index].hasTripTo ??
+                                            false)
                                           gapHC(10),
                                         if (_controller.claim.value!
-                                            .categories![index].hasToDate)
+                                                .categories![index].hasToDate ??
+                                            false)
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -471,7 +488,7 @@ class HistoryDetailPage extends StatelessWidget {
                                                                       .value!
                                                                       .categories![
                                                                           index]
-                                                                      .items[
+                                                                      .items?[
                                                                           formIndex]
                                                                       .fromDate !=
                                                                   null
@@ -481,7 +498,7 @@ class HistoryDetailPage extends StatelessWidget {
                                                                       .value!
                                                                       .categories![
                                                                           index]
-                                                                      .items[
+                                                                      .items![
                                                                           formIndex]
                                                                       .fromDate!)
                                                               : "",
@@ -512,7 +529,7 @@ class HistoryDetailPage extends StatelessWidget {
                                                                     .value!
                                                                     .categories![
                                                                         index]
-                                                                    .items[
+                                                                    .items?[
                                                                         formIndex]
                                                                     .toDate !=
                                                                 null
@@ -522,7 +539,7 @@ class HistoryDetailPage extends StatelessWidget {
                                                                     .value!
                                                                     .categories![
                                                                         index]
-                                                                    .items[
+                                                                    .items![
                                                                         formIndex]
                                                                     .toDate!)
                                                             : "",
@@ -543,11 +560,16 @@ class HistoryDetailPage extends StatelessWidget {
                                               ),
                                             ],
                                           ),
-                                        if (_controller.claim.value!
-                                            .categories![index].hasToDate)
+                                        if ((_controller.claim.value!
+                                                .categories![index].hasToDate ??
+                                            false))
                                           gapHC(10),
-                                        if (_controller.claim.value!
-                                            .categories![index].hasStartMeter)
+                                        if ((_controller
+                                                .claim
+                                                .value!
+                                                .categories![index]
+                                                .hasStartMeter ??
+                                            false))
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -576,7 +598,7 @@ class HistoryDetailPage extends StatelessWidget {
                                               Expanded(
                                                 flex: 5,
                                                 child: Text(
-                                                    " ${_controller.claim.value!.categories![index].items[formIndex].odoMeterEnd} KM" ??
+                                                    " ${_controller.claim.value!.categories![index].items?[formIndex].odoMeterEnd} KM" ??
                                                         'NA',
                                                     textAlign: TextAlign.left,
                                                     overflow: TextOverflow.fade,
@@ -590,18 +612,23 @@ class HistoryDetailPage extends StatelessWidget {
                                               ),
                                             ],
                                           ),
-                                        if (_controller.claim.value!
-                                            .categories![index].hasStartMeter)
+                                        if ((_controller
+                                                .claim
+                                                .value!
+                                                .categories![index]
+                                                .hasStartMeter ??
+                                            false))
                                           gapHC(10),
-                                        if (!_controller.claim.value!
-                                            .categories![index].hasToDate)
+                                        if (!(_controller.claim.value!
+                                                .categories![index].hasToDate ??
+                                            false))
                                           headTitle(
                                               "Document date",
                                               _controller
                                                           .claim
                                                           .value!
                                                           .categories![index]
-                                                          .items[formIndex]
+                                                          .items?[formIndex]
                                                           .fromDate !=
                                                       null
                                                   ? AppFormatter
@@ -611,11 +638,12 @@ class HistoryDetailPage extends StatelessWidget {
                                                               .value!
                                                               .categories![
                                                                   index]
-                                                              .items[formIndex]
+                                                              .items![formIndex]
                                                               .fromDate!)
                                                   : ""),
-                                        if (!_controller.claim.value!
-                                            .categories![index].hasToDate)
+                                        if (!(_controller.claim.value!
+                                                .categories![index].hasToDate ??
+                                            false))
                                           gapHC(10),
                                         headTitle(
                                             "Number of employees",
@@ -623,15 +651,16 @@ class HistoryDetailPage extends StatelessWidget {
                                                 .claim
                                                 .value!
                                                 .categories![index]
-                                                .items[formIndex]
+                                                .items?[formIndex]
                                                 .noOfEmployees
                                                 .toString()),
-                                        if (_controller
-                                                .claim
-                                                .value!
-                                                .categories![index]
-                                                .items[formIndex]
-                                                .noOfEmployees >
+                                        if ((_controller
+                                                    .claim
+                                                    .value!
+                                                    .categories![index]
+                                                    .items?[formIndex]
+                                                    .noOfEmployees ??
+                                                0) >
                                             1)
                                           Row(
                                             mainAxisAlignment:
@@ -646,35 +675,42 @@ class HistoryDetailPage extends StatelessWidget {
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
-                                                  children: _controller
-                                                      .claim
-                                                      .value!
-                                                      .categories![index]
-                                                      .items[formIndex]
-                                                      .employees
-                                                      .map(
-                                                    (e) {
-                                                      return Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                vertical: 5,
-                                                                horizontal: 6),
-                                                        margin: const EdgeInsets
-                                                            .only(bottom: 2),
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        14),
-                                                            color:
-                                                                primaryColor),
-                                                        child: ts(
-                                                            '${e.name}(${e.employeeId})',
-                                                            Colors.white),
-                                                      );
-                                                    },
-                                                  ).toList(),
+                                                  children: (_controller
+                                                                  .claim
+                                                                  .value!
+                                                                  .categories?[
+                                                                      index]
+                                                                  .items?[
+                                                                      formIndex]
+                                                                  .employees ??
+                                                              [])
+                                                          .map(
+                                                        (e) {
+                                                          return Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    vertical: 5,
+                                                                    horizontal:
+                                                                        6),
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    bottom: 2),
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            14),
+                                                                color:
+                                                                    primaryColor),
+                                                            child: ts(
+                                                                '${e.name}(${e.employeeId})',
+                                                                Colors.white),
+                                                          );
+                                                        },
+                                                      ).toList() ??
+                                                      [],
                                                 ),
                                               ),
                                             ],
@@ -684,7 +720,7 @@ class HistoryDetailPage extends StatelessWidget {
                                                 .claim
                                                 .value!
                                                 .categories![index]
-                                                .items[formIndex]
+                                                .items?[formIndex]
                                                 .selectedClass !=
                                             null)
                                           headTitle(
@@ -693,32 +729,33 @@ class HistoryDetailPage extends StatelessWidget {
                                                   .claim
                                                   .value!
                                                   .categories![index]
-                                                  .items[formIndex]
+                                                  .items?[formIndex]
                                                   .selectedClass
                                                   ?.name),
                                         if (_controller
                                                 .claim
                                                 .value!
                                                 .categories![index]
-                                                .items[formIndex]
+                                                .items?[formIndex]
                                                 .selectedClass !=
                                             null)
                                           gapHC(10),
                                         headTitle(
                                             "Remark",
-                                            _controller
-                                                    .claim
-                                                    .value!
-                                                    .categories![index]
-                                                    .items[formIndex]
-                                                    .remarks
-                                                    .isEmpty
+                                            (_controller
+                                                        .claim
+                                                        .value!
+                                                        .categories![index]
+                                                        .items?[formIndex]
+                                                        .remarks
+                                                        ?.isEmpty ??
+                                                    true)
                                                 ? 'Nil'
                                                 : _controller
                                                     .claim
                                                     .value!
                                                     .categories![index]
-                                                    .items[formIndex]
+                                                    .items?[formIndex]
                                                     .remarks),
                                         if (_controller.claim.value?.status !=
                                                 ClaimStatus.pending ||
@@ -727,27 +764,30 @@ class HistoryDetailPage extends StatelessWidget {
                                                 ClaimStatus.pending) ...[
                                           gapHC(10),
                                           Container(
-                                           
                                             decoration: BoxDecoration(
-                                               color: Colors.white,
+                                                color: Colors.white,
                                                 borderRadius:
                                                     BorderRadius.circular(6)),
                                             padding: EdgeInsets.all(5),
                                             child: headTitle(
                                                 "Approver remark",
-                                                _controller
-                                                        .claim
-                                                        .value!
-                                                        .categories![index]
-                                                        .items[formIndex]
-                                                        .approverRemarks
-                                                        .isEmpty
+                                                (_controller
+                                                                    .claim
+                                                                    .value!
+                                                                    .categories![
+                                                                        index]
+                                                                    .items?[
+                                                                        formIndex]
+                                                                    .approverRemarks ??
+                                                                '')
+                                                            .isEmpty ==
+                                                        true
                                                     ? 'Nil'
                                                     : _controller
                                                         .claim
                                                         .value!
                                                         .categories![index]
-                                                        .items[formIndex]
+                                                        .items?[formIndex]
                                                         .approverRemarks,
                                                 colors: _controller.claim.value!
                                                     .approverStatus.color),
@@ -768,21 +808,24 @@ class HistoryDetailPage extends StatelessWidget {
                                                         .withOpacity(0.8))),
                                             Expanded(
                                               flex: 5,
-                                              child: _controller
-                                                      .claim
-                                                      .value!
-                                                      .categories![index]
-                                                      .items[formIndex]
-                                                      .files
-                                                      .isNotEmpty
-                                                  ? AttachedFileWidget(
-                                                      file: _controller
+                                              child: (_controller
                                                           .claim
                                                           .value!
                                                           .categories![index]
-                                                          .items[formIndex]
+                                                          .items?[formIndex]
                                                           .files
-                                                          .first,
+                                                          ?.isNotEmpty ??
+                                                      false)
+                                                  ? AttachedFileWidget(
+                                                      file: _controller
+                                                              .claim
+                                                              .value!
+                                                              .categories![
+                                                                  index]
+                                                              .items?[formIndex]
+                                                              .files!
+                                                              .first ??
+                                                          "",
                                                     )
                                                   : const Text("Nil",
                                                       style: TextStyle(
@@ -797,24 +840,24 @@ class HistoryDetailPage extends StatelessWidget {
                                         ),
                                         gapHC(10),
                                         headTitle("Amount",
-                                            "${_controller.claim.value!.categories![index].items[formIndex].amount!.toStringAsFixed(2)} INR"),
+                                            "${_controller.claim.value!.categories![index].items?[formIndex].amount!.toStringAsFixed(2)} INR"),
                                         if (_controller.claim.value?.status !=
                                             ClaimStatus.pending)
                                           headTitle("Deduct amount",
-                                              "${_controller.claim.value!.categories![index].items[formIndex].deductedAmount != null ? _controller.claim.value!.categories![index].items[formIndex].deductedAmount!.toStringAsFixed(2) : 0} INR"),
+                                              "${_controller.claim.value!.categories![index].items?[formIndex].deductedAmount != null ? _controller.claim.value!.categories![index].items![formIndex].deductedAmount!.toStringAsFixed(2) : 0} INR"),
                                         Obx(() {
                                           if (_controller
                                                       .claim
                                                       .value!
                                                       .categories![index]
-                                                      .items[formIndex]
+                                                      .items?[formIndex]
                                                       .selectedClass !=
                                                   null &&
                                               _controller
                                                       .claim
                                                       .value!
                                                       .categories![index]
-                                                      .items[formIndex]
+                                                      .items?[formIndex]
                                                       .selectedClass
                                                       ?.policy
                                                       ?.gradeAmount !=
@@ -823,36 +866,39 @@ class HistoryDetailPage extends StatelessWidget {
                                                       .claim
                                                       .value!
                                                       .categories![index]
-                                                      .items[formIndex]
+                                                      .items?[formIndex]
                                                       .amount !=
                                                   null) {
-                                            double max = _controller
-                                                    .claim
-                                                    .value!
-                                                    .categories![index]
-                                                    .items[formIndex]
-                                                    .eligibleAmount ??
-                                                _controller
-                                                    .claim
-                                                    .value!
-                                                    .categories![index]
-                                                    .items[formIndex]
-                                                    .selectedClass!
-                                                    .policy!
-                                                    .gradeAmount!;
+                                            double max = (_controller
+                                                        .claim
+                                                        .value
+                                                        ?.categories?[index]
+                                                        .items?[formIndex]
+                                                        .eligibleAmount ??
+                                                    _controller
+                                                        .claim
+                                                        .value!
+                                                        .categories?[index]
+                                                        .items?[formIndex]
+                                                        .selectedClass
+                                                        ?.policy
+                                                        ?.gradeAmount) ??
+                                                0.0;
+
                                             double totalKms = 0;
                                             if (_controller
-                                                .claim
-                                                .value!
-                                                .categories![index]
-                                                .hasStartMeter) {
+                                                    .claim
+                                                    .value!
+                                                    .categories![index]
+                                                    .hasStartMeter ??
+                                                false) {
                                               double start = double.tryParse(
                                                       _controller
                                                               .claim
                                                               .value!
                                                               .categories![
                                                                   index]
-                                                              .items[formIndex]
+                                                              .items?[formIndex]
                                                               .odoMeterStart ??
                                                           '0') ??
                                                   0;
@@ -862,7 +908,7 @@ class HistoryDetailPage extends StatelessWidget {
                                                               .value!
                                                               .categories![
                                                                   index]
-                                                              .items[formIndex]
+                                                              .items?[formIndex]
                                                               .odoMeterEnd ??
                                                           '0') ??
                                                   0;
@@ -871,31 +917,33 @@ class HistoryDetailPage extends StatelessWidget {
                                               }
 
                                               totalKms = end - start;
-
-                                              max = totalKms *
-                                                  _controller
+                                              final gradeAmount = _controller
                                                       .claim
                                                       .value!
-                                                      .categories![index]
-                                                      .items[formIndex]
-                                                      .selectedClass!
-                                                      .policy!
-                                                      .gradeAmount!;
+                                                      .categories?[index]
+                                                      .items?[formIndex]
+                                                      .selectedClass
+                                                      ?.policy
+                                                      ?.gradeAmount ??
+                                                  0;
+
+                                              max = totalKms * gradeAmount;
                                             }
 
-                                            if (_controller
-                                                    .claim
-                                                    .value!
-                                                    .categories![index]
-                                                    .items[formIndex]
-                                                    .amount! >
+                                            if ((_controller
+                                                        .claim
+                                                        .value!
+                                                        .categories![index]
+                                                        .items?[formIndex]
+                                                        .amount ??
+                                                    0) >
                                                 max) {
                                               return Padding(
                                                 padding: const EdgeInsets.only(
                                                     top: 5),
                                                 child: headTitle(
                                                   "",
-                                                  "(Eligible amount ${max.toStringAsFixed(2)} INR ${_controller.claim.value!.categories![index].hasStartMeter ? 'for $totalKms Kms @ ${_controller.claim.value!.categories![index].items[formIndex].selectedClass!.policy!.gradeAmount!} INR/Km' : ''})",
+                                                  "(Eligible amount ${max.toStringAsFixed(2)} INR ${_controller.claim.value!.categories![index].hasStartMeter == true ? 'for $totalKms Kms @ ${_controller.claim.value!.categories![index].items?[formIndex].selectedClass!.policy!.gradeAmount!} INR/Km' : ''})",
                                                   colors: Colors.red,
                                                 ),
                                               );
@@ -909,46 +957,48 @@ class HistoryDetailPage extends StatelessWidget {
                                                 .claim
                                                 .value!
                                                 .categories![index]
-                                                .items[formIndex]
+                                                .items?[formIndex]
                                                 .status !=
                                             ClaimStatus.pending)
                                           headTitle("Status",
-                                              "${_controller.claim.value!.categories![index].items[formIndex].status.title}",
+                                              "${_controller.claim.value!.categories![index].items?[formIndex].status.title}",
                                               colors: _controller
                                                   .claim
                                                   .value!
                                                   .categories![index]
-                                                  .items[formIndex]
+                                                  .items?[formIndex]
                                                   .status
                                                   .color),
                                         if (_controller
                                                     .claim
                                                     .value!
                                                     .categories![index]
-                                                    .items[formIndex]
+                                                    .items?[formIndex]
                                                     .status ==
                                                 ClaimStatus.rejected &&
-                                            _controller
-                                                    .claim
-                                                    .value!
-                                                    .categories![index]
-                                                    .items[formIndex]
-                                                    .rejectionCount <
+                                            (_controller
+                                                        .claim
+                                                        .value!
+                                                        .categories![index]
+                                                        .items?[formIndex]
+                                                        .rejectionCount ??
+                                                    0) <
                                                 2)
                                           gapHC(20),
                                         if (_controller
                                                     .claim
                                                     .value!
                                                     .categories![index]
-                                                    .items[formIndex]
+                                                    .items?[formIndex]
                                                     .status ==
                                                 ClaimStatus.rejected &&
-                                            _controller
-                                                    .claim
-                                                    .value!
-                                                    .categories![index]
-                                                    .items[formIndex]
-                                                    .rejectionCount <
+                                            (_controller
+                                                        .claim
+                                                        .value!
+                                                        .categories![index]
+                                                        .items?[formIndex]
+                                                        .rejectionCount ??
+                                                    0) <
                                                 2)
                                           Row(
                                             children: [
@@ -965,12 +1015,13 @@ class HistoryDetailPage extends StatelessWidget {
                                                         _controller.removeSingle(
                                                             context,
                                                             _controller
-                                                                    .claim
-                                                                    .value!
-                                                                    .categories![
-                                                                        index]
-                                                                    .items[
-                                                                formIndex]);
+                                                                        .claim
+                                                                        .value!
+                                                                        .categories![
+                                                                            index]
+                                                                        .items?[
+                                                                    formIndex] ??
+                                                                ClaimFormData());
                                                       },
                                                       buttonName: "Remove",
                                                       buttonColor: Colors.red,
@@ -988,8 +1039,9 @@ class HistoryDetailPage extends StatelessWidget {
                                     const SizedBox(
                                       height: 15,
                                     ),
-                                itemCount: _controller.claim.value!
-                                    .categories![index].items.length);
+                                itemCount: _controller.claim.value
+                                        ?.categories?[index].items?.length ??
+                                    0);
                           }),
                           gapHC(10)
                         ],
@@ -1042,7 +1094,7 @@ class HistoryDetailPage extends StatelessWidget {
 
   bool showBottomActions() {
     bool canResubmit = _controller.claim.value!.categories!
-        .expand((category) => category.items)
+        .expand((category) => category.items ?? [])
         .toList()
         .where(
           (e) => e.rejectionCount < 2 && e.status != ClaimStatus.approved,
