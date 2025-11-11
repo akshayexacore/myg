@@ -87,14 +87,17 @@ class _FormItemState extends State<FormItem> {
       widget.formData.classId = widget.category.classes!.first.id;
       widget.formData.policyId = widget.category.classes!.first.policy?.id;
     }
-    if (widget.formData.selectedClass != null) {
       print(
-          'grade from draft: ${widget.category.classes!.first.policy?.gradeAmount}');
+          'grade amount is here: ${widget.category.classes!.first.policy?.gradeAmount}');
+    if (widget.formData.selectedClass != null) {
+    
       eligibleAmount(widget.category.classes!.first.policy?.gradeAmount);
       widget.formData.eligibleAmount = eligibleAmount.value;
       max.value = eligibleAmount.value;
       isUpdated.toggle();
     }
+    print(
+          'employeessssss: ${widget.formData.employees}');
     if (widget.formData.employees.isNotEmpty) {
       widget.formData.employees.removeWhere(
         (element) => element.id == Get.find<ProfileController>().user.value.id,
@@ -103,6 +106,8 @@ class _FormItemState extends State<FormItem> {
     }
     isUpdated.listen(
       (p0) {
+        print(
+          'grade amount is here: ${widget.category.classes!.first.policy?.gradeAmount}');
         print('amount: ${widget.formData.selectedClass?.policy?.gradeAmount}');
         if (widget.formData.selectedClass != null &&
             widget.formData.selectedClass?.policy?.gradeAmount != null &&
@@ -112,9 +117,13 @@ class _FormItemState extends State<FormItem> {
           totalKms.value = 0;
           if (widget.category.hasStartMeter??false) {
             double start =
-                double.tryParse(widget.formData.odoMeterStart ?? '0') ?? 0;
+                double.tryParse(widget.formData?.odoMeterStart ?? '0') ?? 0;
             double end =
-                double.tryParse(widget.formData.odoMeterEnd ?? '0') ?? 0;
+                double.tryParse(widget.formData?.odoMeterEnd ?? '0') ?? 0;
+                print('ed: ${widget.formData.odoMeterEnd}');
+                print('edstrt: ${widget.formData.odoMeterStart}');
+                print('edstrt: ${widget.formData.selectedClass!.policy!.gradeAmount!}');
+              
             if (start == 0 && end == 0) {
               return;
             }
@@ -298,6 +307,7 @@ class _FormItemState extends State<FormItem> {
             },
             isEnable: widget.category.hasStartMeter==true ? false : true,
             isObscure: false),
+              
         Obx(() {
           debugPrint(isUpdated.value.toString()); // do not remove
           if (widget.formData.selectedClass != null &&
@@ -589,7 +599,7 @@ class _FormItemState extends State<FormItem> {
 )
       ],
     );
-  }
+  } 
 
   Widget buildClass() {
     return widget.category.hasClass==true
@@ -612,6 +622,7 @@ class _FormItemState extends State<FormItem> {
                   widget.formData.selectedClass = value;
                   widget.formData.classId = value.id;
                   widget.formData.policyId = value.policy?.id;
+                  debugPrint("value.policy?.gradeAmount${value.policy?.gradeAmount}");
                   if (widget.formData.employees.isEmpty) {
                     eligibleAmount(value.policy?.gradeAmount);
                   }

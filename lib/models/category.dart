@@ -253,13 +253,12 @@ class Policy {
   });
 
   Policy.fromJson(Map<String, dynamic> json) {
+    print("calling to json");
     id = json['policy_id'];
     gradeId = json['grade_id'];
     gradeType = json['grade_type'];
     gradeClass = json['grade_class'];
-    gradeAmount = json['grade_amount'] != null
-        ? double.tryParse(json['grade_amount'].toString())
-        : null;
+gradeAmount = json['grade_amount']!=null ? double.tryParse(json['grade_amount'].toString()) : null;
     approver = json['approver'];
     status = json['status'];
   }

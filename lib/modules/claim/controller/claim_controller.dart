@@ -185,17 +185,37 @@ class ClaimController extends GetxController
     }
   }
 
-  void addNewFormItem(Category category) {
-    isFormAddBusy(true);
-    var claim = ClaimFormData();
-    category.items?.add(claim);
-    isFormAddBusy(false);
-    Future.delayed(const Duration(milliseconds: 500)).then(
-      (value) {
-        scrollToWidget(claim);
-      },
+void addNewFormItem(Category category) {
+  isFormAddBusy(true);
+
+  final claim = ClaimFormData();
+
+  if (category.classes != null && category.classes!.isNotEmpty) {
+    // pick the first class with a non-null gradeAmount
+    final validClass = category.classes!.firstWhere(
+      (cls) => (cls.policy?.gradeAmount ?? 0) > 0,
+      orElse: () => category.classes!.first,
     );
+
+    // print('✅ Selected class: ${validClass.s}');
+    print('✅ gradeAmount: ${validClass.policy?.gradeAmount}');
+
+    claim.selectedClass = validClass;
+    claim.classId = validClass.id;
+    claim.policyId = validClass.policy?.id;
+    claim.eligibleAmount = validClass.policy?.gradeAmount ?? 0;
+  } else {
+   
   }
+
+  category.items?.add(claim);
+  isFormAddBusy(false);
+
+  Future.delayed(const Duration(milliseconds: 500)).then((_) {
+    scrollToWidget(claim);
+  });
+}
+
 
   void emitFormUpdate() {
     isFormUpdateBusy(true);
