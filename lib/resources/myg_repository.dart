@@ -154,7 +154,7 @@ class MygRepository {
   }
   Future<ClaimDetailResponse> getDraftDetail(String id) async {
     
-    final response = await _api.post(ApiConstants.draftViewCiam,headers: {},body: {"trip_claim_id":id});
+    final response = await _api.post(ApiConstants.draftViewCiam,headers: {},body: {"trip_claim_id":id},timeout: Duration(seconds: 50));
     return ClaimDetailResponse.fromJson(response);
   }
 

@@ -36,7 +36,7 @@ class ClaimResubmitConfirmationPage extends StatelessWidget {
           ));
         }
 
-        if (_controller.claim.value!.categories!.isEmpty) {
+        if (_controller.claim.value!.categories?.isEmpty == true) {
           return Center(child: ts("Claim details not found!", Colors.black54));
         }
         return SingleChildScrollView(
@@ -67,7 +67,7 @@ class ClaimResubmitConfirmationPage extends StatelessWidget {
                       children: [
                         ts("Date", Colors.white),
                         gapHC(2),
-                        tssb(_controller.claim.value!.date, Colors.white,
+                        tssb(_controller.claim.value?.date, Colors.white,
                             FontWeight.w500),
                       ],
                     ),
@@ -196,7 +196,7 @@ class ClaimResubmitConfirmationPage extends StatelessWidget {
                           decoration: boxBaseDecoration(
                               _controller.claim.value!.status.color, 20),
                           child: Center(
-                              child: tssb(_controller.claim.value!.status.title,
+                              child: tssb(_controller.claim.value?.status.title,
                                   Colors.white, FontWeight.w500)),
                         ),
                         tcustom(
@@ -606,9 +606,7 @@ class ClaimResubmitConfirmationPage extends StatelessWidget {
                                       headTitle(
                                           "Remark",
                                           (_controller
-                                                      .claim
-                                                      .value!
-                                                      .categories![index]
+                                                  .reSubmittedCategories?[index]
                                                       .items?[formIndex]
                                                       .remarks
                                                       ?.isEmpty ??
@@ -633,10 +631,12 @@ class ClaimResubmitConfirmationPage extends StatelessWidget {
                                                       .withOpacity(0.8))),
                                           Expanded(
                                             flex: 5,
-                                            child: (_controller.claim.value!
-    .categories![index]
-    .items?[formIndex]
-    .files?.isNotEmpty ?? false)
+                                            child: (_controller
+                                                            .reSubmittedCategories?[index]
+                                                        .items?[formIndex]
+                                                        .files
+                                                        ?.isNotEmpty ??
+                                                    false)
                                                 ? AttachedFileWidget(
                                                     file: _controller
                                                             .reSubmittedCategories[
@@ -659,7 +659,7 @@ class ClaimResubmitConfirmationPage extends StatelessWidget {
                                       ),
                                       gapHC(10),
                                       headTitle("Amount",
-                                          "${_controller.reSubmittedCategories[index].items?[formIndex].amount!.toStringAsFixed(2)} INR"),
+                                          "${_controller.reSubmittedCategories[index].items?[formIndex].amount?.toStringAsFixed(2)} INR"),
                                       Obx(() {
                                         if (_controller
                                                     .reSubmittedCategories[
@@ -681,16 +681,14 @@ class ClaimResubmitConfirmationPage extends StatelessWidget {
                                                     .items?[formIndex]
                                                     .amount !=
                                                 null) {
-                                          double max = (_controller
-                                                      .claim
-                                                      .value
-                                                      ?.categories?[index]
+                                          double max = ( _controller
+                                                    .reSubmittedCategories[
+                                                        index]
                                                       .items?[formIndex]
                                                       .eligibleAmount ??
                                                   _controller
-                                                      .claim
-                                                      .value!
-                                                      .categories?[index]
+                                                    .reSubmittedCategories[
+                                                        index]
                                                       .items?[formIndex]
                                                       .selectedClass
                                                       ?.policy
@@ -845,7 +843,7 @@ class ClaimResubmitConfirmationPage extends StatelessWidget {
         )
         .toList()
         .isNotEmpty;
-    return (_controller.claim.value!.tripHistoryStatus ==
+    return (_controller.claim.value?.tripHistoryStatus ==
                 ClaimStatus.rejected ||
             _controller.claim.value!.status == ClaimStatus.rejected) &&
         canResubmit;
