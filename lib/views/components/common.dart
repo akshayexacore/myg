@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 // import 'package:url_launcher/url_launcher.dart';
-
 import '../style/colors.dart';
 
 //===========================================================Text Styles
