@@ -10,7 +10,6 @@ import 'package:travel_claim/views/components/app_dialog.dart';
 
 class DraftController extends GetxController with GetSingleTickerProviderStateMixin{
   var isBusy = false.obs;
-
   var items = <DraftListModel>[].obs;
 
   final _mygRepository = MygRepository();
@@ -57,6 +56,7 @@ class DraftController extends GetxController with GetSingleTickerProviderStateMi
       getDrafts(isSilent: true);
     }catch(_){
       print('draft claims delete error: ${_.toString()}');
+      
     }
   }
 }
