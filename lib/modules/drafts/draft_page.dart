@@ -52,9 +52,10 @@ class DraftPage extends StatelessWidget {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  headTitle("Date", AppFormatter.formatDDMMMYYYY(_controller.items[index].createdAt)),
-                                  headTitle("Type of trip", _controller.items[index].tripType.name),
-                                  headTitle("Branch name", _controller.items[index].branch?.map((e)=>e.name).join(',') ?? 'NA'),
+                                  _controller.items[index].isRemider==true?headTitle("Submit before",_controller.items[index].expiryDate.toString()??"",colors:Colors.red):SizedBox.shrink(),
+                                  headTitle("Date",_controller.items[index].date??""),
+                                  headTitle("Type of trip", _controller.items[index].tripTypeDetails?.triptypeName??""),
+                                  headTitle("Branch name", _controller.items[index].visitBranchDetail?.map((e)=>e.branchName).join(',') ?? 'NA'),
                                 ],
                               ),
 
@@ -72,7 +73,9 @@ class DraftPage extends StatelessWidget {
                             ),
                             Positioned.fill(
                               child: Align(    alignment: Alignment.bottomRight,
-                                child: GestureDetector(onTap: ()=>_controller.delete(_controller.items[index]),child: Container(margin: EdgeInsets.only(top: 5),padding: EdgeInsets.all(7),decoration: boxDecoration(Colors.red, 30),child: Icon(Icons.delete,size: 20,color: Colors.white,))),
+                                child: GestureDetector(onTap: ()=>
+                                _controller.delete(_controller.items[index]),
+                                child: Container(margin: EdgeInsets.only(top: 5),padding: EdgeInsets.all(7),decoration: boxDecoration(Colors.red, 30),child: Icon(Icons.delete,size: 20,color: Colors.white,))),
                               ),
                             )
                           ],

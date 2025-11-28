@@ -82,6 +82,7 @@ class MyApp extends StatelessWidget {
           );
         },
         child: GetMaterialApp(
+          
           title: 'myClaim',
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,

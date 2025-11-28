@@ -120,10 +120,10 @@ class ClaimHistory {
   late ClaimStatus financeStatus;
   late String tmgId;
   late String date;
-  late String? finanaceRemarks;
-  late String tripApprovedDate;
-  late String tripRejectedDate;
-  late String financeApprovedDate;
+   String? finanaceRemarks;
+   String? tripApprovedDate;
+   String? tripRejectedDate;
+   String? financeApprovedDate;
   late double totalAmount;
 
   ClaimHistory(
@@ -178,7 +178,7 @@ class ClaimHistory {
     financeApproverDetails = json['finance_approver_details'] != null
         ? new Employee.fromJson(json['finance_approver_details'])
         : null;
-    tripPurpose = json['trip_purpose'] ?? '';
+    tripPurpose = json['trip_purpose']?.toString() ?? '';
     visitBranchDetail =json['visit_branch_detail'] != null
           ? List<Branch>.from(
               json['visit_branch_detail'].map((x) => Branch.fromJson(x)))
@@ -191,6 +191,34 @@ class ClaimHistory {
       });
     }
   }
+@override
+String toString() {
+  return '''
+ClaimHistory {
+  tripClaimId: $tripClaimId,
+  tripPurpose: $tripPurpose,
+  status: $status,
+  tripHistoryStatus: $tripHistoryStatus,
+  approverStatus: $approverStatus,
+  financeStatus: $financeStatus,
+  pendingFrom: $pendingFrom,
+  tripApproverRemarks: $tripApproverRemarks,
+  finanaceRemarks: $finanaceRemarks,
+  tripApprovedDate: $tripApprovedDate,
+  tripRejectedDate: $tripRejectedDate,
+  financeApprovedDate: $financeApprovedDate,
+  tmgId: $tmgId,
+  date: $date,
+  totalAmount: $totalAmount,
+  tripTypeDetails: ${tripTypeDetails?.toJson()},
+  approverDetails: ${approverDetails?.toJson()},
+  userDetails: ${userDetails?.toJson()},
+  financeApproverDetails: ${financeApproverDetails?.toJson()},
+  visitBranchDetail: ${visitBranchDetail?.map((b) => b.toJson()).toList()},
+  categories: ${categories?.map((c) => c.toJson()).toList()}
+}
+''';
+}
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
