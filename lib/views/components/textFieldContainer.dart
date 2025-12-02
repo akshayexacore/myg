@@ -7,7 +7,6 @@ class TextFieldContainer extends StatelessWidget {
   final double? txtRadius;
   final String? labelName;
   final String? labelYn;
-
   const TextFieldContainer({
     Key? key,
     this.child,

@@ -4,8 +4,8 @@ import 'package:travel_claim/models/claim_history.dart';
 import 'package:travel_claim/resources/myg_repository.dart';
 import 'package:travel_claim/utils/app_enums.dart';
 
-
-class SpecialApprovalListController extends GetxController with GetSingleTickerProviderStateMixin{
+class SpecialApprovalListController extends GetxController
+    with GetSingleTickerProviderStateMixin {
   var isBusy = false.obs;
 
   var allItems = <ClaimHistory>[].obs;
@@ -16,7 +16,7 @@ class SpecialApprovalListController extends GetxController with GetSingleTickerP
   final _repository = MygRepository();
   RxInt selectedPage = 0.obs;
   RxString lstrSelectedPage = "Al".obs;
-     late PageController pageController;
+  late PageController pageController;
   @override
   void onInit() {
     getApprovalList();
@@ -26,7 +26,7 @@ class SpecialApprovalListController extends GetxController with GetSingleTickerP
 
   getApprovalList({bool isSilent = false}) async {
     try {
-      if(!isSilent) {
+      if (!isSilent) {
         isBusy(true);
       }
       allItems.clear();
@@ -35,8 +35,8 @@ class SpecialApprovalListController extends GetxController with GetSingleTickerP
       rejectedItems.clear();
       paidItems.clear();
       var response = await _repository.getClaimsForSpecialApproval();
-        allItems(response.claims);
-               for (var item in response.claims) {
+      allItems(response.claims);
+      for (var item in response.claims) {
         switch (item.approverStatus) {
           case ClaimStatus.pending:
             pendingItems.add(item);
@@ -52,20 +52,21 @@ class SpecialApprovalListController extends GetxController with GetSingleTickerP
           case ClaimStatus.resubmitted:
             break;
           case ClaimStatus.settled:
-           paidItems.add(item);
-          break;
-            // TODO: Handle this case.
-        } 
+            paidItems.add(item);
+            break;
+          // TODO: Handle this case.
+        }
       }
     } catch (_) {
       print('special approval claims get error: ${_.toString()}');
     } finally {
-      if(!isSilent) {
+      if (!isSilent) {
         isBusy(false);
       }
     }
   }
-      fnChangePage(int pageNum) {
+
+  fnChangePage(int pageNum) {
     selectedPage.value = pageNum;
     pageController.animateToPage(
       pageNum,

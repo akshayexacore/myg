@@ -112,7 +112,7 @@ class ApiBaseHelper {
   String url, {
   Map<String, dynamic> body = const {},
   Map<String, String>? headers,
-  Duration timeout = const Duration(seconds: 30),   // 👈 default timeout
+  Duration timeout = const Duration(seconds: 40),   // 👈 default timeout
 }) async {
   dynamic responseJson;
   try {

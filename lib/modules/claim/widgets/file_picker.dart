@@ -169,8 +169,8 @@ class _FilePickerState extends State<FilePicker> {
                               //     height: 70,
                               //   )
                               CachedNetworkImage(
-                                  imageUrl:
-                                     getFullImageUrl( widget.selectedFiles[index]),
+                                  imageUrl: getFullImageUrl(
+                                      widget.selectedFiles[index]),
                                   height: 70,
                                   placeholder: (context, url) => const Center(
                                     child: CircularProgressIndicator(
@@ -183,7 +183,6 @@ class _FilePickerState extends State<FilePicker> {
                                   AppAssets.file,
                                   height: 70,
                                 ),
-                               
                           gapWC(10),
                           Expanded(
                               child: ts(

@@ -1,9 +1,6 @@
-import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:travel_claim/modules/claim_approval/controllers/claim_approval_list_controller.dart';
-import 'package:travel_claim/modules/claim_approval/widgets/claim_approval_card.dart';
 import 'package:travel_claim/modules/special_approval/controllers/special_approval_list_controller.dart';
 import 'package:travel_claim/modules/special_approval/widgets/special_approval_card.dart';
 import 'package:travel_claim/views/components/bg.dart';
@@ -13,11 +10,8 @@ import 'package:travel_claim/views/style/colors.dart';
 
 class SpecialApprovalListPage extends StatelessWidget {
   SpecialApprovalListPage({Key? key}) : super(key: key);
-
   static const routeName = '/special_approval_list';
-
   final _controller = Get.find<SpecialApprovalListController>();
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

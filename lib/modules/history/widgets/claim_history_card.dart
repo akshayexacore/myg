@@ -14,20 +14,21 @@ class ClaimHistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Bounce(
-      onTap: (){
+      onTap: () {
         Get.toNamed(
-  HistoryDetailPage.routeName,
-  arguments: {
-    'claim': claim,
-    'id': claim.tripClaimId, // or any other ID you want
-  },
-);
+          HistoryDetailPage.routeName,
+          arguments: {
+            'claim': claim,
+            'id': claim.tripClaimId, // or any other ID you want
+          },
+        );
       },
       duration: const Duration(milliseconds: 110),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
-        margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
-        decoration: boxOutlineShadowCustom(Colors.white, 10, Colors.grey.shade400),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        decoration:
+            boxOutlineShadowCustom(Colors.white, 10, Colors.grey.shade400),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -37,24 +38,34 @@ class ClaimHistoryCard extends StatelessWidget {
               children: [
                 ts("Trip ID", Colors.black),
                 gapHC(2),
-                tssb("#${claim.tmgId}", Colors.black,FontWeight.w500),
+                tssb("#${claim.tmgId}", Colors.black, FontWeight.w500),
                 gapHC(5),
                 Row(
                   children: [
-                    Container(     height: 26,
+                    Container(
+                      height: 26,
                       width: 90,
 
                       //   padding: EdgeInsets.symmetric(vertical: 2,horizontal: 20),
                       decoration: boxDecoration(claim.status.color, 20),
-                      child: Center(child: tssb(claim.status.title, Colors.white, FontWeight.w500)),
+                      child: Center(
+                          child: tssb(claim.status.title, Colors.white,
+                              FontWeight.w500)),
                     ),
-                    if(claim.status == ClaimStatus.pending)
-                      SizedBox(width: 7,),
-                    if(claim.status == ClaimStatus.pending)
-                      Text(claim.pendingFrom,style: TextStyle(color: const Color(0xff333333).withOpacity(0.8),fontSize: 12,fontWeight: FontWeight.w400),)
+                    if (claim.status == ClaimStatus.pending)
+                      SizedBox(
+                        width: 7,
+                      ),
+                    if (claim.status == ClaimStatus.pending)
+                      Text(
+                        claim.pendingFrom,
+                        style: TextStyle(
+                            color: const Color(0xff333333).withOpacity(0.8),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
+                      )
                   ],
                 )
-
               ],
             ),
             Column(
@@ -63,10 +74,10 @@ class ClaimHistoryCard extends StatelessWidget {
               children: [
                 ts("Date", Colors.black),
                 gapHC(2),
-                tssb(claim.date, Colors.black,FontWeight.w500),
+                tssb(claim.date, Colors.black, FontWeight.w500),
                 gapHC(5),
-                tcustom("\u{20B9}${claim.totalAmount}", primaryColor, 18.0, FontWeight.w500),
-
+                tcustom("\u{20B9}${claim.totalAmount}", primaryColor, 18.0,
+                    FontWeight.w500),
               ],
             ),
           ],

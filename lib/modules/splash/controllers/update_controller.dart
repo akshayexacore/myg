@@ -8,15 +8,13 @@ import 'package:url_launcher/url_launcher.dart';
 class UpdateController extends GetxController {
   Future<void> checkVersion() async {
     final newVersion = NewVersionPlus(
-      androidId: 'com.myg.travel_claim', 
-      iOSId: '1562152755',           // <-- your real iOS App Store ID
+      androidId: 'com.myg.travel_claim',
+      iOSId: '1562152755', // <-- your real iOS App Store ID
     );
 
     final status = await newVersion.getVersionStatus();
 // _showUpdateDialog(status);
 
-
-    
     if (status != null && status.canUpdate) {
       _showUpdateDialog(status);
     }
@@ -48,56 +46,56 @@ class UpdateController extends GetxController {
   //   );
   // }
 
+  Future<bool> _showUpdateDialog(VersionStatus? status) async {
+    bool? result = await Get.dialog<bool>(
+      AlertDialog(
+        title: Text("Update Available - v${status?.storeVersion}"),
+        content: Text(status?.releaseNotes ?? 'No release notes available.'),
+        actions: [
+          Row(
+            children: [
+              Expanded(
+                child: Custombutton(
+                    onTap: () => Get.back(result: true),
+                    buttonName: "Later",
+                    buttonColor: Colors.white,
+                    buttonBorderColor: Colors.grey.shade400,
+                    buttonTextColor: primaryColor),
+                // TextButton(
+                //   onPressed: () => Get.back(result: true),
+                //   child: const Text("Discard"),
+                // ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Custombutton(
+                    onTap: () async {
+                      final url = status?.appStoreLink;
+                      if (await canLaunchUrl(Uri.parse(url ?? ""))) {
+                        await launchUrl(Uri.parse(url ?? ""),
+                            mode: LaunchMode.externalApplication);
+                      } else {
+                        Get.snackbar('Error', 'Could not launch update URL');
+                      }
+                    },
+                    buttonName: "Update",
+                    buttonColor: primaryColor,
+                    buttonTextColor: Colors.white),
+              )
+            ],
+          ),
 
-    Future<bool> _showUpdateDialog(VersionStatus? status) async {
-  bool? result = await Get.dialog<bool>(
-    AlertDialog(
-      title:  Text( "Update Available - v${status?.storeVersion}"),
-      content:  Text(status?.releaseNotes ?? 'No release notes available.'),
-      actions: [
-        Row(
-          children: [
-            Expanded(
-              child:  Custombutton(
-                              onTap:  () => Get.back(result: true),
-                              buttonName: "Later",
-                              buttonColor: Colors.white,
-                              buttonBorderColor: Colors.grey.shade400,
-                              buttonTextColor: primaryColor),
-              // TextButton(
-              //   onPressed: () => Get.back(result: true),
-              //   child: const Text("Discard"),
-              // ),
-            ),
-            SizedBox(width: 10,),
+          // AppButton(
+          //   onPressed:,
+          //   child: const Text("Save"),
+          // ),
+        ],
+      ),
+      barrierDismissible: false,
+    );
 
-               Expanded(
-                 child: Custombutton(
-                           
-                                onTap: ()async {
-                                    final url = status?.appStoreLink;
-        if (await canLaunchUrl(Uri.parse(url??""))) {
-          await launchUrl(Uri.parse(url??""), mode: LaunchMode.externalApplication);
-        } else {
-          Get.snackbar('Error', 'Could not launch update URL');
-        }
-                                },
-                                buttonName: "Update",
-                                buttonColor: primaryColor,
-                                buttonTextColor: Colors.white),
-               )
-          ],
-        ),
-     
-        // AppButton(
-        //   onPressed:,
-        //   child: const Text("Save"),
-        // ),
-      ],
-    ),
-    barrierDismissible: false,
-  );
-
-  return result ?? false;
-}
+    return result ?? false;
+  }
 }

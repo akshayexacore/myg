@@ -27,7 +27,7 @@ class AddExpenseScreen extends StatefulWidget {
 
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
   final Addexpensecontroller addexpensecontroller =
-  Get.put(Addexpensecontroller());
+      Get.put(Addexpensecontroller());
 
   File? filee;
   // final FocusNode remark_focusNode = FocusNode();
@@ -140,43 +140,43 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         gapHC(3),
 
                         Obx(() => Container(
-                          height: 45,
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: boxOutlineCustom(
-                              Colors.white, 10, Colors.grey.shade400),
-                          child: DropdownButton(
-                            focusColor: Colors.white,
-                            dropdownColor: Colors.white,
-                            underline: const SizedBox(),
-                            borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                            // Initial Value
-                            value: addexpensecontroller.lstrTypeofTrip.value
-                                .toString(),
-                            isExpanded: true,
-                            // Down Arrow Icon
-                            icon: const Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                size: 13),
+                              height: 45,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: boxOutlineCustom(
+                                  Colors.white, 10, Colors.grey.shade400),
+                              child: DropdownButton(
+                                focusColor: Colors.white,
+                                dropdownColor: Colors.white,
+                                underline: const SizedBox(),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                                // Initial Value
+                                value: addexpensecontroller.lstrTypeofTrip.value
+                                    .toString(),
+                                isExpanded: true,
+                                // Down Arrow Icon
+                                icon: const Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    size: 13),
 
-                            // Array list of items
-                            items: addexpensecontroller.typeOfTripList
-                                .map((items) {
-                              return DropdownMenuItem(
-                                value: items["TripTypeName"],
-                                child: ts(
-                                  items["TripTypeName"],
-                                  Colors.black,
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (dynamic value) {
-                              addexpensecontroller.fnOnChnageTrip(
-                                  value, "Trip");
-                            },
-                          ),
-                        )),
+                                // Array list of items
+                                items: addexpensecontroller.typeOfTripList
+                                    .map((items) {
+                                  return DropdownMenuItem(
+                                    value: items["TripTypeName"],
+                                    child: ts(
+                                      items["TripTypeName"],
+                                      Colors.black,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (dynamic value) {
+                                  addexpensecontroller.fnOnChnageTrip(
+                                      value, "Trip");
+                                },
+                              ),
+                            )),
                         // GestureDetector(
                         //   onTap: (){
                         //     print("33333333333333");
@@ -199,44 +199,44 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         ts("Branch name", Colors.black),
                         gapHC(3),
                         Obx(() => Container(
-                          height: 45,
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: boxOutlineCustom(
-                              Colors.white, 10, Colors.grey.shade400),
-                          child: DropdownButton(
-                            focusColor: Colors.white,
-                            dropdownColor: Colors.white,
-                            underline: const SizedBox(),
-                            borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                            // Initial Value
-                            hint: ts("Branch", Colors.grey.shade400),
-                            value: addexpensecontroller.lstrbranchName.value
-                                .toString(),
-                            isExpanded: true,
-                            // Down Arrow Icon
-                            icon: const Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                size: 13),
+                              height: 45,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: boxOutlineCustom(
+                                  Colors.white, 10, Colors.grey.shade400),
+                              child: DropdownButton(
+                                focusColor: Colors.white,
+                                dropdownColor: Colors.white,
+                                underline: const SizedBox(),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                                // Initial Value
+                                hint: ts("Branch", Colors.grey.shade400),
+                                value: addexpensecontroller.lstrbranchName.value
+                                    .toString(),
+                                isExpanded: true,
+                                // Down Arrow Icon
+                                icon: const Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    size: 13),
 
-                            // Array list of items
-                            items: addexpensecontroller.branchList.value
-                                .map((items) {
-                              return DropdownMenuItem(
-                                value: items["BranchName"].toString(),
-                                child: ts(
-                                  items["BranchName"].toString(),
-                                  Colors.black,
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (dynamic value) {
-                              addexpensecontroller.fnOnChnageTrip(
-                                  value, "Branch");
-                            },
-                          ),
-                        )),
+                                // Array list of items
+                                items: addexpensecontroller.branchList.value
+                                    .map((items) {
+                                  return DropdownMenuItem(
+                                    value: items["BranchName"].toString(),
+                                    child: ts(
+                                      items["BranchName"].toString(),
+                                      Colors.black,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (dynamic value) {
+                                  addexpensecontroller.fnOnChnageTrip(
+                                      value, "Branch");
+                                },
+                              ),
+                            )),
                         gapHC(15),
                         ts("Purpose of trip", Colors.black),
                         gapHC(3),
@@ -267,102 +267,104 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                               gapHC(12),
                               GetBuilder<Addexpensecontroller>(
                                   builder: (controller) {
-                                    return GridView.builder(
-                                        padding: EdgeInsets.zero,
-                                        gridDelegate:
+                                return GridView.builder(
+                                    padding: EdgeInsets.zero,
+                                    gridDelegate:
                                         const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2, // 2 columns
-                                          crossAxisSpacing: 10.0,
-                                          mainAxisSpacing: 10.0,
-                                          childAspectRatio: 7.7 / 2,
-                                        ),
-                                        shrinkWrap: true,
-                                        physics: const ScrollPhysics(),
-                                        itemCount:
+                                      crossAxisCount: 2, // 2 columns
+                                      crossAxisSpacing: 10.0,
+                                      mainAxisSpacing: 10.0,
+                                      childAspectRatio: 7.7 / 2,
+                                    ),
+                                    shrinkWrap: true,
+                                    physics: const ScrollPhysics(),
+                                    itemCount:
                                         controller.expenseCategory.value.length,
-                                        itemBuilder: (context, index) {
-                                          var image = controller.expenseCategory
-                                              .value[index]["ImageUrl"]
-                                              .toString();
-                                          bool isCheck = controller.expenseCategory
-                                              .value[index]["Oncheck"];
+                                    itemBuilder: (context, index) {
+                                      var image = controller.expenseCategory
+                                          .value[index]["ImageUrl"]
+                                          .toString();
+                                      bool isCheck = controller.expenseCategory
+                                          .value[index]["Oncheck"];
 
-                                          var title = controller.expenseCategory
-                                              .value[index]["CategoryName"]
-                                              .toString();
-                                          return GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                controller.expenseCategory
+                                      var title = controller.expenseCategory
+                                          .value[index]["CategoryName"]
+                                          .toString();
+                                      return GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            controller.expenseCategory
                                                     .value[index]["Oncheck"] =
                                                 !controller.expenseCategory
                                                     .value[index]["Oncheck"];
-                                              });
+                                          });
 
-                                              if (controller.expenseCategory.value[index]["Oncheck"] == true) {
-                                                var selectedList = controller
-                                                    .expenseCategory.value
-                                                    .where((element) =>
-                                                element["Oncheck"] == true)
-                                                    .toList();
-                                                dprint(
-                                                    "selectedList>> ${selectedList}");
-                                                controller.selectedCtegory.value =
-                                                    selectedList;
-                                              }
-                                              // if (controller.selectedCtegory
-                                              //         .value[index]["Expand"] ==
-                                              //     true) {
-                                              //   controller.selectedCtegory
-                                              //       .value[index]["Expand"] = false;
-                                              // }
-                                            },
-                                            child: Container(
-                                              height: 44,
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 5, vertical: 4),
-                                              decoration: boxBaseDecoration(
-                                                  Colors.white, 6),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SizedBox(
-                                                    height: 24.0,
-                                                    width: 24.0,
-                                                    child: Checkbox(
-                                                      activeColor: Colors.green,
-                                                      value: controller
-                                                          .expenseCategory
-                                                          .value[index]["Oncheck"],
-                                                      hoverColor: Colors.black,
-                                                      focusColor: Colors.black,
-                                                      onChanged: (bool? value) {
-                                                        // controller.fnCheckCategory(
-                                                        //     index, value ?? false);
-                                                      },
-                                                    ),
-                                                  ),
-                                                  gapWC(6),
-                                                  Image.network(
-                                                    image,
-                                                    height: 18,
-                                                    width: 18,
-                                                  ),
-                                                  gapWC(4),
-                                                  Expanded(
-                                                      child: tchcus(
-                                                          title, Colors.black, 12.0,
-                                                          height: 0.99)),
-                                                  gapWC(10),
-                                                ],
+                                          if (controller.expenseCategory
+                                                  .value[index]["Oncheck"] ==
+                                              true) {
+                                            var selectedList = controller
+                                                .expenseCategory.value
+                                                .where((element) =>
+                                                    element["Oncheck"] == true)
+                                                .toList();
+                                            dprint(
+                                                "selectedList>> ${selectedList}");
+                                            controller.selectedCtegory.value =
+                                                selectedList;
+                                          }
+                                          // if (controller.selectedCtegory
+                                          //         .value[index]["Expand"] ==
+                                          //     true) {
+                                          //   controller.selectedCtegory
+                                          //       .value[index]["Expand"] = false;
+                                          // }
+                                        },
+                                        child: Container(
+                                          height: 44,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5, vertical: 4),
+                                          decoration: boxBaseDecoration(
+                                              Colors.white, 6),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              SizedBox(
+                                                height: 24.0,
+                                                width: 24.0,
+                                                child: Checkbox(
+                                                  activeColor: Colors.green,
+                                                  value: controller
+                                                      .expenseCategory
+                                                      .value[index]["Oncheck"],
+                                                  hoverColor: Colors.black,
+                                                  focusColor: Colors.black,
+                                                  onChanged: (bool? value) {
+                                                    // controller.fnCheckCategory(
+                                                    //     index, value ?? false);
+                                                  },
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        });
-                                  })
+                                              gapWC(6),
+                                              Image.network(
+                                                image,
+                                                height: 18,
+                                                width: 18,
+                                              ),
+                                              gapWC(4),
+                                              Expanded(
+                                                  child: tchcus(
+                                                      title, Colors.black, 12.0,
+                                                      height: 0.99)),
+                                              gapWC(10),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    });
+                              })
                             ],
                           ),
-                        ),//Category
+                        ), //Category
 
                         gapHC(10),
                         ListView.builder(
@@ -375,112 +377,118 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                               dprint(
                                   "SELECETD CATEGORYLIST >>>>>> ::: ${addexpensecontroller.selectedCtegory}");
                               var name = addexpensecontroller.selectedCtegory
-                                  .value[index]["CategoryName"] ==
-                                  "Air"
+                                          .value[index]["CategoryName"] ==
+                                      "Air"
                                   ? "Flight"
                                   : addexpensecontroller.selectedCtegory
-                                  .value[index]["CategoryName"];
-                              var catId = addexpensecontroller.selectedCtegory.value[index]["CategoryID"];
-                              var isTripFrom = addexpensecontroller.selectedCtegory.value[index]["TripFrom"];
-                              var isTripTo= addexpensecontroller.selectedCtegory.value[index]["TripTo"];
-                              var isFromDate= addexpensecontroller.selectedCtegory.value[index]["FromDate"];
-                              var isToDate= addexpensecontroller.selectedCtegory.value[index]["ToDate"];
-                              var isDocumentDate= addexpensecontroller.selectedCtegory.value[index]["DocumentDate"];
-                              var isStartMeter= addexpensecontroller.selectedCtegory.value[index]["StartMeter"];
-                              var isEndMeter= addexpensecontroller.selectedCtegory.value[index]["EndMeter"];
-                              var ImageUrl= addexpensecontroller.selectedCtegory.value[index]["ImageUrl"];
+                                      .value[index]["CategoryName"];
+                              var catId = addexpensecontroller
+                                  .selectedCtegory.value[index]["CategoryID"];
+                              var isTripFrom = addexpensecontroller
+                                  .selectedCtegory.value[index]["TripFrom"];
+                              var isTripTo = addexpensecontroller
+                                  .selectedCtegory.value[index]["TripTo"];
+                              var isFromDate = addexpensecontroller
+                                  .selectedCtegory.value[index]["FromDate"];
+                              var isToDate = addexpensecontroller
+                                  .selectedCtegory.value[index]["ToDate"];
+                              var isDocumentDate = addexpensecontroller
+                                  .selectedCtegory.value[index]["DocumentDate"];
+                              var isStartMeter = addexpensecontroller
+                                  .selectedCtegory.value[index]["StartMeter"];
+                              var isEndMeter = addexpensecontroller
+                                  .selectedCtegory.value[index]["EndMeter"];
+                              var ImageUrl = addexpensecontroller
+                                  .selectedCtegory.value[index]["ImageUrl"];
 
-                              return Obx(()=>Column(
-                                children: [
-                                  Bounce(
-                                      onTap: (){
-                                        setState(() {
-                                          addexpensecontroller.selectedCtegory
-                                              .value[index]["Expand"] =
-                                          !addexpensecontroller
-                                              .selectedCtegory
-                                              .value[index]["Expand"];
-                                        });
-                                        dprint("sdcsdcsfcgrge>>> ${ addexpensecontroller.selectedCtegory
-                                            .value[index]["Expand"]}");
-                                      },
-                                      child:addexpensecontroller
-                                          .selectedCtegory.value[index]["Oncheck"]? Padding(
-                                        padding:
-                                        const EdgeInsets.symmetric(
-                                            vertical: 5),
-                                        child: expansionTile(
-                                            addexpensecontroller
-                                                .selectedCtegory
-                                                .value[index]
-                                            ["ImageUrl"]!,
-                                            addexpensecontroller
-                                                .selectedCtegory
-                                                .value[index]
-                                            ["CategoryName"]),
-                                      )
-                                          :SizedBox()),
-                                  addexpensecontroller.selectedCtegory
-                                      .value[index]["Expand"]
-                                      ? Column(
+                              return Obx(() => Column(
                                     children: [
-                                      //
-                                      // for(int i = 0 ; i < addexpensecontroller.selectedCtegory[index]["addmore"] ; i++)
-                                      insideScreen(name),
-
                                       Bounce(
-                                        onTap: () {
-                                          dprint(
-                                              "Adddmoooooooooooooer>>  ${addexpensecontroller.selectedCtegory[index]["addmore"]++}");
-                                          addexpensecontroller
-                                              .addmoreList.value
-                                              .add(addexpensecontroller
-                                              .selectedCtegory
-                                              .value[index]);
-                                          dprint(
-                                              "!!!!>> > > > >> ${addexpensecontroller.addmoreList.value}");
-                                        },
-                                        child: Container(
-                                          decoration: boxOutlineCustom(
-                                              Colors.white,
-                                              10.0,
-                                              primaryColor),
-                                          padding: const EdgeInsets
-                                              .symmetric(
-                                              vertical: 9,
-                                              horizontal: 20),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment
-                                                .center,
-                                            children: [
-                                              tssb(
-                                                  "Add more",
-                                                  Colors.black,
-                                                  FontWeight.w500),
-                                              gapWC(2),
-                                              const Icon(
-                                                Icons.add,
-                                                color: Colors.black,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      gapHC(10)
+                                          onTap: () {
+                                            setState(() {
+                                              addexpensecontroller
+                                                      .selectedCtegory
+                                                      .value[index]["Expand"] =
+                                                  !addexpensecontroller
+                                                      .selectedCtegory
+                                                      .value[index]["Expand"];
+                                            });
+                                            dprint(
+                                                "sdcsdcsfcgrge>>> ${addexpensecontroller.selectedCtegory.value[index]["Expand"]}");
+                                          },
+                                          child: addexpensecontroller
+                                                  .selectedCtegory
+                                                  .value[index]["Oncheck"]
+                                              ? Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 5),
+                                                  child: expansionTile(
+                                                      addexpensecontroller
+                                                              .selectedCtegory
+                                                              .value[index]
+                                                          ["ImageUrl"]!,
+                                                      addexpensecontroller
+                                                              .selectedCtegory
+                                                              .value[index]
+                                                          ["CategoryName"]),
+                                                )
+                                              : SizedBox()),
+                                      addexpensecontroller.selectedCtegory
+                                              .value[index]["Expand"]
+                                          ? Column(
+                                              children: [
+                                                //
+                                                // for(int i = 0 ; i < addexpensecontroller.selectedCtegory[index]["addmore"] ; i++)
+                                                insideScreen(name),
+
+                                                Bounce(
+                                                  onTap: () {
+                                                    dprint(
+                                                        "Adddmoooooooooooooer>>  ${addexpensecontroller.selectedCtegory[index]["addmore"]++}");
+                                                    addexpensecontroller
+                                                        .addmoreList.value
+                                                        .add(
+                                                            addexpensecontroller
+                                                                .selectedCtegory
+                                                                .value[index]);
+                                                    dprint(
+                                                        "!!!!>> > > > >> ${addexpensecontroller.addmoreList.value}");
+                                                  },
+                                                  child: Container(
+                                                    decoration:
+                                                        boxOutlineCustom(
+                                                            Colors.white,
+                                                            10.0,
+                                                            primaryColor),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 9,
+                                                        horizontal: 20),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        tssb(
+                                                            "Add more",
+                                                            Colors.black,
+                                                            FontWeight.w500),
+                                                        gapWC(2),
+                                                        const Icon(
+                                                          Icons.add,
+                                                          color: Colors.black,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                gapHC(10)
+                                              ],
+                                            )
+                                          : const SizedBox(),
                                     ],
-                                  )
-                                      : const SizedBox(),
-                                ],
-                              ));
-
-
-
-
-
-
+                                  ));
                             }),
-
 
                         gapHC(10),
 
@@ -520,7 +528,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           ),
           bottomNavigationBar: Container(
             padding:
-            const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 20),
+                const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 20),
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
@@ -633,16 +641,13 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 height: 45,
                 width: size.width * 0.4,
                 decoration:
-                boxOutlineCustom(Colors.white, 10, Colors.grey.shade400),
+                    boxOutlineCustom(Colors.white, 10, Colors.grey.shade400),
                 child: Center(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      ts(
-                          setDate(
-                              6,
-                              addexpensecontroller.checkInDate.value),
+                      ts(setDate(6, addexpensecontroller.checkInDate.value),
                           Colors.black),
                       const Icon(
                         Icons.calendar_month,
@@ -668,7 +673,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 height: 45,
                 width: size.width * 0.4,
                 decoration:
-                boxOutlineCustom(Colors.white, 10, Colors.grey.shade400),
+                    boxOutlineCustom(Colors.white, 10, Colors.grey.shade400),
                 child: Center(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -1334,94 +1339,92 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   //   return rtnList;
   // }
 
-
   Widget insideScreen(name) {
     Size size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         gapHC(20),
-        ts("1.${name} details", primaryColor,
-            weight: FontWeight.w500),
+        ts("1.${name} details", primaryColor, weight: FontWeight.w500),
         const Divider(),
         gapHC(10),
         name == "Lodging" ||
-            name == "Food" ||
-            name == "Fuel" ||
-            name == "Entertainment"
+                name == "Food" ||
+                name == "Fuel" ||
+                name == "Entertainment"
             ? const SizedBox()
             : Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ts("From", Colors.black),
-            gapHC(3),
-            const TextinputfieldContainer(
-                showIcon: false,
-                verticalPadding: 6,
-                maxline: 1,
-                textInputAction: TextInputAction.done,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ts("From", Colors.black),
+                  gapHC(3),
+                  const TextinputfieldContainer(
+                      showIcon: false,
+                      verticalPadding: 6,
+                      maxline: 1,
+                      textInputAction: TextInputAction.done,
 
-                // focusNode: fromfocusNode,
-                // onSubmitted:  (){
-                //   fromfocusNode.unfocus();
-                // } ,
-                hintText: "From",
-                isEnable: true,
-                isObscure: false),
-            gapHC(10),
-            ts("To", Colors.black),
-            gapHC(3),
-            const TextinputfieldContainer(
-                showIcon: false,
-                verticalPadding: 6,
-                maxline: 1,
-                textInputAction: TextInputAction.done,
+                      // focusNode: fromfocusNode,
+                      // onSubmitted:  (){
+                      //   fromfocusNode.unfocus();
+                      // } ,
+                      hintText: "From",
+                      isEnable: true,
+                      isObscure: false),
+                  gapHC(10),
+                  ts("To", Colors.black),
+                  gapHC(3),
+                  const TextinputfieldContainer(
+                      showIcon: false,
+                      verticalPadding: 6,
+                      maxline: 1,
+                      textInputAction: TextInputAction.done,
 
-                // focusNode: to_focusNode,
-                // onSubmitted:  (){
-                //   to_focusNode.unfocus();
-                // } ,
-                hintText: "To",
-                isEnable: true,
-                isObscure: false),
-          ],
-        ),
+                      // focusNode: to_focusNode,
+                      // onSubmitted:  (){
+                      //   to_focusNode.unfocus();
+                      // } ,
+                      hintText: "To",
+                      isEnable: true,
+                      isObscure: false),
+                ],
+              ),
         name == "Fuel" ? odooMeterReading(size) : const SizedBox(),
         gapHC(10),
         name == "Lodging"
             ? checkinOut(size)
             : Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ts("Date", Colors.black),
-            gapHC(3),
-            GestureDetector(
-              onTap: () {
-                addexpensecontroller.wSelectFromDate(context);
-              },
-              child: Container(
-                height: 45,
-                width: size.width * 0.4,
-                decoration: boxOutlineCustom(
-                    Colors.white, 10, Colors.grey.shade400),
-                child: Center(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ts(setDate(6, addexpensecontroller.fromDate.value),
-                          Colors.black),
-                      const Icon(
-                        Icons.calendar_month,
-                        color: primaryColor,
-                      )
-                    ],
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ts("Date", Colors.black),
+                  gapHC(3),
+                  GestureDetector(
+                    onTap: () {
+                      addexpensecontroller.wSelectFromDate(context);
+                    },
+                    child: Container(
+                      height: 45,
+                      width: size.width * 0.4,
+                      decoration: boxOutlineCustom(
+                          Colors.white, 10, Colors.grey.shade400),
+                      child: Center(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ts(setDate(6, addexpensecontroller.fromDate.value),
+                                Colors.black),
+                            const Icon(
+                              Icons.calendar_month,
+                              color: primaryColor,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ),
-          ],
-        ),
         gapHC(10),
         tcustom("Number of employee", Colors.black, 14.0, FontWeight.w500),
         gapHC(3),
@@ -1440,9 +1443,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 decoration: boxBaseDecorationC(primaryColor, 10, 0.0, 10, 0.0),
                 child: const Center(
                     child: Icon(
-                      Icons.remove,
-                      color: Colors.white,
-                    )),
+                  Icons.remove,
+                  color: Colors.white,
+                )),
               ),
             ),
             gapWC(8),
@@ -1460,7 +1463,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
                   decoration: InputDecoration(
                     contentPadding:
-                    const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
                     //focusColor:Colors.grey.shade100 ,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(1.0),
@@ -1493,9 +1496,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 decoration: boxBaseDecorationC(primaryColor, 0, 10.0, 0, 10.0),
                 child: const Center(
                     child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    )),
+                  Icons.add,
+                  color: Colors.white,
+                )),
               ),
             ),
           ],
@@ -1503,180 +1506,180 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         gapHC(10),
         name == "Flight" || addexpensecontroller.selectedChips.isNotEmpty
             ? Obx(
-              () => Column(
-            children: [
-              TextinputfieldContainer(
-                  showIcon: false,
-                  verticalPadding: 6,
-                  maxline: 1,
-                  textInputAction: TextInputAction.done,
-                  hintText: "",
-                  controller: addexpensecontroller.txtSuggestionEmpCode,
-                  isEnable: true,
-                  isObscure: false,
-                  onchange: (value) {
-                    addexpensecontroller.fnOnChnageSuggestionValue(value);
-                  }),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                ),
-                decoration: boxOutlineCustom(
-                    Colors.white, 10, Colors.grey.shade400),
-                child: Wrap(
-                  spacing: 9.0,
-                  runSpacing: -7,
-                  children: addexpensecontroller.selectedChips.value
-                      .map((chip) {
-                    return Chip(
-                      //materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      padding: EdgeInsets.zero,
-                      backgroundColor: primaryColor,
-                      deleteIconColor: Colors.white,
-
-                      side: const BorderSide(color: Colors.white),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30)),
-                      label: Text(
-                        chip,
-                        style: const TextStyle(color: Colors.white),
+                () => Column(
+                  children: [
+                    TextinputfieldContainer(
+                        showIcon: false,
+                        verticalPadding: 6,
+                        maxline: 1,
+                        textInputAction: TextInputAction.done,
+                        hintText: "",
+                        controller: addexpensecontroller.txtSuggestionEmpCode,
+                        isEnable: true,
+                        isObscure: false,
+                        onchange: (value) {
+                          addexpensecontroller.fnOnChnageSuggestionValue(value);
+                        }),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
                       ),
-                      onDeleted: () =>
-                          addexpensecontroller.deleteChip(chip),
-                    );
-                  }).toList(),
+                      decoration: boxOutlineCustom(
+                          Colors.white, 10, Colors.grey.shade400),
+                      child: Wrap(
+                        spacing: 9.0,
+                        runSpacing: -7,
+                        children: addexpensecontroller.selectedChips.value
+                            .map((chip) {
+                          return Chip(
+                            //materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            padding: EdgeInsets.zero,
+                            backgroundColor: primaryColor,
+                            deleteIconColor: Colors.white,
+
+                            side: const BorderSide(color: Colors.white),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                            label: Text(
+                              chip,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            onDeleted: () =>
+                                addexpensecontroller.deleteChip(chip),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        )
+              )
             : const SizedBox(),
         name == "Train"
             ? Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ts("Class", Colors.black),
-            gapHC(3),
-            Obx(() => Container(
-              height: 45,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: boxOutlineCustom(
-                  Colors.white, 10, Colors.grey.shade400),
-              child: DropdownButton(
-                focusColor: Colors.white,
-                dropdownColor: Colors.white,
-                underline: const SizedBox(),
-                borderRadius:
-                const BorderRadius.all(Radius.circular(10)),
-                // Initial Value
-                value: addexpensecontroller.lstrTrainClass.value
-                    .toString(),
-                isExpanded: true,
-                // Down Arrow Icon
-                icon: const Icon(Icons.arrow_forward_ios_rounded,
-                    size: 13),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ts("Class", Colors.black),
+                  gapHC(3),
+                  Obx(() => Container(
+                        height: 45,
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: boxOutlineCustom(
+                            Colors.white, 10, Colors.grey.shade400),
+                        child: DropdownButton(
+                          focusColor: Colors.white,
+                          dropdownColor: Colors.white,
+                          underline: const SizedBox(),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          // Initial Value
+                          value: addexpensecontroller.lstrTrainClass.value
+                              .toString(),
+                          isExpanded: true,
+                          // Down Arrow Icon
+                          icon: const Icon(Icons.arrow_forward_ios_rounded,
+                              size: 13),
 
-                // Array list of items
-                items: addexpensecontroller.trainClassList
-                    .map((String items) {
-                  return DropdownMenuItem(
-                    value: items,
-                    child: ts(
-                      items,
-                      Colors.black,
-                    ),
-                  );
-                }).toList(),
-                onChanged: (dynamic value) {
-                  addexpensecontroller.fnOnChnageTrip(value, "Train");
-                },
-              ),
-            ))
-          ],
-        )
+                          // Array list of items
+                          items: addexpensecontroller.trainClassList
+                              .map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: ts(
+                                items,
+                                Colors.black,
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (dynamic value) {
+                            addexpensecontroller.fnOnChnageTrip(value, "Train");
+                          },
+                        ),
+                      ))
+                ],
+              )
             : name == "Bus"
-            ? Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ts("Class", Colors.black),
-            gapHC(3),
-            Obx(() => Container(
-              height: 45,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: boxOutlineCustom(
-                  Colors.white, 10, Colors.grey.shade400),
-              child: DropdownButton(
-                focusColor: Colors.white,
-                dropdownColor: Colors.white,
-                underline: const SizedBox(),
-                borderRadius:
-                const BorderRadius.all(Radius.circular(10)),
-                // Initial Value
-                value: addexpensecontroller.lstrBusClass.value
-                    .toString(),
-                isExpanded: true,
-                // Down Arrow Icon
-                icon: const Icon(Icons.arrow_forward_ios_rounded,
-                    size: 13),
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ts("Class", Colors.black),
+                      gapHC(3),
+                      Obx(() => Container(
+                            height: 45,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: boxOutlineCustom(
+                                Colors.white, 10, Colors.grey.shade400),
+                            child: DropdownButton(
+                              focusColor: Colors.white,
+                              dropdownColor: Colors.white,
+                              underline: const SizedBox(),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              // Initial Value
+                              value: addexpensecontroller.lstrBusClass.value
+                                  .toString(),
+                              isExpanded: true,
+                              // Down Arrow Icon
+                              icon: const Icon(Icons.arrow_forward_ios_rounded,
+                                  size: 13),
 
-                // Array list of items
-                items: addexpensecontroller.busClassList
-                    .map((String items) {
-                  return DropdownMenuItem(
-                    value: items,
-                    child: ts(
-                      items,
-                      Colors.black,
-                    ),
-                  );
-                }).toList(),
-                onChanged: (dynamic value) {
-                  addexpensecontroller.fnOnChnageTrip(
-                      value, "Bus");
-                },
-              ),
-            ))
-          ],
-        )
-            : name == "Flight"
-            ? Container(
-          height: 100,
-          padding: const EdgeInsets.symmetric(
-              horizontal: 10, vertical: 10),
-          decoration: boxOutlineShadowCustom(
-              Colors.white, 10.0, Colors.grey.shade400),
-          child: ListView.builder(
-              itemCount: addexpensecontroller
-                  .filteredEmployees.value.length,
-              // itemCount:  addexpensecontroller.chipsList.where((p0) => p0 == addexpensecontroller.txtSuggestionEmpCode.text).length,
-              physics: const ScrollPhysics(),
-              itemBuilder: (context, index) {
-                var name = addexpensecontroller
-                    .filteredEmployees.value[index];
+                              // Array list of items
+                              items: addexpensecontroller.busClassList
+                                  .map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: ts(
+                                    items,
+                                    Colors.black,
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (dynamic value) {
+                                addexpensecontroller.fnOnChnageTrip(
+                                    value, "Bus");
+                              },
+                            ),
+                          ))
+                    ],
+                  )
+                : name == "Flight"
+                    ? Container(
+                        height: 100,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        decoration: boxOutlineShadowCustom(
+                            Colors.white, 10.0, Colors.grey.shade400),
+                        child: ListView.builder(
+                            itemCount: addexpensecontroller
+                                .filteredEmployees.value.length,
+                            // itemCount:  addexpensecontroller.chipsList.where((p0) => p0 == addexpensecontroller.txtSuggestionEmpCode.text).length,
+                            physics: const ScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              var name = addexpensecontroller
+                                  .filteredEmployees.value[index];
 
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Bounce(
-                      onTap: () {
-                        addexpensecontroller
-                            .txtSuggestionEmpCode.text = "";
-                        addexpensecontroller
-                            .filteredEmployees.value =
-                            addexpensecontroller.chipsList.value;
-                        if (addexpensecontroller.selectedChips
-                            .contains(name)) {
-                          dprint("containeeeeeeeeeeeeddd");
-                        } else {
-                          addexpensecontroller.selectedChips
-                              .add(name);
-                        }
-                      },
-                      child: Text(name)),
-                );
-              }),
-        )
-            : const SizedBox(),
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Bounce(
+                                    onTap: () {
+                                      addexpensecontroller
+                                          .txtSuggestionEmpCode.text = "";
+                                      addexpensecontroller
+                                              .filteredEmployees.value =
+                                          addexpensecontroller.chipsList.value;
+                                      if (addexpensecontroller.selectedChips
+                                          .contains(name)) {
+                                        dprint("containeeeeeeeeeeeeddd");
+                                      } else {
+                                        addexpensecontroller.selectedChips
+                                            .add(name);
+                                      }
+                                    },
+                                    child: Text(name)),
+                              );
+                            }),
+                      )
+                    : const SizedBox(),
         gapHC(10),
         ts("Remarks", Colors.black),
         gapHC(3),
@@ -1709,7 +1712,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 maxLines: 1,
                 decoration: InputDecoration(
                   contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 0.0),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0.0),
                   hintText: 'Amount',
                   hintStyle: hintTextStyle(),
                   enabledBorder: OutlineInputBorder(
@@ -1747,27 +1750,28 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         filee == null
             ? const SizedBox()
             : Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ts("Files", Colors.black),
-            gapHC(5),
-            Row(
-              children: [
-                Image.asset(AppAssets.file),
-                gapWC(10),
-                Expanded(
-                    child: ts(
-                        filee != null ? filee!.path.split("/").last : "",
-                        Colors.black)),
-              ],
-            ),
-          ],
-        ),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ts("Files", Colors.black),
+                  gapHC(5),
+                  Row(
+                    children: [
+                      Image.asset(AppAssets.file),
+                      gapWC(10),
+                      Expanded(
+                          child: ts(
+                              filee != null ? filee!.path.split("/").last : "",
+                              Colors.black)),
+                    ],
+                  ),
+                ],
+              ),
         gapHC(10),
       ],
     );
   }
-  void _addNewWidget(name,index) {
+
+  void _addNewWidget(name, index) {
     dprint("NAME >                >>>>>>>>>>>>>>>>>   ${name}");
     // setState(() {
     //   if (name == name) innerWidegt.add(insideScreen(name,index));

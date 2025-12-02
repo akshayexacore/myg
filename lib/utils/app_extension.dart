@@ -5,7 +5,7 @@ extension CustomExtension on String {
     var letterLimit = 2;
     var initial = '';
 
-    if(parts.isEmpty || parts.first.isEmpty){
+    if (parts.isEmpty || parts.first.isEmpty) {
       return '';
     }
     // check length
@@ -21,7 +21,6 @@ extension CustomExtension on String {
     return initial;
   }
 }
-
 
 extension FloorNameExtension on int {
   String toReadableFloorName() {
