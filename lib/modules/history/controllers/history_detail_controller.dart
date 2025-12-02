@@ -26,6 +26,7 @@ class HistoryDetailController extends GetxController with GetSingleTickerProvide
   var isFormAddBusy = false.obs;
   var isFormUpdateBusy = false.obs;
   var claim = Rxn<ClaimHistory>();
+  var claimId = "".obs;
   var reSubmittedCategories = <Category>[].obs;
   final formKey = GlobalKey<FormState>();
   final _repository = MygRepository();
@@ -34,8 +35,11 @@ class HistoryDetailController extends GetxController with GetSingleTickerProvide
 
   @override
   void onInit() {
-    claim(Get.arguments);
-    if(claim.value!.categories == null || claim.value!.categories!.isEmpty){
+    final args = Get.arguments as Map<String, dynamic>;
+//  claim.value = args['claim'] as ClaimHistory;
+claimId.value= args['id'] as String;
+    // claim(Get.arguments);
+    if(claim.value?.categories == null || claim.value!.categories?.isEmpty==true){
       getDetails();
       canGoToHistory = false;
     }else{
@@ -49,8 +53,10 @@ class HistoryDetailController extends GetxController with GetSingleTickerProvide
       if(!isSilent) {
         isBusy(true);
       }
-      var response = await _repository.getClaimDetail(claim.value!.tripClaimId);
+      var response = await _repository.getClaimDetail(claimId.value);
+      
         claim(response.claim);
+        // debugPrint(claim.value)
     } catch (_) {
       print('detail claims get error: ${_.toString()}');
     } finally {
@@ -171,7 +177,7 @@ class HistoryDetailController extends GetxController with GetSingleTickerProvide
 
   void gotoResubmit(){
     List<Category> cats = claim.value!.categories!.where((element) {
-      return element.items.where((e) => e.status == ClaimStatus.rejected && e.rejectionCount < 2,).isNotEmpty;
+      return (element.items?.where((e) => e.status == ClaimStatus.rejected && e.rejectionCount < 2,).isNotEmpty)??false;
     },).toList();
 
     if(cats.isEmpty){
@@ -223,9 +229,9 @@ class HistoryDetailController extends GetxController with GetSingleTickerProvide
     bool valid = true;
     reSubmittedCategories.forEach((element) {
       print('here 1');
-      element.items.forEach((form) {
+      element.items?.forEach((form) {
         print('here 2');
-        if(form.files.isEmpty && element.name.toLowerCase()!='food'){
+        if(form.files?.isEmpty ==true && element.name?.toLowerCase()!='food' && element.name?.toLowerCase()!='cab' && element.name?.toLowerCase()!='two-wheeler'  && element.name?.toLowerCase()!='four-wheeler'){
           form.fileError = "This is a mandatory field";
           print('here');
           emitFormUpdate();
@@ -252,7 +258,7 @@ class HistoryDetailController extends GetxController with GetSingleTickerProvide
 
         var body = {
           "claim_details": reSubmittedCategories
-            .expand((category) => category.items)
+            .expand((category) => category.items??[])
             .toList().map((v) => v.toApiJson()).toList()
         };
 

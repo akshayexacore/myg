@@ -52,7 +52,56 @@ class ClaimDetailResponse {
     data['data'] = claim?.toJson();
     return data;
   }
+}extension ClaimHistoryCopyWith on ClaimHistory {
+  ClaimHistory copyWith({
+    String? tripClaimId,
+    TripType? tripTypeDetails,
+    Employee? approverDetails,
+    Employee? userDetails,
+    Employee? financeApproverDetails,
+    String? tripPurpose,
+   List< Branch>? visitBranchDetail,
+    List<Category>? categories,
+    ClaimStatus? status,
+    ClaimStatus? tripHistoryStatus,
+    String? pendingFrom,
+    String? tripApproverRemarks,
+    ClaimStatus? approverStatus,
+    ClaimStatus? financeStatus,
+    String? tmgId,
+    String? date,
+    String? finanaceRemarks,
+    String? tripApprovedDate,
+    String? tripRejectedDate,
+    String? financeApprovedDate,
+    double? totalAmount,
+  }) {
+    return ClaimHistory(
+      tripClaimId: tripClaimId ?? this.tripClaimId,
+      tripTypeDetails: tripTypeDetails ?? this.tripTypeDetails,
+      approverDetails: approverDetails ?? this.approverDetails,
+      userDetails: userDetails ?? this.userDetails,
+      financeApproverDetails: financeApproverDetails ?? this.financeApproverDetails,
+      tripPurpose: tripPurpose ?? this.tripPurpose,
+      visitBranchDetail: visitBranchDetail ?? this.visitBranchDetail,
+      categories: categories ?? this.categories,
+      status: status ?? this.status,
+      tripHistoryStatus: tripHistoryStatus ?? this.tripHistoryStatus,
+      pendingFrom: pendingFrom ?? this.pendingFrom,
+      tripApproverRemarks: tripApproverRemarks ?? this.tripApproverRemarks,
+      approverStatus: approverStatus ?? this.approverStatus,
+      financeStatus: financeStatus ?? this.financeStatus,
+      tmgId: tmgId ?? this.tmgId,
+      date: date ?? this.date,
+      finanaceRemarks: finanaceRemarks ?? this.finanaceRemarks,
+      tripApprovedDate: tripApprovedDate ?? this.tripApprovedDate,
+      tripRejectedDate: tripRejectedDate ?? this.tripRejectedDate,
+      financeApprovedDate: financeApprovedDate ?? this.financeApprovedDate,
+      totalAmount: totalAmount ?? this.totalAmount,
+    );
+  }
 }
+
 
 class ClaimHistory {
   late String tripClaimId;
@@ -61,7 +110,7 @@ class ClaimHistory {
   Employee? userDetails;
   Employee? financeApproverDetails;
   late String tripPurpose;
-  Branch? visitBranchDetail;
+  List<Branch>? visitBranchDetail;
   List<Category>? categories;
   late ClaimStatus status;
   late ClaimStatus tripHistoryStatus;
@@ -71,9 +120,10 @@ class ClaimHistory {
   late ClaimStatus financeStatus;
   late String tmgId;
   late String date;
-  late String tripApprovedDate;
-  late String tripRejectedDate;
-  late String financeApprovedDate;
+   String? finanaceRemarks;
+   String? tripApprovedDate;
+   String? tripRejectedDate;
+   String? financeApprovedDate;
   late double totalAmount;
 
   ClaimHistory(
@@ -81,6 +131,8 @@ class ClaimHistory {
         this.tripTypeDetails,
         this.approverDetails,
         this.userDetails,
+        this.finanaceRemarks="",
+
         this.financeApproverDetails,
         this.tripPurpose = '',
         this.pendingFrom = '',
@@ -102,6 +154,7 @@ class ClaimHistory {
   ClaimHistory.fromJson(Map<String, dynamic> json) {
     tripClaimId = json['trip_claim_id'] ?? '';
     status = json['trip_status'].toString().toClaimStatus;
+    finanaceRemarks=json["finance_remarks"] ??"";
     tripHistoryStatus = json['trip_history_status'].toString().toClaimStatus;
     approverStatus = json['approver_status'].toString().toClaimStatus;
     financeStatus = json['finance_status'].toString().toClaimStatus;
@@ -125,10 +178,11 @@ class ClaimHistory {
     financeApproverDetails = json['finance_approver_details'] != null
         ? new Employee.fromJson(json['finance_approver_details'])
         : null;
-    tripPurpose = json['trip_purpose'] ?? '';
-    visitBranchDetail = json['visit_branch_detail'] != null
-        ? new Branch.fromJson(json['visit_branch_detail'])
-        : null;
+    tripPurpose = json['trip_purpose']?.toString() ?? '';
+    visitBranchDetail =json['visit_branch_detail'] != null
+          ? List<Branch>.from(
+              json['visit_branch_detail'].map((x) => Branch.fromJson(x)))
+          : null;
     categories = <Category>[];
     if (json['categories'] != null) {
       categories = <Category>[];
@@ -137,6 +191,34 @@ class ClaimHistory {
       });
     }
   }
+@override
+String toString() {
+  return '''
+ClaimHistory {
+  tripClaimId: $tripClaimId,
+  tripPurpose: $tripPurpose,
+  status: $status,
+  tripHistoryStatus: $tripHistoryStatus,
+  approverStatus: $approverStatus,
+  financeStatus: $financeStatus,
+  pendingFrom: $pendingFrom,
+  tripApproverRemarks: $tripApproverRemarks,
+  finanaceRemarks: $finanaceRemarks,
+  tripApprovedDate: $tripApprovedDate,
+  tripRejectedDate: $tripRejectedDate,
+  financeApprovedDate: $financeApprovedDate,
+  tmgId: $tmgId,
+  date: $date,
+  totalAmount: $totalAmount,
+  tripTypeDetails: ${tripTypeDetails?.toJson()},
+  approverDetails: ${approverDetails?.toJson()},
+  userDetails: ${userDetails?.toJson()},
+  financeApproverDetails: ${financeApproverDetails?.toJson()},
+  visitBranchDetail: ${visitBranchDetail?.map((b) => b.toJson()).toList()},
+  categories: ${categories?.map((c) => c.toJson()).toList()}
+}
+''';
+}
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -149,7 +231,7 @@ class ClaimHistory {
     }
     data['trip_purpose'] = this.tripPurpose;
     if (this.visitBranchDetail != null) {
-      data['visit_branch_detail'] = this.visitBranchDetail!.toJson();
+      data['visit_branch_detail'] = this.visitBranchDetail!.map((x) => x.toJson()).toList();
     }
     if (this.categories != null) {
       data['categories'] = this.categories!.map((v) => v.toJson()).toList();
@@ -158,3 +240,41 @@ class ClaimHistory {
   }
 }
 
+
+class DuplicateEmployee {
+  final int? userId;
+  final String? empId;
+  final String? empName;
+  final String? tripClaimId;
+  final String? tripClaimDetailId;
+  final String? category;
+  final bool? isDuplication;
+  final String? documentDate;
+  final int? categoryId;
+
+  DuplicateEmployee({
+    this.userId,
+    this.empId,
+    this.empName,
+    this.tripClaimId,
+    this.tripClaimDetailId,
+    this.isDuplication,
+    this.category,
+    this.documentDate,
+    this.categoryId
+  });
+
+  factory DuplicateEmployee.fromJson(Map<String, dynamic> json) {
+    return DuplicateEmployee(
+      userId: json['user_id'],
+      empId: json['emp_id'],
+      empName: json['emp_name'],
+      tripClaimId: json['trip_claim_id'],
+      tripClaimDetailId: json['trip_claim_detail_id'],
+      category: json['category'],
+      isDuplication: json['is_duplication'],
+      documentDate: json['document_date'],
+      categoryId: json['category_id']
+    );
+  }
+}

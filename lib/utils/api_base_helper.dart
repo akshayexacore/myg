@@ -108,34 +108,34 @@ class ApiBaseHelper {
     return responseJson;
   }
 
-  Future<dynamic> post(String url,
-      {Map<String, dynamic> body = const {},
-      Map<String, String>? headers}) async {
-    dynamic responseJson;
-    try {
-      if (headers != null) {
-        headers.addAll(_headers);
-      }
-      var uri = Uri.parse(_baseUrl + url);
-      print("the url is post here $uri");
-
-      final client = await createIoClient();
-      final response = await client
-          .post(uri, body: jsonEncode(body), headers: headers)
-          .timeout(Duration(seconds: 30));
-
-      // final response = await http
-      //     .post(uri, body: jsonEncode(body), headers: headers) //actual
-      //     .timeout(Duration(seconds: 30));
-      print(body);
-      responseJson = _returnResponse(response);
-    } on SocketException {
-      throw FetchDataException('No Internet connection');
-    } on TimeoutException {
-      throw FetchDataTimeOutException('Connection timeout.');
+ Future<dynamic> post(
+  String url, {
+  Map<String, dynamic> body = const {},
+  Map<String, String>? headers,
+  Duration timeout = const Duration(seconds: 40),   // 👈 default timeout
+}) async {
+  dynamic responseJson;
+  try {
+    if (headers != null) {
+      headers.addAll(_headers);
     }
-    return responseJson;
+    var uri = Uri.parse(_baseUrl + url);
+    print("the url is post here $uri$body");
+
+    final client = await createIoClient();
+
+    final response = await client
+        .post(uri, body: jsonEncode(body), headers: headers)
+        .timeout(timeout);                            // 👈 use given timeout
+
+    responseJson = _returnResponse(response);
+  } on SocketException {
+    throw FetchDataException('No Internet connection');
+  } on TimeoutException {
+    throw FetchDataTimeOutException('Connection timeout.');
   }
+  return responseJson;
+}
 
   Future<dynamic> patch(String url,
       {Map<String, dynamic> body = const {},

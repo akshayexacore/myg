@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 import 'package:travel_claim/models/branch.dart';
 import 'package:travel_claim/models/trip_type.dart';
+import 'package:travel_claim/modules/splash/controllers/update_controller.dart';
 import 'package:travel_claim/resources/myg_repository.dart';
 
 class LandingController extends GetxController
     with GetSingleTickerProviderStateMixin {
-
+ final updateController = Get.put(UpdateController());
   var isBranchBusy = false.obs;
   var branches = <Branch>[].obs;
 
@@ -17,10 +18,15 @@ class LandingController extends GetxController
 
   @override
   void onInit() {
+    versionCheck();
     getNotificationCount();
     getBranches();
     geTripTypes();
     super.onInit();
+  }
+
+  versionCheck() async {
+      await updateController.checkVersion();
   }
 
 

@@ -28,4 +28,12 @@ class ApiConstants {
   static String advanceRequest = '/api/advanceRequest';
   static String advanceList = '/api/advanceList';
   static String classCalculation = '/api/classCalculation';
+  static String checkDuplicateClaims = '/api/checkDuplicateClaims';
+  static String fromApi = '/api/locationFrom?search_key=';
+  static String toApi = '/api/locationTo?search_key=';
+  static String saveDraft = '/api/save-draft';
+  static String draftList = '/api/draft-claim-list';
+  static String deleteDraft='/api/draft-trip-claim/delete';
+  static String draftViewCiam ='/api/draft-view-claim';
+  static String updateDraft ='/api/update-draft';
 }

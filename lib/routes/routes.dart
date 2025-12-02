@@ -78,6 +78,7 @@ class Routes {
         page: () => ClaimPage(),
         binding: BindingsBuilder(() {
           Get.lazyPut(() => ClaimController());
+          Get.lazyPut(() => DraftController());
         })),
     GetPage(
         name: ClaimConfirmationPage.routeName,
@@ -126,6 +127,7 @@ class Routes {
         page: () => ClaimDetailApprovalPage(),
         binding: BindingsBuilder(() {
           Get.lazyPut(() => ClaimDetailApprovalController());
+          Get.lazyPut(() => ProfileController());
         })),
     GetPage(
         name: SpecialApprovalListPage.routeName,

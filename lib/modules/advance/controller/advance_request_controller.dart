@@ -19,6 +19,7 @@ import 'package:travel_claim/views/widgets.dart';
 
 class AdvanceRequestController extends GetxController
     with GetSingleTickerProviderStateMixin {
+      
   var isBusy = false.obs;
   var selectedBranch = Rxn<Branch>();
   var selectedTripType = Rxn<TripType>();

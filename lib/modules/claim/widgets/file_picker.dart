@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:travel_claim/configs/app_config.dart';
+import 'package:travel_claim/global/globalValues.dart';
 import 'package:travel_claim/modules/gallery/gallery_page.dart';
 import 'package:travel_claim/modules/gallery/pdf_viewer.dart';
 import 'package:travel_claim/modules/gallery/widgets/gallery_item.dart';
@@ -20,7 +21,9 @@ import 'package:travel_claim/views/components/image_dispalya.ssl.dart';
 import 'package:travel_claim/views/const/appassets.dart';
 import 'package:travel_claim/views/style/colors.dart';
 import 'package:path/path.dart';
-  var selectedImageFile;
+
+var selectedImageFile;
+
 class FilePicker extends StatefulWidget {
   List<String> selectedFiles;
   final ValueChanged<List<String>> onChanged;
@@ -52,7 +55,7 @@ class _FilePickerState extends State<FilePicker> {
                   onTap: () {
                     showUploadOptions();
                   },
-                  buttonName: "Choose file",
+                  buttonName: "Choose files",
                   buttonColor: primaryColor,
                   buttonTextColor: Colors.white),
             ),
@@ -78,6 +81,7 @@ class _FilePickerState extends State<FilePicker> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
+<<<<<<< HEAD
                 return GestureDetector(
                   onTap: () {
                     if (extension(widget.selectedFiles[index])
@@ -106,96 +110,137 @@ showDialog(
                                   "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
                               height: MediaQuery.of(context).size.height/1.1,
                               width:  MediaQuery.of(context).size.width/1.5,
+=======
+                return Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        if (extension(widget.selectedFiles[index])
+                            .toLowerCase()
+                            .endsWith('pdf')) {
+                          Get.to(() => PdfViewer(
+                              file:
+                                  "${AppConfig.imageLiveBaseUrl}${widget.selectedFiles[index]}"));
+                        } else {
+                          print("object");
+                          // showDialog(
+                          //               context: context,
+                          //               builder: (BuildContext context) {
+                          //                 return Dialog(
+                          //                   backgroundColor: Colors.transparent,
+                          //                   insetPadding: EdgeInsets.all(0),
+                          //                   child: Container(
+                          //                     width: MediaQuery.of(context).size.width,
+                          //                     height: MediaQuery.of(context).size.height,
+                          //                     color: Colors.black,
+                          //                     child: Stack(
+                          //                       children: [
+                          //                         // Full-screen content
+                          //                         CustomSslImageDispaly(
+                          //                               url:
+                          //                                   "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
+                          //                               height: MediaQuery.of(context).size.height-200,
+                          //                               width:  MediaQuery.of(context).size.width,
+                          //                             ),
+                          //                         // Close button at the top right corner
+                          //                         Positioned(
+                          //                           top: 30,
+                          //                           right: 20,
+                          //                           child: IconButton(
+                          //                             icon: Icon(Icons.close,color: Colors.white,),
+                          //                             onPressed: () {
+                          //                               Navigator.of(context).pop();
+                          //                             },
+                          //                           ),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                   ),
+                          //                 );
+                          //               },
+                          //             );
+
+                          Navigator.push(
+                            Get.context!,
+                            MaterialPageRoute(
+                              builder: (context) => GalleryPhotoViewWrapper(
+                                galleryItems: [
+                                  GalleryItem(
+                                      id: "id:1",
+                                      resource:
+                                          "${AppConfig.imageLiveBaseUrl}${widget.selectedFiles[index]}")
+                                ],
+                                backgroundDecoration: const BoxDecoration(
+                                  color: Colors.black,
+                                ),
+                                initialIndex: 0,
+                                scrollDirection: Axis.horizontal,
+                              ),
+>>>>>>> android
                             ),
-                        // Close button at the top right corner
-                        Positioned(
-                          top: 40,
-                          right: 20,
-                          child: IconButton(
-                            icon: Icon(Icons.close,color: Colors.white,),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ),
-                      ],
+                          );
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          widget.selectedFiles[index]
+                                      .split("/")
+                                      .last
+                                      .toLowerCase()
+                                      .endsWith('jpg') ||
+                                  widget.selectedFiles[index]
+                                      .split("/")
+                                      .last
+                                      .toLowerCase()
+                                      .endsWith('png')
+                              ?
+                              //  CustomSslImageDispaly(
+                              //     url:
+                              //         "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
+                              //     height: 70,
+                              //   )
+                              CachedNetworkImage(
+                                  imageUrl: getFullImageUrl(
+                                      widget.selectedFiles[index]),
+                                  height: 70,
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 2),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                )
+                              : Image.asset(
+                                  AppAssets.file,
+                                  height: 70,
+                                ),
+                          gapWC(10),
+                          Expanded(
+                              child: ts(
+                                  '' /*widget.selectedFiles[index].split("/").last*/,
+                                  Colors.black)),
+                          gapWC(10),
+                          GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                setState(() {
+                                  widget.selectedFiles.removeAt(index);
+                                  widget.onChanged.call(widget.selectedFiles);
+                                });
+                              },
+                              child: const CircleAvatar(
+                                radius: 14,
+                                backgroundColor: primaryColor,
+                                child: Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              ))
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            );
-                      
-                      // Navigator.push(
-                      //   Get.context!,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => GalleryPhotoViewWrapper(
-                      //       galleryItems: [
-                      //         GalleryItem(
-                      //             id: "id:1",
-                      //             resource:
-                      //                 "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}")
-                      //       ],
-                      //       backgroundDecoration: const BoxDecoration(
-                      //         color: Colors.black,
-                      //       ),
-                      //       initialIndex: 0,
-                      //       scrollDirection: Axis.horizontal,
-                      //     ),
-                      //   ),
-                      // );
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      widget.selectedFiles[index]
-                                  .split("/")
-                                  .last
-                                  .toLowerCase()
-                                  .endsWith('jpg') ||
-                              widget.selectedFiles[index]
-                                  .split("/")
-                                  .last
-                                  .toLowerCase()
-                                  .endsWith('png')
-                          ? CustomSslImageDispaly(
-                              url:
-                                  "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
-                              height: 70,
-                            )
-                          // CachedNetworkImage(
-                          //     imageUrl:
-                          //         "${AppConfig.imageBaseUrl}${widget.selectedFiles[index]}",
-                          //     height: 70,
-                          //   )
-                          : Image.asset(
-                              AppAssets.file,
-                              height: 70,
-                            ),
-                      gapWC(10),
-                      Expanded(
-                          child: ts(
-                              '' /*widget.selectedFiles[index].split("/").last*/,
-                              Colors.black)),
-                      gapWC(10),
-                      GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () {
-                            setState(() {
-                              widget.selectedFiles.removeAt(index);
-                              widget.onChanged.call(widget.selectedFiles);
-                            });
-                          },
-                          child: const CircleAvatar(
-                            radius: 14,
-                            backgroundColor: primaryColor,
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              size: 16,
-                            ),
-                          ))
-                    ],
-                  ),
+                  ],
                 );
               },
               separatorBuilder: (context, index) => const SizedBox(
@@ -301,7 +346,6 @@ showDialog(
         backgroundColor: Colors.white);
   }
 
-
   pickFromFiles(BuildContext context) async {
     Get.back();
     picker.FilePickerResult? result = await picker.FilePicker.platform
@@ -322,6 +366,8 @@ showDialog(
       }
       selectedImageFile = file;
       String newFile = await uploadFile(file.path, context);
+      String filePath = newFile.split('/uploads/').last;
+      newFile = 'uploads/$filePath';
       if (newFile.isNotEmpty) {
         setState(() {
           if (widget.multiple) {
@@ -354,6 +400,10 @@ showDialog(
       selectedImageFile = photo;
 
       String newFile = await uploadFile(photo.path, context);
+      String filePath = newFile.split('/uploads/').last;
+
+// Prepend "uploads/" to get final path
+      newFile = 'uploads/$filePath';
       if (newFile.isNotEmpty) {
         setState(() {
           if (widget.multiple) {
@@ -384,6 +434,10 @@ showDialog(
       }
 
       String newFile = await uploadFile(photo.path, context);
+      String filePath = newFile.split('/uploads/').last;
+
+// Prepend "uploads/" to get final path
+      newFile = 'uploads/$filePath';
       if (newFile.isNotEmpty) {
         setState(() {
           if (widget.multiple) {

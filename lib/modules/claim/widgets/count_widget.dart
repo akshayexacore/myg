@@ -63,7 +63,7 @@ class _CountWidgetState extends State<CountWidget> {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(1.0),
                   borderSide: BorderSide(
-                      width: 1, color: Colors.grey.shade300), //<-- SEE HERE
+                      width: 1, color: Colors.grey.shade300), 
                 ),
 
                 border: OutlineInputBorder(

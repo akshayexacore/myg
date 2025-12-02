@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_claim/models/claim_form.dart';
+import 'package:travel_claim/models/draft_list_model.dart';
 import 'package:travel_claim/modules/claim/claim_page.dart';
+import 'package:travel_claim/resources/myg_repository.dart';
 import 'package:travel_claim/utils/local_storage_data_provider.dart';
 import 'package:travel_claim/views/components/app_dialog.dart';
 
 
 class DraftController extends GetxController with GetSingleTickerProviderStateMixin{
   var isBusy = false.obs;
+  var items = <DraftListModel>[].obs;
 
-  var items = <ClaimForm>[].obs;
-
-
+  final _mygRepository = MygRepository();
   final _repository = LocalStorageDataProvider();
 
   @override
@@ -20,7 +21,7 @@ class DraftController extends GetxController with GetSingleTickerProviderStateMi
     super.onInit();
   }
 
-  void gotoClaimForm(ClaimForm claim){
+  void gotoClaimForm(DraftListModel claim){
     Get.toNamed(ClaimPage.routeName,arguments: claim);
   }
 
@@ -29,8 +30,8 @@ class DraftController extends GetxController with GetSingleTickerProviderStateMi
       if(!isSilent) {
         isBusy(true);
       }
-      var response = await _repository.getClaims();
-        items(response);
+      var response = await _mygRepository.getClaimDraftHistory();
+        items(response.claimList);
     } catch (_) {
       print('draft claims get error: ${_.toString()}');
     } finally {
@@ -40,7 +41,7 @@ class DraftController extends GetxController with GetSingleTickerProviderStateMi
     }
   }
 
-  void delete(ClaimForm claim){
+  void delete(DraftListModel claim){
     AppDialog.showDialog(title:"Delete?",content:  "Are you sure want to delete this draft?",negativeText: "Cancel",negativeOnPressed: (){
       Get.back();
     },positiveText: "Delete",positiveOnPressed: (){
@@ -49,12 +50,13 @@ class DraftController extends GetxController with GetSingleTickerProviderStateMi
     });
   }
 
-  _delete(ClaimForm claim)async{
+  _delete(DraftListModel claim)async{
     try{
-      await _repository.delete(claim.storageId);
-      getDrafts();
+      await _mygRepository.deleteDraft(body:{"trip_claim_id":claim.tripClaimId });
+      getDrafts(isSilent: true);
     }catch(_){
       print('draft claims delete error: ${_.toString()}');
+      
     }
   }
 }
