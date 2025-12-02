@@ -149,7 +149,7 @@ class MygRepository {
 
   Future<ClaimDetailResponse> getClaimDetail(String id) async {
     
-    final response = await _api.post(ApiConstants.viewClaim,headers: {},body: {"trip_claim_id":id});
+    final response = await _api.post(ApiConstants.viewClaim,headers: {},body: {"trip_claim_id":id},timeout: Duration(seconds: 45));
     return ClaimDetailResponse.fromJson(response);
   }
   Future<ClaimDetailResponse> getDraftDetail(String id) async {
