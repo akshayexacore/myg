@@ -8,9 +8,7 @@ import 'package:travel_claim/utils/shared_preferences_data_provider.dart';
 
 class AuthRepository {
   late final ApiBaseHelper _api = ApiBaseHelper();
-
   late final _preferences = SharedPreferencesDataProvider();
-
 
   Future<String> getAccessToken() async {
     return await _preferences.getAccessToken();
