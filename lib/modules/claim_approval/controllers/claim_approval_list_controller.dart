@@ -4,10 +4,14 @@ import 'package:travel_claim/models/claim_history.dart';
 import 'package:travel_claim/resources/myg_repository.dart';
 import 'package:travel_claim/utils/app_enums.dart';   
 //testtttttttttttttttttttttttt
-
+//szssss
 class ClaimApprovalListController extends GetxController
     with GetSingleTickerProviderStateMixin {
   var isBusy = false.obs;
+
+
+
+  
    late PageController pageController;
 
   var allItems = <ClaimHistory>[].obs;
